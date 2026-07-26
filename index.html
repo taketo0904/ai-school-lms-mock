@@ -378,6 +378,107 @@
     .grid3,.grid2{gap:10px}
   }
 
+
+  /* ===== コーチング：キックオフ ===== */
+  .kick{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:20px;background:var(--blue-s);
+    border:1px solid var(--blue);border-radius:var(--r);padding:20px 22px;margin-bottom:20px}
+  @media (max-width:760px){.kick{grid-template-columns:1fr}}
+  .kick.done{background:var(--card);border-color:var(--line)}
+  .kicklb{font-size:10.5px;letter-spacing:.13em;font-weight:700;color:var(--blue)}
+  .kick.done .kicklb{color:var(--ok)}
+  .kick h2{font-size:20px;font-weight:700;margin:5px 0 7px}
+  .kick p{font-size:13px;color:var(--ink2);margin:0 0 10px;max-width:60ch}
+  .kicklist{margin:0;padding-left:1.15em;font-size:12.5px;color:var(--ink2);line-height:1.9}
+  .kickside{display:flex;flex-direction:column;gap:8px;justify-content:flex-start}
+  .kickdate{font-size:12px;color:var(--dim);margin-bottom:2px}
+
+  /* ===== 4フェーズ ===== */
+  .phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:6px}
+  .ph{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;box-shadow:var(--sh1)}
+  .ph[data-st="current"]{border-color:var(--blue);box-shadow:var(--sh2)}
+  .phn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;font-weight:700;
+    background:var(--card2);color:var(--dim);border:1px solid var(--line)}
+  .ph[data-st="done"] .phn{background:var(--ok);color:#fff;border-color:var(--ok)}
+  .ph[data-st="current"] .phn{background:var(--blue);color:var(--blue-ink);border-color:var(--blue)}
+  .wschips{display:flex;flex-wrap:wrap;gap:6px}
+
+  /* ===== ワークシート ===== */
+  .wslayout{display:grid;grid-template-columns:214px minmax(0,1fr);gap:18px;align-items:start}
+  @media (max-width:860px){.wslayout{grid-template-columns:1fr}
+    .wsnav{display:flex;overflow-x:auto;gap:8px;position:static!important}}
+  .wsnav{display:flex;flex-direction:column;gap:4px;position:sticky;top:66px}
+  .wsnavb{display:flex;gap:9px;align-items:flex-start;text-align:left;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r2);padding:9px 11px;cursor:pointer;flex-shrink:0;min-width:190px}
+  .wsnavb:hover{background:var(--card2)}
+  .wsnavb[aria-current="true"]{background:var(--blue-s);border-color:var(--blue)}
+  .wsnavb .wsn{font-size:10.5px;font-weight:700;color:var(--blue);padding-top:2px}
+  .wsnavb b{font-size:12.5px;display:block}
+  .wssub{font-size:10.5px;color:var(--dim);display:block;line-height:1.4;margin-top:1px}
+  .wsbody{min-width:0}
+  .wsh2{font-size:19px;font-weight:700;margin-bottom:6px}
+  .wsdesc{font-size:13px;color:var(--ink2);margin:0 0 16px;max-width:66ch;line-height:1.8}
+  .wsnote{font-size:11.5px;color:var(--dim);margin:8px 0 0;line-height:1.7}
+  .wshead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+  .satsum{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;text-align:center}
+  .satnum{font-size:26px;font-weight:700}
+  .satnum span{font-size:12px;color:var(--dim);font-weight:400;margin-left:3px}
+  .satgrid{display:grid;gap:7px}
+  .satrow{display:grid;grid-template-columns:96px minmax(0,1fr) 30px;gap:10px;align-items:center;font-size:12px}
+  .satnm{color:var(--ink2)}
+  .satv{text-align:right;color:var(--dim)}
+
+  .wsblock{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:15px 16px;margin-bottom:12px;box-shadow:var(--sh1)}
+  .wsblockhead{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
+  .wsblockhead b{font-size:14.5px}
+  .wstag{font-size:10px;padding:2px 7px;border-radius:999px;background:var(--card2);color:var(--dim);border:1px solid var(--line)}
+  .wstag.red{background:var(--warn-s);color:var(--warn);border-color:var(--warn)}
+  .wstag.blue{background:var(--blue-s);color:var(--blue);border-color:var(--blue)}
+  .wsgrid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .wsgrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .wsgrid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:820px){.wsgrid2,.wsgrid3,.wsgrid4{grid-template-columns:1fr}}
+  .wslb{display:block;font-size:11px;font-weight:700;color:var(--dim);margin-bottom:5px}
+  .wsin{width:100%;background:var(--card);border:1px solid var(--line2);border-radius:var(--r2);
+    padding:8px 10px;font-size:13px;line-height:1.7;resize:vertical;font-family:inherit}
+  .wsin:focus{border-color:var(--blue)}
+  .wssel{margin-left:auto;background:var(--card);border:1px solid var(--line2);border-radius:var(--r2);
+    padding:6px 9px;font-size:12px}
+  .hintbox{margin-top:7px;background:var(--card2);border-radius:var(--r2);padding:8px 10px}
+  .hintbox b{font-size:10.5px;color:var(--dim);display:block;margin-bottom:3px}
+  .hintbox ul{margin:0;padding-left:1.1em;font-size:11px;color:var(--dim);line-height:1.75}
+  .exrow{font-size:12.5px;color:var(--ink2);line-height:1.7}
+  .exrow .wslb{margin-bottom:2px}
+  .wstable td{vertical-align:top;padding:6px 8px}
+  .wstable .agec{color:var(--dim);font-size:11.5px;white-space:nowrap;padding-top:12px}
+  .wstable .areac{font-weight:700;font-size:12px;white-space:nowrap}
+  .wstable .wsin{font-size:12px;padding:6px 8px}
+  .colorkey{font-size:12px;font-weight:700}
+  .colorkey.red{color:var(--warn)}.colorkey.blue{color:var(--blue)}
+
+  /* GOAL 3層 */
+  .goalstack{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .glayer{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--card)}
+  .glayer.v{border-left:4px solid var(--mag)}
+  .glayer.q{border-left:4px solid var(--blue)}
+  .glayer.n{border-left:4px solid var(--ok)}
+  .glab{font-size:13px;font-weight:700;margin-bottom:4px}
+  .glayer.v .glab{color:var(--mag)}.glayer.q .glab{color:var(--blue)}.glayer.n .glab{color:var(--ok)}
+  .gdef{font-size:11.5px;color:var(--dim);line-height:1.75;margin-bottom:9px}
+  .miles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+  .mile{background:var(--card2);border-radius:var(--r2);padding:9px 10px}
+  .milem{margin-bottom:6px;font-weight:700;font-size:12px}
+  .czone{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:820px){.czone{grid-template-columns:1fr 1fr}}
+  .cz{background:var(--card2);border-radius:var(--r2);padding:10px}
+  .cz.goal{background:var(--blue-s);border:1px solid var(--blue)}
+  .czl{display:block;font-size:10.5px;font-weight:700;color:var(--dim);margin-bottom:5px}
+  .cz.goal .czl{color:var(--blue)}
+  .wsblock.decide{border-left:3px solid var(--mag)}
+  .wsblock.agree{border-left:3px solid var(--blue)}
+  @media print{.side,.topbar,.wsnav,.crumb,.b{display:none!important}.wslayout{grid-template-columns:1fr}}
+
   /* ===== admin ===== */
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;text-align:center}
   .metric .lb{font-size:12.5px;font-weight:700;margin-bottom:10px}
@@ -913,7 +1014,7 @@ let S = {
   mode:"user", page:"dash", cid:null, li:0,
   tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prog","g-mail"]),
   q:"", qmode:"course", filter:"all", libFilter:"all", tmpl:"t1", chartRange:7, statTab:"amount",
-  page1:1, page2:1, done:null, cotab:"board", sid:"s3", iid:"h1", vu:"中川 雄斗",
+  page1:1, page2:1, done:null, cotab:"program", sid:"s3", iid:"h1", ws:"w1", vu:"中川 雄斗",
 };
 
 function save(){
@@ -1007,8 +1108,9 @@ const USERNAV = [
     { p:"fav", label:"お気に入りコンテンツ" },
   ]},
   { id:"g-co", ic:"✅", label:"コーチング", items:[
+    { p:"co-prog", label:"プログラム" },
+    { p:"worksheet", label:"ワークシート" },
     { p:"coaching", label:"やることボード", badge:true },
-    { p:"co-flow", label:"工程（エピック）" },
     { p:"co-mins", label:"議事録" },
   ]},
 ];
@@ -1026,7 +1128,7 @@ const ADMINNAV = [
 
 /* コーチングのタブもナビの選択状態に反映する */
 const navOn = p => p==="coaching" ? (S.page==="coaching"&&S.cotab==="board")
-  : p==="co-flow" ? (S.page==="coaching"&&S.cotab==="flow")
+  : p==="co-prog" ? (S.page==="coaching"&&S.cotab==="program")
   : p==="co-mins" ? (S.page==="coaching"&&(S.cotab==="mins"||S.cotab==="todo"))
   : S.page===p;
 
@@ -1087,7 +1189,7 @@ function renderSide(){
   $$("#side .ghead").forEach(b=>b.onclick=()=>{
     const g=b.dataset.g; S.groups.has(g)?S.groups.delete(g):S.groups.add(g); renderSide();});
   /* コーチング配下のナビはタブを指定して同じ画面を開く */
-  const COMAP={ "coaching":"board", "co-flow":"flow", "co-mins":"mins" };
+  const COMAP={ "coaching":"board", "co-prog":"program", "co-mins":"mins" };
   $$("#side .nav[data-p]").forEach(b=>b.onclick=()=>{
     const p=b.dataset.p;
     if(COMAP[p]){S.cotab=COMAP[p];go("coaching");return}
@@ -1363,7 +1465,369 @@ function vLesson(){
 /* ============ 受講生: コーチング（工程 / 議事録 / ToDo をタブで分ける） ============
    カリキュラム（CATS）は「仕事の能力」を上げる場。
    ここ（FLOW）は「案件・副業を取る」ための工程管理で、コーチが並走する。 */
-const COTABS = [["board","ボード"],["flow","工程（エピック）"],["mins","議事録"],["todo","課題一覧"]];
+
+/* ============ コーチングのワークシート ============
+   コーチングは4フェーズで進む。フェーズはシートの「使用タイミング」に対応する。 */
+const PHASES = [
+  { id:"p1", name:"現状把握", desc:"8つの領域で今どこにいるかを、事実と解釈に分けて置く。", status:"done", date:"2026/06/24" },
+  { id:"p2", name:"決断",     desc:"GOAL世界の自分がやること・やらないことを決める。", status:"current", date:"2026/07/22" },
+  { id:"p3", name:"現実変容", desc:"決めたことを行動に落とし、現実を動かす。任意のタイミングで実施。", status:"todo", date:"" },
+  { id:"p4", name:"最終セッション", desc:"到達を確認し、次のGOALを置き直す。", status:"todo", date:"" },
+];
+
+/* 8領域。hints はシートの「定量情報の観点」をそのまま使う */
+const AREAS = [
+  { id:"work", name:"仕事", hints:["労働時間（時間/日）","勤務時間（何時〜何時で働いているのか）","企業情報（何をしている会社）","業務内容（どんな役割を担っているのか）","月収/年収","休日（いつ休みなのか）"] },
+  { id:"fin",  name:"ファイナンス", hints:["手取り収入/月","収入の内訳","支出総額/月","支出の内訳","資産（株/不動産/車 etc…）","貯蓄（キャッシュ）","借入金"] },
+  { id:"health", name:"健康美容", hints:["睡眠時間","運動頻度（回/週）","運動時間（時間/回）","投資金額","実施内容","継続期間","体重/体脂肪率"] },
+  { id:"family", name:"家族", hints:["対象（登場人物・年齢）","接触頻度（週/回）","関わっている時間（時間/週 or 時間/日）","イベント回数（旅行/食事 etc…）"] },
+  { id:"intel", name:"知性", hints:["内容","投資金額","実施頻度（回/週）","実施時間（時間/回）","継続期間"] },
+  { id:"social", name:"社会貢献", hints:["内容","寄付金額","実施頻度（回/週 or 回/月）","実施時間（時間/回）"] },
+  { id:"rel", name:"人間関係", hints:["過去1ヶ月間の接触回数が最も多い5人の特徴","└年齢 / 性格 / 仕事内容","└関係性 / 関わりの内容"] },
+  { id:"hobby", name:"趣味", hints:["内容","実施頻度（回/週 or 回/月）","実施時間（時間/回）","投資金額","継続期間"] },
+];
+const SAT = [
+  [1,"全く満足していない"],[2,"どちらかと言えば満足していない"],[3,"どちらとも言えない"],
+  [4,"どちらかと言うと満足している"],[5,"とても満足している"],
+];
+
+/* ワークシートの並び。スプレッドシートのシート順に対応 */
+const SHEETS = [
+  { id:"w1", n:"01", name:"現状把握", sub:"8領域の満足度と、事実／解釈／枠" },
+  { id:"w2", n:"02", name:"ライフヒストリー", sub:"3歳からの出来事・感情・信念・行動" },
+  { id:"w3", n:"03", name:"自己理解", sub:"動詞の経歴シート（夢中／拒否反応）" },
+  { id:"w4", n:"04", name:"自己機能", sub:"自己欲求・自己能力から機能を言語化する" },
+  { id:"w5", n:"05", name:"GOAL設計", sub:"定性GOAL／定量GOAL／VISION" },
+  { id:"w6", n:"06", name:"決断", sub:"やると決めること／断つと決めること" },
+  { id:"w7", n:"07", name:"アクションプラン", sub:"領域ごとの行動と期日" },
+  { id:"w8", n:"08", name:"合意", sub:"セッションにおける合意事項" },
+];
+
+/* Q群はシートの文言をそのまま使う */
+const SELFQ = [
+  "【Q1】自己機能を100%発揮している自分はどのような状態ですか？",
+  "【Q2】自己機能を100%発揮している自分はどんな人の役に立っていますか？／どんな風に役に立っていますか？",
+  "【Q3】自己機能を100%発揮している自分は周りからどんな感謝の言葉をもらっていますか？",
+  "【Q4】1〜3を実現している時の自分の生活リズムや口癖はなんですか？",
+];
+const BRAINQ = [
+  "①最も効果的なアクションプランは何か？",
+  "②過去うまくいったことがあるアクションプランは何か？",
+  "③奇想天外なアクションプランは何か？",
+  "④上記のアイディアを掛け合わせるとどんなアイディアが出るか？",
+];
+
+/* ============ ワークシートの入力保存 ============
+   入力はすべて localStorage に保存する。キーは sheet:field 形式。 */
+const WKEY="dojo-ws-v1";
+let WS={};
+function wsLoad(){ try{ WS=JSON.parse(localStorage.getItem(WKEY)||"{}") }catch(e){ WS={} } }
+function wsSet(k,v){ WS[k]=v; try{ localStorage.setItem(WKEY,JSON.stringify(WS)) }catch(e){} }
+const wsGet=(k,d)=>WS[k]!==undefined?WS[k]:(d||"");
+
+/* 入力欄。textarea は自動保存 */
+function ta(k,ph,rows){
+  return `<textarea class="wsin" data-k="${k}" rows="${rows||3}" placeholder="${ph||""}">${wsGet(k)}</textarea>`;
+}
+function ti(k,ph){
+  return `<input class="wsin" data-k="${k}" placeholder="${ph||""}" value="${wsGet(k)}">`;
+}
+function wireWs(){
+  $$v(".wsin").forEach(el=>{
+    el.oninput=()=>wsSet(el.dataset.k, el.value);
+  });
+  $$v("[data-sat]").forEach(sel=>{
+    sel.onchange=()=>{ wsSet(sel.dataset.sat, sel.value); render(); };
+  });
+}
+
+/* 満足度の平均。定量として見せる */
+function satAvg(){
+  const vs=AREAS.map(a=>+wsGet("sat:"+a.id,0)).filter(v=>v>0);
+  return vs.length? (vs.reduce((a,b)=>a+b,0)/vs.length) : 0;
+}
+
+/* ---- 01 現状把握 ---- */
+function sheetGenjo(){
+  const avg=satAvg();
+  let h=`<div class="wshead">
+    <div><h2 class="wsh2">現状把握</h2>
+      <p class="wsdesc">8つの領域について、いま何点か。そして「事実」と「解釈」を分けて書きます。
+        事実は数字で書ける情報、解釈はそれをどう感じているかです。</p></div>
+    <div class="satsum"><div class="ch">満足度の平均</div>
+      <div class="satnum tnum">${avg?avg.toFixed(1):"—"}<span>/ 5.0</span></div></div></div>`;
+
+  /* 定量：8領域の満足度を横棒で一覧 */
+  h+=`<div class="card pad" style="margin-bottom:16px"><div class="ch">領域ごとの満足度</div>
+    <div class="satgrid">${AREAS.map(a=>{const v=+wsGet("sat:"+a.id,0);
+      return `<div class="satrow"><span class="satnm">${a.name}</span>
+        <div class="bar ${v>=4?"ok":""}"><i style="width:${v?v/5*100:0}%"></i></div>
+        <span class="satv tnum">${v?v:"—"}</span></div>`}).join("")}</div>
+    <p class="wsnote">満足度が低い領域と、GOALで動かしたい領域が一致しているかを見ます。低いことが悪いわけではありません。</p></div>`;
+
+  h+=AREAS.map(a=>`<div class="wsblock">
+    <div class="wsblockhead"><b>${a.name}</b>
+      <select class="wssel" data-sat="sat:${a.id}">
+        <option value="">満足度を選ぶ</option>
+        ${SAT.map(([v,l])=>`<option value="${v}" ${String(wsGet("sat:"+a.id))===String(v)?"selected":""}>｜${v}｜${l}</option>`).join("")}
+      </select></div>
+    <div class="wsgrid3">
+      <div><label class="wslb">事実（定量情報）</label>
+        ${ta("fact:"+a.id,"数字で書けることを書く",4)}
+        <div class="hintbox"><b>観点</b><ul>${a.hints.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>
+      <div><label class="wslb">解釈（定性情報）</label>${ta("intp:"+a.id,"その事実をどう感じているか",4)}</div>
+      <div><label class="wslb">枠（信念）<span class="wstag">コーチ記入</span></label>${ta("belief:"+a.id,"セッション中にコーチが記入します",4)}</div>
+    </div></div>`).join("");
+  return h;
+}
+
+/* ---- 02 ライフヒストリー ---- */
+function sheetHistory(){
+  const ages=[];
+  for(let i=3;i<=40;i++)ages.push(i);
+  let h=`<h2 class="wsh2">ライフヒストリー</h2>
+    <p class="wsdesc">印象に残った出来事を、感情 → 信念 → 行動の順に掘ります。信念→感情→行動が人間のパターンです。
+      できるだけ「3歳から」「毎年」「書けるだけ書く」を意識してください。</p>
+    <div class="card pad" style="margin-bottom:14px"><div class="ch">記入例</div>
+      <div class="wsgrid4 exrow">
+        <div><span class="wslb">出来事</span>10歳で父を亡くした。母親の絶望した顔を見た。</div>
+        <div><span class="wslb">感情</span>責任感がめちゃくちゃ芽生えた。なんとかしなきゃ。</div>
+        <div><span class="wslb">信念</span>長男として、自分がお父さんの代わりになる。</div>
+        <div><span class="wslb">行動</span>野球選手になると決める</div></div></div>`;
+  h+=`<div class="tablewrap"><table class="wstable"><thead><tr>
+    <th style="width:52px">年齢</th><th>出来事（何があったのか）</th><th>感情（何を感じたのか）</th>
+    <th>信念（何がそう思わせたか）</th><th>行動（その後、何をしたか）</th></tr></thead><tbody>
+    ${ages.map(y=>`<tr><td class="tnum agec">${y}歳</td>
+      <td>${ta("h-e:"+y,"",2)}</td><td>${ta("h-f:"+y,"",2)}</td>
+      <td>${ta("h-b:"+y,"",2)}</td><td>${ta("h-a:"+y,"",2)}</td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="wsnote">41歳以降はコーチングセッション中に追加します。</p>`;
+  return h;
+}
+
+/* ---- 03 自己理解（動詞の経歴） ---- */
+function sheetCareer(){
+  let h=`<h2 class="wsh2">自己理解（動詞の経歴シート）</h2>
+    <p class="wsdesc">これまでの職歴を「動詞」で分解します。①〜⑧を埋めたうえで、業務を2色に分けてください。
+      それ以外の欄はセッション中にコーチと一緒に埋めます。</p>
+    <div class="card pad" style="margin-bottom:14px">
+      <div class="row" style="gap:14px">
+        <span class="colorkey red">■ 苦なくやっていたこと／夢中にやっていたこと</span>
+        <span class="colorkey blue">■ とにかく苦しかったこと／身体が拒否反応をしていたもの</span></div>
+      <p class="wsnote" style="margin-top:8px">外部環境は関係なく、その業務単体で見たときにどうだったかで分けます。</p></div>`;
+  const fields=[["c1","①所属していた組織","株式会社〇〇"],["c2","②どんな事業をしている組織なのか？","ToCのリフォームを提供している"],
+    ["c3","③所属していた期間","2年"],["c4","④部署","営業"],["c5","⑤役職（マネジメント経験ありは人数も）","プレイヤー"],
+    ["c6","⑥何をする部署でどんな役職なのか？","ToCでリフォームの営業をしてお客様に工事を提案する"]];
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>直近の経歴</b><span class="wstag">1社目</span></div>
+    <div class="wsgrid2">${fields.map(([k,l,ex])=>`<div><label class="wslb">${l}</label>${ti("cr:"+k,"例）"+ex)}</div>`).join("")}</div>
+    <div class="wsgrid2" style="margin-top:12px">
+      <div><label class="wslb">⑦業務内容<span class="wstag red">夢中だったもの</span></label>${ta("cr:red","1行に1つ書く",6)}</div>
+      <div><label class="wslb">⑦業務内容<span class="wstag blue">苦しかったもの</span></label>${ta("cr:blue","1行に1つ書く",6)}</div></div>
+    <div style="margin-top:12px"><label class="wslb">⑧残した成果・褒められたこと</label>${ta("cr:win","例）年間売上1位／説明が上手／よく話を理解し整理している",4)}</div>
+  </div>`;
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>夢中だった業務の分解</b><span class="wstag">セッションで実施</span></div>
+    <p class="wsnote" style="margin-bottom:10px">最も優先順位の高い業務を1つ選び、ステップに割ってから「何が自分を夢中にさせているのか」を言語化します。</p>
+    <div class="wsgrid2">
+      <div><label class="wslb">重要な業務</label>${ti("cr:key","例）ヒアリング")}</div>
+      <div><label class="wslb">業務の説明</label>${ta("cr:keydesc","例）お客様の想いを聞かせてもらい、理想の工事とすり合わせて信頼してもらう",2)}</div></div>
+    <div style="margin-top:10px"><label class="wslb">ステップに割る</label>${ta("cr:steps","例）自己紹介／直したい箇所の調査／理想の把握／現状の説明／ギャップ説明",4)}</div>
+    <div style="margin-top:10px"><label class="wslb">このステップの何があなたを夢中にさせているのか？</label>
+      ${ta("cr:why","例）認識を統一することで、自分と相手の思考を整理し統合している",3)}</div></div>`;
+  return h;
+}
+
+/* ---- 04 自己機能 ---- */
+function sheetFunc(){
+  let h=`<h2 class="wsh2">自己機能</h2>
+    <p class="wsdesc">動詞の経歴から出てきたものを、「自己欲求（したい）」「自己能力（できる）」に整理し、
+      その2つが人の役に立つ形＝自己機能として言語化します。ここがGOAL設計の土台になります。</p>`;
+  const trio=[["want","自己欲求","どんな時に（発動条件）／誰・何に対して（対象）／どのように（価値提供の手段）"],
+    ["able","自己能力","価値提供の手段をさらに具体化する"],
+    ["func","自己機能","自己欲求・自己能力に由来する、人の役に立つ形"]];
+  h+=`<div class="wsgrid3">${trio.map(([k,n,d])=>`<div class="wsblock" style="margin:0">
+    <div class="wsblockhead"><b>${n}</b></div>
+    <p class="wsnote" style="margin-bottom:8px">${d}</p>${ta("fn:"+k,"",7)}</div>`).join("")}</div>`;
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>自己機能を発揮した未来を描く</b></div>
+    ${SELFQ.map((q,i)=>`<div style="margin-bottom:12px"><label class="wslb">${q}</label>${ta("fq:"+i,"",3)}</div>`).join("")}</div>`;
+  return h;
+}
+
+/* ---- 05 GOAL設計 ---- */
+function sheetGoal(){
+  let h=`<h2 class="wsh2">GOAL設計</h2>
+    <p class="wsdesc">GOALは3層で置きます。ここを一人で言語化するのは難しいので、セッションで一緒に作ります。</p>`;
+  h+=`<div class="goalstack">
+    <div class="glayer v"><div class="glab">VISION</div>
+      <div class="gdef">測定不可能／達成不可能／期日なし。未来世界であなたが作る世界線、イメージ。</div>
+      ${ta("g:vision","",3)}</div>
+    <div class="glayer q"><div class="glab">定性GOAL</div>
+      <div class="gdef">測定可能・達成可能・期日／質／量が<b>含まれていない</b>状態の言葉。<br>
+        条件：①現状の外側　②見るだけでエネルギーをもらえる　③状態を表す　④ショート・シンプル・ストレート　⑤人の役に立つ</div>
+      ${ta("g:qual","",3)}</div>
+    <div class="glayer n"><div class="glab">定量GOAL</div>
+      <div class="gdef">測定可能・達成可能で、期日／質／量が<b>含まれている</b>もの。<br>
+        問：どのような指標を達成すれば、定性GOALの状態を獲得できるか？</div>
+      <div class="miles">${[0,1,2,3,4].map(i=>`<div class="mile">
+        <input class="wsin milem" data-k="g:m${i}m" placeholder="2026年○月" value="${wsGet("g:m"+i+"m")}">
+        ${ta("g:m"+i,"この時点で達成している状態",3)}</div>`).join("")}</div>
+    </div></div>`;
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>現状の外側</b></div>
+    <p class="wsnote" style="margin-bottom:10px">いまの延長線上にある未来と、GOALの位置を分けて見ます。</p>
+    <div class="czone">
+      <div class="cz past"><span class="czl">過去</span>${ta("cz:past","これまでのパターン",2)}</div>
+      <div class="cz now"><span class="czl">現在</span>${ta("cz:now","いまの事実と感情",2)}</div>
+      <div class="cz fut"><span class="czl">現状の延長線上の未来</span>${ta("cz:fut","このままだとどうなるか",2)}</div>
+      <div class="cz goal"><span class="czl">GOAL</span>${ta("cz:goal","現状の外側にある未来",2)}</div>
+    </div></div>`;
+  return h;
+}
+
+/* ---- 06 決断 ---- */
+function sheetDecide(){
+  let h=`<h2 class="wsh2">決断</h2>
+    <p class="wsdesc">GOALを手に入れるためのパワフルな決断は何ですか。
+      コンフォートゾーンを動かすため、身体がゾクゾク・ソワソワする決断が効果的です。</p>`;
+  h+=`<div class="wsgrid2"><div class="wsblock" style="margin:0">
+      <div class="wsblockhead"><b>GOAL世界の私が「やっていないこと」</b></div>${ta("d:not","1行に1つ、具体的な事実で書く",8)}</div>
+    <div class="wsblock" style="margin:0">
+      <div class="wsblockhead"><b>GOAL世界の私が「やっていること」</b></div>${ta("d:do","1行に1つ、具体的な事実で書く",8)}</div></div>`;
+  h+=`<div class="wsgrid2" style="margin-top:14px">
+    <div class="wsblock decide" style="margin:0"><div class="wsblockhead"><b>何を断つと決めるか？</b></div>
+      ${ta("d:cut","",3)}<label class="wslb" style="margin-top:8px">いつやるか</label>${ti("d:cutd","例）2026年9月30日")}</div>
+    <div class="wsblock decide" style="margin:0"><div class="wsblockhead"><b>何をやると決めるか？</b></div>
+      ${ta("d:start","",3)}<label class="wslb" style="margin-top:8px">いつ開始するか</label>${ti("d:startd","例）2026年8月1日")}</div></div>`;
+  return h;
+}
+
+/* ---- 07 アクションプラン ---- */
+function sheetAction(){
+  let h=`<h2 class="wsh2">アクションプラン</h2>
+    <p class="wsdesc">決めたことを行動に落とします。ここで確定したものが、そのままボードの課題になります。</p>`;
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>フォーカスしている定量GOAL</b></div>${ta("a:focus","",2)}</div>`;
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>ブレスト</b></div>
+    ${BRAINQ.map((q,i)=>`<div style="margin-bottom:12px"><label class="wslb">${q}</label>${ta("a:b"+i,"",3)}</div>`).join("")}</div>`;
+  const areas=[["仕事",4],["人間関係",3],["職業機能（能力・知性）",3],["家族",3]];
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>やると決めるアクションプラン</b>
+      <button class="b b-sm" id="a-push">ボードに課題として追加</button></div>
+    <div class="tablewrap"><table class="wstable"><thead><tr>
+      <th style="width:150px">領域</th><th>アクションプラン</th><th style="width:130px">期日</th>
+      <th>獲得したい成果</th><th style="width:130px">成果の期日</th></tr></thead><tbody>
+      ${areas.flatMap(([nm,n])=>Array.from({length:n},(_,i)=>{const k=`a:${nm}:${i}`;
+        return `<tr><td class="areac">${i===0?nm:""}</td>
+          <td>${ti(k+":p","")}</td><td>${ti(k+":d","2026/08/00")}</td>
+          <td>${ti(k+":r","")}</td><td>${ti(k+":rd","2026/00/00")}</td></tr>`})).join("")}
+    </tbody></table></div></div>`;
+  return h;
+}
+
+/* ---- 08 合意 ---- */
+function sheetAgree(){
+  let h=`<h2 class="wsh2">セッションにおける合意</h2>
+    <p class="wsdesc">合意とは、当事者全員の意思が一致することです。毎回のセッションで決めたことをここに残します。</p>`;
+  h+=[1,2,3,4,5].map(i=>`<div class="wsblock agree"><div class="wsblockhead"><b>${i}</b></div>${ta("ag:"+i,"",3)}</div>`).join("");
+  return h;
+}
+
+const SHEETFN={w1:sheetGenjo,w2:sheetHistory,w3:sheetCareer,w4:sheetFunc,w5:sheetGoal,w6:sheetDecide,w7:sheetAction,w8:sheetAgree};
+
+function vWorksheet(){
+  const cur=SHEETS.find(s=>s.id===S.ws)||SHEETS[0];
+  const parts=[{t:"マイダッシュボード",go:()=>go("dash")},{t:"コーチング",go:()=>{S.cotab="program";go("coaching")}},{t:cur.name}];
+  let h=crumb(parts);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <h1 class="ptitle" style="margin:0">ワークシート</h1>
+    <div class="row" style="gap:8px">
+      <span class="chip">自動保存されます</span>
+      <button class="b b-sm" id="ws-print">印刷用に開く</button></div></div>`;
+  h+=`<div class="wslayout">
+    <nav class="wsnav">${SHEETS.map(s=>`<button class="wsnavb" data-ws="${s.id}" aria-current="${s.id===cur.id}">
+      <span class="wsn tnum">${s.n}</span><span><b>${s.name}</b><span class="wssub">${s.sub}</span></span></button>`).join("")}</nav>
+    <div class="wsbody">${SHEETFN[cur.id]()}</div></div>`;
+  V().innerHTML=h;
+  wireCrumb(parts); wireWs();
+  $$v("[data-ws]").forEach(b=>b.onclick=()=>{S.ws=b.dataset.ws;render()});
+  $v("#ws-print").onclick=()=>window.print();
+  if($v("#a-push"))$v("#a-push").onclick=()=>toast("確定したアクションを課題としてボードに追加しました（モック）");
+}
+
+/* ============ コーチング：プログラム（最初に見る画面）============
+   初回オンボーディング（2時間）を最上部に置く。ここが価値の入口。 */
+function tabProgram(){
+  const done=PHASES.filter(p=>p.status==="done").length;
+  const cur=PHASES.find(p=>p.status==="current")||PHASES[0];
+  const kicked=wsGet("kickoff:done")==="1";
+  const filled=SHEETS.filter(s=>{
+    if(s.id==="w1")return AREAS.some(a=>wsGet("sat:"+a.id));
+    if(s.id==="w5")return wsGet("g:qual")||wsGet("g:vision");
+    return Object.keys(WS).some(k=>k.startsWith(({w2:"h-",w3:"cr:",w4:"fn:",w6:"d:",w7:"a:",w8:"ag:"})[s.id]||"@@")&&WS[k]);
+  }).length;
+
+  let h="";
+  /* オンボーディングを一番上に。未実施なら大きく出す */
+  h+=`<div class="kick ${kicked?"done":""}">
+    <div class="kickmain">
+      <div class="kicklb">${kicked?"完了":"最初にやること"}</div>
+      <h2>キックオフ面談（2時間）</h2>
+      <p>何がしたいのか、何に困っているのかを2時間かけて全部出し切ります。
+        ここでGOALの材料を集めるので、準備は不要です。手ぶらで来てください。</p>
+      <ul class="kicklist">
+        <li>8つの領域で、いまどこにいるかを棚卸しする</li>
+        <li>3歳からのライフヒストリーを辿り、自分のパターンを見つける</li>
+        <li>「したいこと」と「できること」から、自己機能を言語化する</li>
+        <li>その先にGOALを置き、次のセッションまでの行動を決める</li>
+      </ul></div>
+    <div class="kickside">
+      ${kicked?`<div class="kickdate tnum">2026/06/24 実施</div>
+        <button class="b" id="k-min">この回の議事録を見る</button>`
+      :`<button class="b b-pri b-lg" id="k-book">日程を予約する</button>`}
+      <button class="b" id="k-ws">ワークシートを開く</button></div></div>`;
+
+  /* 4フェーズ */
+  h+=`<div class="sectitle">コーチングの進み方</div>
+    <div class="phases">${PHASES.map((p,i)=>`<div class="ph" data-st="${p.status}">
+      <div class="phn">${p.status==="done"?"✓":i+1}</div>
+      <div class="phb"><div class="row" style="gap:8px;margin-bottom:2px">
+        <b>${p.name}</b>
+        <span class="chip ${p.status==="done"?"g":p.status==="current"?"b":""}">${p.status==="done"?"完了":p.status==="current"?"いまここ":"これから"}</span>
+        ${p.date?`<span class="tnum" style="font-size:11px;color:var(--dim)">${p.date}</span>`:""}</div>
+        <div style="font-size:12.5px;color:var(--ink2)">${p.desc}</div></div></div>`).join("")}</div>`;
+
+  /* ワークシートの進み具合 */
+  h+=`<div class="sectitle" style="margin-top:20px">ワークシート</div>
+    <div class="card pad" style="margin-bottom:16px">
+      <div class="row" style="gap:10px;margin-bottom:10px">
+        <div class="bar ${filled===SHEETS.length?"ok":""}"><i style="width:${Math.round(filled/SHEETS.length*100)}%"></i></div>
+        <span class="tnum" style="font-size:12px;color:var(--dim)">${filled} / ${SHEETS.length}シート着手</span></div>
+      <div class="wschips">${SHEETS.map(s=>`<button class="b b-sm" data-ws2="${s.id}">${s.n} ${s.name}</button>`).join("")}</div>
+      <p class="wsnote" style="margin-top:10px">セッションの前に埋めておくほど、当日の密度が上がります。空欄のままでも構いません。</p></div>`;
+
+  /* 学習ロードマップ（AI・営業の工程）は下に置く */
+  h+=`<div class="sectitle">学習ロードマップ</div>
+    <p style="font-size:12.5px;color:var(--dim);margin:0 0 12px">
+      GOALが決まったあと、そこに向かうための学習と実践の工程です。コーチングと並行して進みます。</p>
+    <div class="flowwrap">${FLOW.map(f=>{
+      const acts=allHw().filter(a=>a.ses.flow===f.id); const au=acts.filter(a=>!isDone(a)).length;
+      return `<div class="fstep" data-st="${f.status}">
+        <div class="fnum">${f.status==="done"?"✓":f.num}</div>
+        <div class="fbody"><div class="row" style="gap:8px;margin-bottom:3px">
+          <b style="font-size:14.5px">${f.name}</b>
+          <span class="chip ${f.status==="done"?"g":f.status==="current"?"b":""}">${f.status==="done"?"通過":f.status==="current"?"いまここ":"未着手"}</span>
+          ${acts.length?`<span class="chip ${au?"w":"g"}">課題 ${acts.length-au}/${acts.length}</span>`:""}</div>
+          <div class="goalbox" style="margin-top:6px">到達条件：${f.goal}</div>
+          <div class="row" style="gap:6px;margin-top:8px">
+            ${f.courses.map(id=>{const x=findC(id);return x?`<button class="b b-sm" data-oc="${id}">${x.c.title}</button>`:""}).join("")}</div>
+        </div></div>`}).join("")}</div>`;
+  return h;
+}
+function wireProgram(){
+  if($v("#k-book"))$v("#k-book").onclick=()=>{wsSet("kickoff:done","1");toast("キックオフ面談を予約しました（モック）");render()};
+  if($v("#k-min"))$v("#k-min").onclick=()=>go("minutes",{sid:"s1"});
+  if($v("#k-ws"))$v("#k-ws").onclick=()=>go("worksheet");
+  $$v("[data-ws2]").forEach(b=>b.onclick=()=>go("worksheet",{ws:b.dataset.ws2}));
+  $$v("[data-oc]").forEach(b=>b.onclick=()=>go("course",{cid:b.dataset.oc}));
+}
+
+const COTABS = [["program","プログラム"],["board","ボード"],["mins","議事録"],["todo","課題一覧"]];
 
 /* Jira風の課題カード。key・優先度・担当・期限・親（工程）を出す */
 function issueCard(a){
@@ -1457,32 +1921,14 @@ function vCoaching(){
   h+=`<div class="tabs" role="tablist">${COTABS.map(([k,v])=>
     `<button role="tab" data-ct="${k}" aria-selected="${S.cotab===k}">${v}${k==="todo"&&un.length?`（${un.length}）`:""}</button>`).join("")}</div>`;
 
+  if(S.cotab==="program"){ h+=tabProgram(); }
+
   if(S.cotab==="board"){
     h+=`<p style="font-size:12px;color:var(--dim);margin:0 0 10px">
       カードをドラッグして状態を動かせます。カードを押すと課題の詳細が開きます。</p>`;
     h+=jiraBoard();
   }
 
-  if(S.cotab==="flow"){
-    h+=`<div class="flowwrap">${FLOW.map(f=>{
-      const cs=f.cats.map(id=>CATS.find(c=>c.id===id)).filter(Boolean);
-      const acts=all.filter(a=>a.ses.flow===f.id);
-      const au=acts.filter(a=>!isDone(a)).length;
-      return `<div class="fstep" data-st="${f.status}">
-        <div class="fnum">${f.status==="done"?"✓":f.num}</div>
-        <div class="fbody">
-          <div class="row" style="gap:8px;margin-bottom:3px">
-            <b style="font-size:15px">${f.name}</b>
-            <span class="chip ${f.status==="done"?"g":f.status==="current"?"b":""}">${f.status==="done"?"通過":f.status==="current"?"いまここ":"未着手"}</span>
-            ${acts.length?`<span class="chip ${au?"w":"g"}">ToDo ${acts.length-au}/${acts.length}</span>`:""}</div>
-          <div style="font-size:12.5px;color:var(--ink2);margin-bottom:6px">${f.desc}</div>
-          <div class="goalbox">到達条件：${f.goal}</div>
-          <div class="row" style="gap:6px;margin-top:8px">
-            <span style="font-size:11px;color:var(--dim)">関連コース</span>
-            ${f.courses.map(id=>{const x=findC(id);return x?`<button class="b b-sm" data-oc="${id}">${x.c.title}</button>`:""}).join("")}
-            ${cs.map(c=>`<button class="b b-sm" data-ocat="${c.id}">${c.name}</button>`).join("")}</div>
-        </div></div>`}).join("")}</div>`;
-  }
 
   if(S.cotab==="mins"){
     h+=`<div class="mins">${SESSIONS.map(s=>{
@@ -1515,7 +1961,7 @@ function vCoaching(){
   $$v("[data-ms]").forEach(b=>b.onclick=()=>go("minutes",{sid:b.dataset.ms}));
   $$v("[data-oc]").forEach(b=>b.onclick=()=>go("course",{cid:b.dataset.oc}));
   $$v("[data-ocat]").forEach(b=>b.onclick=()=>go("stage",{cid:b.dataset.ocat}));
-  wireActions(); wireBoard();
+  wireActions(); wireBoard(); wireProgram();
 }
 
 /* ============ 課題の詳細（Jira風）============
@@ -2133,6 +2579,7 @@ function render(){
     else if(P==="lesson")vLesson();
     else if(P==="coaching")vCoaching();
     else if(P==="minutes")vMinutes();
+    else if(P==="worksheet")vWorksheet();
     else if(P==="issue")vIssue();
     else if(P==="fav")libraryView("お気に入りコンテンツ",allCourses().filter(x=>S.favs.has(x.c.id)),"コース詳細の「マイ目標コースに追加」で登録できます。");
     else if(P==="stage"){const st=CATS.find(s=>s.id===S.cid)||CATS[0];
@@ -2176,6 +2623,7 @@ $("#ic-mail").onclick=()=>toast("メッセージ一覧（モック）");
 $("#ic-bell").onclick=()=>toast("お知らせ：宿題の期限が2件近づいています");
 
 load();
+wsLoad();
 render();
 </script>
 </body>
