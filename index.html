@@ -10,5 +10,2086 @@
 </head>
 <body>
 <style>
+  :root{
+    --paper:#f4f6f9; --card:#fff; --card2:#eef2f8; --head:#f7f9fc;
+    --ink:#16233d; --ink2:#3c4a64; --dim:#6c7a92;
+    --line:#dbe2ec; --line2:#c2cddc;
+    --blue:#1857a8; --blue-d:#12447f; --blue-s:#e8f0fb; --blue-ink:#fff;
+    --mag:#cf0e70; --mag-s:#fce7f2;
+    --ok:#0f7f5e; --ok-s:#e3f3ee;
+    --warn:#c2410c; --warn-s:#fdeee4;
+    --star:#e0a109; --orange:#e07a2f;
+    --sh1:0 1px 2px rgba(22,35,61,.07);
+    --sh2:0 1px 3px rgba(22,35,61,.09),0 8px 20px -12px rgba(22,35,61,.2);
+    --r:8px; --r2:5px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0b1120; --card:#141d2e; --card2:#1b2540; --head:#1a2440;
+      --ink:#eef3fa; --ink2:#c2ccdd; --dim:#8a97ad;
+      --line:#26324a; --line2:#3a4a66;
+      --blue:#5d9dee; --blue-d:#7db4f5; --blue-s:#16294a; --blue-ink:#08111f;
+      --mag:#ff62ab; --mag-s:#3b0f28;
+      --ok:#3ec191; --ok-s:#0f3229;
+      --warn:#f59e6b; --warn-s:#3a1e10;
+      --star:#f0bb3d; --orange:#f0975a;
+      --sh1:0 1px 2px rgba(0,0,0,.45);
+      --sh2:0 1px 3px rgba(0,0,0,.55),0 10px 24px -14px rgba(0,0,0,.85);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0b1120; --card:#141d2e; --card2:#1b2540; --head:#1a2440;
+    --ink:#eef3fa; --ink2:#c2ccdd; --dim:#8a97ad; --line:#26324a; --line2:#3a4a66;
+    --blue:#5d9dee; --blue-d:#7db4f5; --blue-s:#16294a; --blue-ink:#08111f;
+    --mag:#ff62ab; --mag-s:#3b0f28; --ok:#3ec191; --ok-s:#0f3229;
+    --warn:#f59e6b; --warn-s:#3a1e10; --star:#f0bb3d; --orange:#f0975a;
+    --sh1:0 1px 2px rgba(0,0,0,.45); --sh2:0 1px 3px rgba(0,0,0,.55),0 10px 24px -14px rgba(0,0,0,.85);
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f6f9; --card:#fff; --card2:#eef2f8; --head:#f7f9fc;
+    --ink:#16233d; --ink2:#3c4a64; --dim:#6c7a92; --line:#dbe2ec; --line2:#c2cddc;
+    --blue:#1857a8; --blue-d:#12447f; --blue-s:#e8f0fb; --blue-ink:#fff;
+    --mag:#cf0e70; --mag-s:#fce7f2; --ok:#0f7f5e; --ok-s:#e3f3ee;
+    --warn:#c2410c; --warn-s:#fdeee4; --star:#e0a109; --orange:#e07a2f;
+    --sh1:0 1px 2px rgba(22,35,61,.07); --sh2:0 1px 3px rgba(22,35,61,.09),0 8px 20px -12px rgba(22,35,61,.2);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+    font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif}
+  .tnum{font-variant-numeric:tabular-nums}
+  h1,h2,h3,h4{margin:0;font-size:inherit;font-weight:inherit;text-wrap:balance}
+  button,input,select,textarea{font:inherit;color:inherit}
+  a{color:var(--blue)}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ===== topbar ===== */
+  .topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:14px;
+    height:56px;padding:0 18px;background:var(--card);border-bottom:1px solid var(--line)}
+  .burger{background:none;border:none;cursor:pointer;color:var(--ink2);font-size:17px;padding:4px 6px;display:none}
+  @media (max-width:900px){.burger{display:block}}
+  .logo{display:flex;align-items:baseline;gap:10px;margin-right:auto;min-width:0}
+  .logo .mark{font-size:20px;font-weight:600;letter-spacing:.08em;
+    background:linear-gradient(95deg,var(--mag),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .logo .tag{font-size:11px;color:var(--dim);white-space:nowrap}
+  @media (max-width:760px){.logo .tag{display:none}}
+  .ticon{background:none;border:none;cursor:pointer;color:var(--dim);font-size:15px;padding:5px 6px;position:relative}
+  .ticon:hover{color:var(--ink)}
+  .ticon .dot{position:absolute;top:3px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--mag)}
+  .me{width:29px;height:29px;border-radius:50%;background:var(--blue-s);color:var(--blue);
+    border:1px solid var(--line);display:grid;place-items:center;font-size:11.5px;font-weight:700;flex-shrink:0}
+
+  /* ===== shell ===== */
+  .shell{display:grid;grid-template-columns:236px minmax(0,1fr)}
+  @media (max-width:900px){
+    .shell{grid-template-columns:1fr}
+    .side{position:fixed;inset:56px auto 0 0;width:270px;z-index:35;transform:translateX(-100%);
+      transition:transform .18s ease;overflow-y:auto;box-shadow:var(--sh2)}
+    .side[data-open="true"]{transform:none}
+    .scrim{position:fixed;inset:56px 0 0 0;background:rgba(10,17,32,.4);z-index:34;display:none}
+    .scrim[data-open="true"]{display:block}
+  }
+
+  /* ===== sidebar ===== */
+  .side{background:var(--card);border-right:1px solid var(--line);align-self:start;
+    position:sticky;top:56px;max-height:calc(100vh - 56px);overflow-y:auto}
+  .modeseg{display:flex;padding:10px 12px 8px;gap:0}
+  .modeseg button{flex:1;background:var(--card);border:1px solid var(--line2);color:var(--dim);
+    font-size:12.5px;padding:6px 4px;cursor:pointer}
+  .modeseg button:first-child{border-radius:var(--r2) 0 0 var(--r2)}
+  .modeseg button:last-child{border-radius:0 var(--r2) var(--r2) 0;border-left:none}
+  .modeseg button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600}
+  .navgroup{border-top:1px solid var(--line)}
+  .ghead{width:100%;display:flex;align-items:center;gap:9px;background:none;border:none;cursor:pointer;
+    padding:11px 14px;text-align:left;color:var(--blue);font-size:13px;font-weight:600}
+  .ghead .ic{font-size:13px;width:16px;flex-shrink:0}
+  .ghead .cv{margin-left:auto;color:var(--dim);font-size:10px;transition:transform .16s}
+  .navgroup[data-open="true"] .ghead .cv{transform:rotate(180deg)}
+  .glist{display:none;padding-bottom:4px}
+  .navgroup[data-open="true"] .glist{display:block}
+  .nav{width:100%;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;
+    padding:8px 14px 8px 30px;text-align:left;color:var(--ink2);font-size:12.5px;border-left:3px solid transparent}
+  .nav:hover{background:var(--card2);color:var(--ink)}
+  .nav[aria-current="true"]{background:var(--blue-s);color:var(--blue);font-weight:600;border-left-color:var(--blue)}
+  .nav .cnt{margin-left:auto;font-size:10.5px;color:var(--dim)}
+  .nav[aria-current="true"] .cnt{color:var(--blue)}
+  .navtop{padding-left:14px}
+  .sidesearch{padding:10px 14px 14px;border-top:1px solid var(--line)}
+  .sidesearch .lb{font-size:11px;color:var(--dim);margin-bottom:6px}
+  .radiorow{display:flex;gap:12px;margin-bottom:8px}
+  .radiorow label{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer}
+  .radiorow input{accent-color:var(--blue)}
+  .sfield{display:flex;gap:0}
+  .sfield input{flex:1;min-width:0;background:var(--card);border:1px solid var(--line2);
+    border-radius:var(--r2) 0 0 var(--r2);padding:7px 9px;font-size:12.5px}
+  .sfield button{background:var(--card);border:1px solid var(--line2);border-left:none;
+    border-radius:0 var(--r2) var(--r2) 0;padding:0 10px;cursor:pointer;color:var(--blue)}
+  .badgeNew{background:var(--mag);color:#fff;font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:6px}
+
+  /* ===== content ===== */
+  main{padding:18px 22px 44px;min-width:0}
+  @media (max-width:560px){main{padding:14px 14px 36px}}
+  .crumb{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim);margin-bottom:14px;flex-wrap:wrap}
+  .crumb button{background:none;border:none;padding:0;cursor:pointer;color:var(--blue);text-decoration:none}
+  .crumb button:hover{text-decoration:underline}
+  .crumb .here{color:var(--ink)}
+  .ptitle{font-size:19px;margin-bottom:14px}
+  .sectitle{color:var(--blue);font-size:13.5px;font-weight:700;margin-bottom:12px}
+
+  /* buttons */
+  .b{border:1px solid var(--line2);background:var(--card);color:var(--ink);padding:7px 14px;
+    border-radius:var(--r2);font-size:12.5px;cursor:pointer;white-space:nowrap}
+  .b:hover{background:var(--card2)}
+  .b:disabled{opacity:.4;cursor:not-allowed}
+  .b-pri{background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600}
+  .b-pri:hover{background:var(--blue-d)}
+  .b-org{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:600}
+  .b-org:hover{filter:brightness(1.06)}
+  .b-lg{padding:10px 20px;font-size:13.5px}
+  .b-sm{padding:5px 10px;font-size:11.5px}
+  .link{background:none;border:none;padding:0;color:var(--blue);font-size:12px;text-decoration:underline;cursor:pointer}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh1)}
+  .pad{padding:16px}
+  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .grow{flex:1}
+  .bar{flex:1;height:6px;border-radius:999px;background:var(--card2);overflow:hidden;border:1px solid var(--line)}
+  .bar>i{display:block;height:100%;background:var(--blue)}
+  .bar.ok>i{background:var(--ok)}
+  .chip{font-size:10.5px;padding:3px 8px;border-radius:999px;white-space:nowrap;font-weight:600;
+    background:var(--card2);color:var(--dim);border:1px solid var(--line)}
+  .chip.b{background:var(--blue-s);color:var(--blue);border-color:var(--blue)}
+  .chip.g{background:var(--ok-s);color:var(--ok);border-color:var(--ok)}
+  .chip.m{background:var(--mag-s);color:var(--mag);border-color:var(--mag)}
+  .chip.w{background:var(--warn-s);color:var(--warn);border-color:var(--warn)}
+
+  /* ===== learner: resume ===== */
+  .resume{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;background:var(--card);
+    border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:var(--r);
+    padding:16px 18px;box-shadow:var(--sh2);margin-bottom:18px}
+  @media (max-width:660px){.resume{grid-template-columns:1fr}}
+  .resume .eb{font-size:10.5px;letter-spacing:.13em;color:var(--blue);font-weight:700}
+  .resume h2{font-size:18px;margin:4px 0 3px}
+  .resume .wh{font-size:12.5px;color:var(--dim)}
+  .resume .bw{display:flex;align-items:center;gap:10px;margin-top:11px;max-width:400px}
+
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:18px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .ch{font-size:11px;letter-spacing:.09em;color:var(--dim);font-weight:700;margin-bottom:10px}
+
+  /* ===== homework ===== */
+  .hw{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+  .hw:first-of-type{border-top:none}
+  .hw input{margin:3px 0 0;accent-color:var(--ok);flex-shrink:0}
+  .hw .tx{flex:1;min-width:0;font-size:13px}
+  .hw[data-done="true"] .tx{color:var(--dim);text-decoration:line-through}
+  .hw .due{font-size:11px;color:var(--dim);white-space:nowrap;margin-top:2px}
+  .hw[data-over="true"] .due{color:var(--warn);font-weight:700}
+  .hw .src{font-size:10.5px;color:var(--dim);margin-top:2px}
+
+  /* ===== course library cards ===== */
+  .libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+  .lib{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+    box-shadow:var(--sh1);display:flex;flex-direction:column;text-align:left;cursor:pointer;padding:0}
+  .lib:hover{box-shadow:var(--sh2)}
+  .thumb{position:relative;aspect-ratio:16/9;display:grid;place-items:center;padding:10px;
+    background:linear-gradient(125deg,#cf0e70,#7b2ab8 45%,#1857a8);color:#fff}
+  .thumb .bn{font-size:9px;letter-spacing:.16em;opacity:.85;position:absolute;top:8px;left:10px}
+  .thumb .tt{font-size:13px;font-weight:700;text-align:center;line-height:1.35;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+  .thumb .dur{position:absolute;bottom:6px;right:8px;font-size:10.5px;background:rgba(0,0,0,.6);padding:1px 6px;border-radius:3px}
+  .thumb.lock{filter:saturate(.25) brightness(.7)}
+  .thumb .lk{position:absolute;inset:0;display:grid;place-items:center;font-size:20px}
+  .lib .bd{padding:11px 12px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .lib .nm{font-size:13.5px;font-weight:600}
+  .lib .mt{font-size:11px;color:var(--dim)}
+  .lib .ft{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-top:1px solid var(--line)}
+  .iconb{background:none;border:none;cursor:pointer;color:var(--line2);font-size:15px;padding:2px 4px;line-height:1}
+  .iconb:hover{color:var(--mag)}
+  .iconb[aria-pressed="true"]{color:var(--mag)}
+  .iconb.sh:hover{color:var(--blue)}
+
+  /* ===== course detail ===== */
+  .chead{display:grid;grid-template-columns:210px minmax(0,1fr) auto;gap:18px;align-items:start}
+  @media (max-width:820px){.chead{grid-template-columns:1fr}}
+  .chead .th{border-radius:var(--r2);overflow:hidden}
+  .chead h2{font-size:20px;margin-bottom:8px}
+  .chead .ab{font-size:13px;color:var(--ink2);margin:0}
+  .sns{display:flex;gap:7px;justify-content:flex-end;margin-bottom:10px}
+  .sns button{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;color:#fff;font-size:11px;display:grid;place-items:center}
+  .sns .tw{background:#1d9bf0}.sns .fb{background:#1877f2}.sns .ln{background:#06c755}
+  .lesgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+  .les{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);overflow:hidden;
+    box-shadow:var(--sh1);display:flex;flex-direction:column;padding:0;cursor:pointer;text-align:left}
+  .les:hover{box-shadow:var(--sh2);border-color:var(--line2)}
+  .les .top{position:relative;background:var(--head);border-bottom:1px solid var(--line);padding:8px 10px 26px;min-height:96px}
+  .les .sc{display:inline-block;font-size:10px;color:var(--ink2);border-bottom:2px solid var(--mag);padding-bottom:1px}
+  .les .ti{font-size:12.5px;margin-top:9px;text-align:center;line-height:1.4}
+  .les .dr{position:absolute;bottom:6px;right:8px;font-size:10.5px;background:rgba(0,0,0,.62);color:#fff;padding:1px 6px;border-radius:3px}
+  .les .st{position:absolute;bottom:6px;left:8px;font-size:10px;font-weight:700}
+  .les[data-state="done"] .st{color:var(--ok)}
+  .les[data-state="current"] .st{color:var(--blue)}
+  .les .bt{display:flex;align-items:center;justify-content:space-between;padding:7px 10px}
+
+  /* ===== lesson player ===== */
+  .lgrid{display:grid;grid-template-columns:minmax(0,1fr) 262px;gap:22px;align-items:start}
+  @media (max-width:940px){.lgrid{grid-template-columns:1fr}}
+  .video{aspect-ratio:16/9;background:var(--card2);border:1px solid var(--line);border-radius:var(--r);
+    display:grid;place-items:center;position:relative;margin-bottom:14px}
+  .video .pl{width:52px;height:52px;border-radius:50%;background:var(--blue);color:var(--blue-ink);display:grid;place-items:center;font-size:16px}
+  .video .tm{position:absolute;bottom:10px;right:12px;font-size:11.5px;background:rgba(0,0,0,.6);color:#fff;padding:2px 7px;border-radius:4px}
+  .obox{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:12px;box-shadow:var(--sh1)}
+  .obox>h4{font-size:11px;letter-spacing:.09em;color:var(--dim);font-weight:700;padding:11px 13px;border-bottom:1px solid var(--line)}
+  .orow{width:100%;display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;
+    background:none;border:none;border-top:1px solid var(--line);padding:8px 13px;cursor:pointer;text-align:left}
+  .orow:first-child{border-top:none}
+  .orow:hover{background:var(--blue-s)}
+  .orow[aria-current="true"]{background:var(--blue-s)}
+  .orow .dt{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:9px;
+    border:1px solid var(--line2);background:var(--card);color:var(--dim)}
+  .orow[data-state="done"] .dt{background:var(--ok);border-color:var(--ok);color:#fff}
+  .orow[data-state="current"] .dt{background:var(--blue);border-color:var(--blue);color:var(--blue-ink)}
+  .orow .nm{font-size:12.5px;min-width:0}
+  .orow .dr{font-size:11px;color:var(--dim);white-space:nowrap}
+  .navrow{display:flex;gap:10px;align-items:center;border-top:1px solid var(--line);padding-top:14px;flex-wrap:wrap}
+  .kbd{font-size:11px;color:var(--dim);margin-top:9px}
+  .kbd b{font-weight:400;background:var(--card2);border:1px solid var(--line2);border-radius:3px;padding:1px 5px;margin:0 1px}
+
+  /* ===== coaching / minutes ===== */
+  .mins{display:flex;flex-direction:column;gap:14px}
+  .min{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh1);overflow:hidden}
+  .min>.hd{display:flex;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid var(--line);background:var(--head);flex-wrap:wrap}
+  .min .dt{font-size:13.5px;font-weight:700}
+  .min .co{font-size:11.5px;color:var(--dim)}
+  .min>.bd{padding:14px 15px}
+  .min h5{font-size:11px;letter-spacing:.08em;color:var(--dim);font-weight:700;margin:0 0 7px}
+  .min .sum{font-size:13px;color:var(--ink2);margin:0 0 14px;white-space:pre-wrap}
+  .min ul{margin:0 0 14px;padding-left:1.15em;font-size:13px}
+  .min ul li{margin-bottom:4px}
+  .hwbox{background:var(--card2);border:1px solid var(--line);border-radius:var(--r2);padding:11px 13px}
+
+  /* ===== Jira風ボード ===== */
+  .board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(232px,1fr);gap:12px;
+    overflow-x:auto;padding-bottom:10px;align-items:start}
+  .bcol{background:var(--card2);border:1px solid var(--line);border-radius:var(--r);padding:10px;min-width:232px}
+  .bhead{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--dim);
+    letter-spacing:.06em;padding:2px 4px 10px}
+  .bhead .bn{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:1px 7px;font-size:10.5px}
+  .blist{display:flex;flex-direction:column;gap:8px;min-height:70px;border-radius:var(--r2);padding:2px}
+  .blist.over{background:var(--blue-s);outline:2px dashed var(--blue);outline-offset:-2px}
+  .bempty{font-size:11.5px;color:var(--dim);text-align:center;padding:18px 6px;border:1px dashed var(--line2);border-radius:var(--r2)}
+  .jcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:10px 11px;
+    box-shadow:var(--sh1);cursor:pointer;display:flex;flex-direction:column;gap:8px;text-align:left}
+  .jcard:hover{border-color:var(--blue);box-shadow:var(--sh2)}
+  .jcard.dragging{opacity:.45}
+  .jtx{font-size:12.5px;line-height:1.55;font-weight:600}
+  .jmeta{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .epic{font-size:9.5px;font-weight:700;letter-spacing:.03em;background:var(--mag-s);color:var(--mag);
+    border:1px solid var(--mag);border-radius:3px;padding:1px 5px;white-space:nowrap}
+  .prio{font-size:10.5px;font-weight:700;white-space:nowrap}
+  .jkey{font-size:10.5px;color:var(--dim);font-weight:700}
+  .jav{width:20px;height:20px;border-radius:50%;background:var(--blue-s);color:var(--blue);
+    display:grid;place-items:center;font-size:9.5px;font-weight:700;border:1px solid var(--line);flex-shrink:0}
+  .jdue{font-size:10.5px;color:var(--dim)}
+  .jdue.over,.over{color:var(--warn);font-weight:700}
+
+  /* 課題詳細 */
+  .ilayout{display:grid;grid-template-columns:minmax(0,1fr) 268px;gap:16px;align-items:start}
+  @media (max-width:860px){.ilayout{grid-template-columns:1fr}}
+  .idl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 12px;font-size:12.5px}
+  .idl dt{color:var(--dim);white-space:nowrap}
+  .idl dd{margin:0}
+
+  /* ===== 工程ロードマップ ===== */
+  .flowwrap{display:flex;flex-direction:column;gap:0}
+  .fstep{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:0 0 18px;position:relative}
+  .fstep::before{content:"";position:absolute;left:21px;top:34px;bottom:0;width:2px;background:var(--line)}
+  .fstep:last-child::before{display:none}
+  .fstep[data-st="done"]::before{background:var(--ok)}
+  .fnum{width:44px;height:34px;display:grid;place-items:center;border-radius:999px;font-size:13px;font-weight:700;
+    background:var(--card2);color:var(--dim);border:1px solid var(--line)}
+  .fstep[data-st="done"] .fnum{background:var(--ok);color:#fff;border-color:var(--ok)}
+  .fstep[data-st="current"] .fnum{background:var(--blue);color:var(--blue-ink);border-color:var(--blue)}
+  .fbody{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh1)}
+  .fstep[data-st="current"] .fbody{border-color:var(--blue);box-shadow:var(--sh2)}
+  .goalbox{background:var(--card2);border-left:3px solid var(--blue);border-radius:var(--r2);
+    padding:8px 11px;font-size:12.5px;color:var(--ink2)}
+  .fstep[data-st="done"] .goalbox{border-left-color:var(--ok)}
+
+  /* ===== 議事録（ドキュメント形式）===== */
+  .minlink{display:block;width:100%;text-align:left;padding:0;cursor:pointer;background:var(--card)}
+  .minlink:hover{box-shadow:var(--sh2);border-color:var(--line2)}
+  .doc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--sh1);padding:26px 30px 32px;max-width:900px}
+  @media (max-width:600px){.doc{padding:18px 16px 24px}}
+  .dochead{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:18px}
+  .doctitle{font-size:23px;font-weight:700;line-height:1.45;letter-spacing:-.01em}
+  /* アクションアイテムは最上部で最も目立たせる */
+  .acts{background:var(--blue-s);border:1px solid var(--blue);border-radius:var(--r);
+    padding:16px 18px;margin-bottom:24px}
+  .actsh{font-size:15.5px;font-weight:700;color:var(--blue)}
+  .actcol{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px}
+  .actcol .ch{margin-bottom:8px}
+  .empty2{font-size:12.5px;color:var(--dim);margin:0}
+  .nextnote{margin-top:12px;font-size:12.5px;color:var(--ink2);background:var(--card);
+    border:1px dashed var(--blue);border-radius:var(--r2);padding:9px 12px}
+  .nextnote.ok{border-color:var(--ok);color:var(--ok)}
+  .docsec{margin-bottom:22px}
+  .docsec h2{font-size:16.5px;font-weight:700;margin-bottom:9px;
+    border-left:3px solid var(--mag);padding-left:10px}
+  .docsec p{font-size:13.5px;line-height:1.85;color:var(--ink2);margin:0;max-width:66ch}
+  .docsec p.lead{font-size:14px;color:var(--ink)}
+  .decs{margin:0;padding-left:1.25em;font-size:13.5px;line-height:1.9;color:var(--ink2)}
+  .decs li{margin-bottom:3px}
+
+  /* ===== admin ===== */
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;text-align:center}
+  .metric .lb{font-size:12.5px;font-weight:700;margin-bottom:10px}
+  .circ{width:120px;height:120px;border-radius:50%;background:var(--blue);color:var(--blue-ink);
+    display:grid;place-items:center;margin:0 auto;font-size:19px;font-weight:700;letter-spacing:-.01em}
+  .circ.sub{font-size:16px}
+  .metric .un{font-size:11px;color:var(--dim);margin-top:8px}
+  .chartwrap{overflow-x:auto}
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .tabs button{background:none;border:none;border-bottom:2px solid transparent;padding:8px 16px;
+    cursor:pointer;font-size:13px;color:var(--dim)}
+  .tabs button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue);font-weight:700}
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:12px}
+  .f label{display:block;font-size:10.5px;color:var(--dim);margin-bottom:4px}
+  .f input,.f select,.f textarea{width:100%;background:var(--card);border:1px solid var(--line2);
+    border-radius:var(--r2);padding:7px 9px;font-size:12.5px}
+  .f .hint{font-size:10.5px;color:var(--dim);margin-top:3px}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+  table{border-collapse:collapse;width:100%;min-width:640px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-size:12.5px;vertical-align:middle}
+  th{background:var(--head);color:var(--ink2);font-weight:700;font-size:11.5px;white-space:nowrap;position:sticky;top:0}
+  tbody tr:hover{background:var(--card2)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .av{width:26px;height:26px;border-radius:50%;background:var(--card2);border:1px solid var(--line);
+    display:grid;place-items:center;font-size:10.5px;color:var(--dim);flex-shrink:0}
+  .pager{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0}
+  .pager .pg{display:flex;gap:2px}
+  .pager .pg button{background:var(--card);border:1px solid var(--line2);color:var(--ink2);
+    width:28px;height:28px;border-radius:var(--r2);cursor:pointer;font-size:11px}
+  .pager .pg button:disabled{opacity:.35;cursor:not-allowed}
+  .funcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .fn{display:flex;gap:11px}
+  .fn .ic{width:30px;height:30px;border-radius:var(--r2);background:var(--blue);color:var(--blue-ink);
+    display:grid;place-items:center;font-size:14px;flex-shrink:0}
+  .fn h4{font-size:13.5px;font-weight:700;margin-bottom:5px}
+  .fn button{display:block;background:none;border:none;padding:2px 0;color:var(--ink2);font-size:12.5px;cursor:pointer;text-align:left}
+  .fn button:hover{color:var(--blue);text-decoration:underline}
+  .mail3{display:grid;grid-template-columns:230px minmax(0,1fr);gap:16px;align-items:start}
+  @media (max-width:820px){.mail3{grid-template-columns:1fr}}
+  .tlist button{width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--line);
+    padding:11px 13px;cursor:pointer;font-size:12.5px}
+  .tlist button:hover{background:var(--card2)}
+  .tlist button[aria-current="true"]{background:var(--blue-s);color:var(--blue);font-weight:600}
+  .tagins{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .tagins .lb{font-size:11.5px;color:var(--dim)}
+  .tagins button{background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer}
+  .tagins button:hover{text-decoration:underline}
+  .ro{background:var(--card2);border:1px solid var(--line);border-radius:var(--r2);padding:9px 11px;font-size:12px;color:var(--ink2);margin-bottom:10px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);
+    padding:10px 18px;border-radius:999px;font-size:12.5px;box-shadow:var(--sh2);z-index:60;display:none}
+  .toast[data-show="true"]{display:block}
+  .empty{padding:26px 18px;text-align:center;color:var(--dim);font-size:13px}
+  .hr{height:1px;background:var(--line);margin:18px 0}
+</style>
+
+<div class="topbar">
+  <button class="burger" id="burger" aria-label="メニュー">☰</button>
+  <div class="logo"><span class="mark mincho">道場</span><span class="tag">AIで効率化し、営業で稼ぐまで。</span></div>
+  <button class="ticon" id="ic-mail" aria-label="メッセージ">✉<span class="dot"></span></button>
+  <button class="ticon" id="ic-bell" aria-label="お知らせ">🔔</button>
+  <div class="me">中</div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <nav class="side" id="side" aria-label="メインナビゲーション"></nav>
+  <main id="view"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ データ ============ */
+const L = (sec,title,dur,done,body,tasks) => ({sec,title,dur,done,body,tasks:tasks||[]});
+/* カリキュラムは2軸。
+   kind:"level"   = AIスキル。初級→中級→上級と積み上げる（仕事の能力）
+   kind:"practice"= 営業・マーケ・副業。案件と副業を取るための実践（コーチングが並走） */
+const CATS = [
+{ id:"ai1", kind:"level", num:"初級", name:"AI初心者", desc:"どのツールが何に使えるかを知り、まず自分の手で動かせるようにする。", courses:[
+  { id:"a1-map", badge:"全体", tool:"生成AI基礎", title:"生成AIの全体像と使い分け", sub:"ChatGPT・Gemini・Claudeの違い", tier:"standard",
+    about:["主要ツールの違いと得意分野を知る","目的からツールを選べるようになる"], lessons:[
+    L("Section0","このコースの進め方","3:12",true,"AIスキルは「知っている」で止めると1円にもなりません。手を動かす前提で進めます。",["受講の目的と使える時間をコミュニティに投稿する"]),
+    L("Section1","ChatGPT / Gemini / Claudeの違い","12:40",true,"3つの主要ツールの特徴と、どの作業にどれを使うかを整理します。",["3つすべてでアカウントを作る"]),
+    L("Section2","AI関連用語の最低限","8:05",false,"トークン・コンテキスト・ハルシネーションなど、つまずきやすい用語だけ押さえます。"),
+    L("Section3","やってはいけない使い方","7:30",false,"機密情報の扱いと、出力をそのまま信じてはいけない場面を確認します。")]},
+  { id:"a1-gpt", badge:"GPT", tool:"ChatGPT", title:"ChatGPTの基本操作", sub:"画面操作から日常業務での使い方まで", tier:"standard",
+    about:["画面操作を一通り身につける","毎日使う型を3つ持ち帰る"], lessons:[
+    L("Section0","画面と基本操作","6:20",false,"新規チャット・履歴・モデル選択など、迷いやすい操作を確認します。"),
+    L("Section1","プロンプトの型を覚える","15:02",false,"毎回ゼロから考えなくて済むよう、目的別の型を身につけます。",["自分の業務用プロンプトを3つ作る"]),
+    L("Section2","ファイル・画像を読ませる","11:15",false,"資料や画像を渡して要約・抽出させる使い方を解説します."),
+    L("Section3","実践：自分の業務を1つ置き換える","課題",false,"実際の業務を1つ選び、AIで置き換えて時間を測ります。",["ビフォーアフターの時間を記録して提出する"])]},
+  { id:"a1-gemini", badge:"Ge", tool:"Gemini", title:"GeminiとGoogleサービス連携", sub:"Gmail・スプレッドシートと組み合わせる", tier:"standard",
+    about:["Geminiの得意な場面を知る","普段のGoogleツールと繋げて使う"], lessons:[
+    L("Section0","Geminiの基本操作","7:10",false,"ChatGPTとの違いを踏まえて基本操作を確認します。"),
+    L("Section1","Gmail・スプレッドシート連携","12:30",false,"メール下書きや表の集計を任せる使い方を解説します。",["スプレッドシートで1つ自動化する"])]},
+  { id:"a1-copilot", badge:"Co", tool:"Copilot", title:"Microsoft Copilot", sub:"Word / Excel / Outlookでの実践", tier:"standard",
+    about:["Office組み込みAIの使いどころ","議事録と集計を任せる"], lessons:[
+    L("Section0","Copilotで何ができるか","6:15",false,"Office製品に組み込まれたCopilotの範囲を確認します。"),
+    L("Section1","Word / Excel / Outlookでの実践","13:10",false,"議事録作成や集計作業など、日常業務での使い方を解説します。")]},
+  { id:"a1-nlm", badge:"NLM", tool:"NotebookLM", title:"NotebookLMで資料を整理する", sub:"要約とQ&Aで調べ物を短縮", tier:"standard",
+    about:["手元の資料をAIに読ませる","資料に基づいて答えさせる"], lessons:[
+    L("Section0","NotebookLMでできること","5:45",false,"資料を読み込ませて整理させる基本の使い方を確認します。"),
+    L("Section1","要約とQ&Aの実践","10:50",false,"長い資料の要約と、根拠つきの回答をさせる方法を学びます。")]},
+  { id:"a1-search", badge:"検索", tool:"AI検索エンジン", title:"AI検索でリサーチを短縮する", sub:"営業先の下調べにそのまま使う", tier:"standard",
+    about:["従来検索との使い分け","営業リサーチに落とし込む"], lessons:[
+    L("Section0","AI検索の使い分け","6:40",false,"従来の検索との違いと、向いている調べ物を整理します。"),
+    L("Section1","営業先リサーチへの実装","9:55",false,"訪問前の下調べを短時間で終わらせる手順を解説します。",["実際に3社分の下調べをする"])]},
+]},
+
+{ id:"ai2", kind:"level", num:"中級", name:"AI中級者", desc:"バイブコーディング。AIに書かせて、売れる成果物を自分で作れる状態にする。", courses:[
+  { id:"a2-vibe", badge:"VIBE", tool:"バイブコーディング", title:"バイブコーディング入門", sub:"コードを書かずにAIに作らせる", tier:"standard",
+    about:["バイブコーディングとは何かを理解する","作れる範囲と作れない範囲を知る"], lessons:[
+    L("Section0","バイブコーディングとは","8:40",false,"自分でコードを書く代わりに、AIに指示して作らせる進め方を解説します。プログラミング未経験でも成果物が作れる前提の考え方です。"),
+    L("Section1","作れるもの・作れないもの","10:20",false,"個人が仕事にできる範囲（単体ツール・LP・自動化）と、手を出すべきでない範囲を線引きします。"),
+    L("Section2","指示の出し方（要件の伝え方）","13:45",false,"何を作りたいかをAIに伝える順序を型にします。ここが甘いと何度も作り直しになります。",["作りたいツールの要件を1枚に書く"]),
+    L("Section3","動かない時の切り分け方","11:30",false,"エラーが出たときに、AIに何を渡せば直るのかを解説します。")]},
+  { id:"a2-cursor", badge:"Cur", tool:"Cursor", title:"Cursorで作る", sub:"AIエディタで実際に手を動かす", tier:"standard",
+    about:["Cursorの基本操作","小さいツールを1本完成させる"], lessons:[
+    L("Section0","Cursorの導入と基本操作","6:50",false,"AIに直接コードを書かせながら進める開発の流れを確認します。"),
+    L("Section1","作りながら直す進め方","14:10",false,"一度に完成させず、小さく動かして直す進め方を解説します。"),
+    L("Section2","実践：業務ツールを1本作る","課題",false,"自分の業務を題材に、動くツールを1本作り切ります。",["ツールを1本完成させて提出する"])]},
+  { id:"a2-cc", badge:"CC", tool:"Claude Code", title:"Claude Codeで作る", sub:"対話しながらまとめて作らせる", tier:"standard",
+    about:["対話型で作らせる進め方","複数ファイルの成果物を扱う"], lessons:[
+    L("Section0","Claude Codeの基本","9:15",false,"対話しながら、ある程度まとまった単位で作らせる進め方を解説します。"),
+    L("Section1","指示と確認のサイクル","12:00",false,"作らせたものを自分で確認し、直させるサイクルの回し方を学びます。")]},
+  { id:"a2-ghcp", badge:"GH", tool:"GitHub Copilot", title:"GitHub Copilot", sub:"補完で書く速度を上げる", tier:"standard",
+    about:["補完の使いどころ","既存コードに手を入れる"], lessons:[
+    L("Section0","導入と基本操作","4:20",false,"補完がどう効くかを確認します。"),
+    L("Section1","既存コードを直す","13:00",false,"ゼロから作る以外の、既にあるものを直す場面での使い方を解説します。")]},
+  { id:"a2-gas", badge:"GAS", tool:"Google Apps Script", title:"Google Apps Scriptで自動化する", sub:"スプレッドシート起点の業務自動化", tier:"standard",
+    about:["定型作業を自動化する","納品できる自動化を作る"], lessons:[
+    L("Section0","GASでできる自動化の範囲","8:00",false,"定型作業をどこまで自動化できるか、代表的な事例で確認します。"),
+    L("Section1","スプレッドシート連携の実践","14:20",false,"シートを起点にした自動化を実際に組みます。"),
+    L("Section2","実践：他人が使える形にする","課題",false,"自分だけが使える状態から、他人に渡せる状態まで整えます。",["自動化を1本作り、手順書をつけて提出する"])]},
+  { id:"a2-html", badge:"HTML", tool:"バイブコーディング", title:"単体HTMLツールを商品にする", sub:"納品しやすい最小の成果物", tier:"standard",
+    about:["ファイル1枚で動く成果物を作る","そのまま売れる形にする"], lessons:[
+    L("Section0","なぜ単体HTMLが売りやすいのか","7:20",false,"環境構築が不要で、渡すだけで動く成果物は個人が売る商材として扱いやすい理由を解説します。"),
+    L("Section1","作例：入力フォーム付きの計算ツール","15:40",false,"実際に売れる形の小さなツールを1本作ります。",["ツールを1本作って提出する"])]},
+  { id:"a2-nocode", badge:"自動", tool:"ノーコード自動化", title:"ノーコードで業務を繋ぐ", sub:"Zapier・n8n等での連携", tier:"elite",
+    about:["ツール間を繋ぐ自動化","運用に乗る形にする"], lessons:[
+    L("Section0","ノーコード自動化の考え方","9:30",false,"複数のツールを繋いで自動化する場合の設計を解説します。"),
+    L("Section1","実践：通知の自動化を組む","12:50",false,"問い合わせが来たら通知する、といった自動化を実際に組みます。")]},
+]},
+
+{ id:"ai3", kind:"level", num:"上級", name:"AI上級者", desc:"実務で金額がつく事例。導入支援・研修講師まで踏み込む。", courses:[
+  { id:"a3-case", badge:"事例", tool:"実務事例", title:"実務で使えるAI活用事例集", sub:"金額がついた案件の中身を分解する", tier:"standard",
+    about:["実際に受注した案件の構造を知る","自分の商材に転用する"], lessons:[
+    L("Section0","議事録・レポート自動化の事例","11:20",false,"月額で継続している議事録自動化案件の中身と、いくらで受けているかを分解します。"),
+    L("Section1","問い合わせ対応の自動化事例","12:40",false,"問い合わせ返信の下書き生成を導入した事例を解説します。"),
+    L("Section2","資料作成代行の事例","10:15",false,"提案書・報告書の作成を巻き取っている事例を解説します。"),
+    L("Section3","事例から自分の商材を決める","課題",false,"3つの事例のうち、自分が売れそうなものを1つ選んで商品化します。",["自分の商材を1つ決めて提出する"])]},
+  { id:"a3-intro", badge:"導入", tool:"実務事例", title:"社内AI導入支援", sub:"業務フロー診断と置き換え設計", tier:"standard",
+    about:["現場の業務を棚卸しする","置き換える順番を設計する"], lessons:[
+    L("Section0","業務の棚卸しの進め方","12:10",false,"どの作業から置き換えるべきかを判断するための、業務の洗い出し方を解説します。"),
+    L("Section1","置き換え設計と費用対効果の出し方","14:30",false,"削減時間を金額に換算して提案する方法を学びます。",["架空の会社を想定して診断シートを作る"]),
+    L("Section2","導入後の定着支援","11:05",false,"導入して終わりにせず、使われ続ける状態を作る動き方を解説します。")]},
+  { id:"a3-teach", badge:"講師", tool:"研修講師", title:"AI研修講師として登壇する", sub:"企業研修は時給単価が高い", tier:"elite",
+    about:["研修講師の需要と単価","登壇の型を作る"], lessons:[
+    L("Section0","なぜ研修講師の需要があるのか","10:40",false,"CopilotやGeminiを導入したものの使いこなせていない企業が多く、実務に即して教えられる人が不足しています。時給2万円規模の案件が成立する背景を解説します。"),
+    L("Section1","研修の構成の作り方","15:20",false,"90分・半日・1日の型ごとに、構成の組み方を解説します。",["90分研修の構成案を1本作る"]),
+    L("Section2","登壇と質疑の対応","12:35",false,"当日の進め方と、答えられない質問が来たときの対応を解説します。"),
+    L("Section3","実践：模擬登壇","課題",false,"コーチ相手に15分の模擬登壇を行い、フィードバックを受けます。",["模擬登壇を1回実施する"])]},
+  { id:"a3-sec", badge:"制約", tool:"実務事例", title:"セキュリティ制約下での活用", sub:"大企業案件で必須になる論点", tier:"elite",
+    about:["持ち込めない情報の線引き","制約内で成果を出す設計"], lessons:[
+    L("Section0","何が持ち込めないのか","9:50",false,"顧客情報・機密資料の扱いと、社内規程で止まりやすい論点を整理します。"),
+    L("Section1","制約内での活用設計","13:15",false,"外部に出せない前提でどこまでできるかを設計します。")]},
+  { id:"a3-rag", badge:"RAG", tool:"実務事例", title:"社内ナレッジ検索の構築", sub:"手元の資料に基づいて答えさせる", tier:"elite",
+    about:["社内資料を検索できる形にする","精度が出ない時の対処"], lessons:[
+    L("Section0","仕組みの概要","11:40",false,"社内資料を読ませて回答させる仕組みの流れを、実装の前に整理します。"),
+    L("Section1","構築と精度の調整","16:20",false,"実際に構築し、狙った回答が出ない場合の調整方法を解説します。")]},
+]},
+
+{ id:"sales-free", kind:"practice", num:"営業", name:"営業：無料でできる施策", desc:"お金をかけずに反応を取る。まずここだけで案件は取れる。", courses:[
+  { id:"sf-li-prof", badge:"LI", tool:"LinkedIn", title:"LinkedIn プロフィールの作り方", sub:"見られる前提で整える", tier:"standard",
+    about:["発注したくなるプロフィールにする","検索で見つかる状態にする"], lessons:[
+    L("Section0","なぜLinkedInが法人営業に向くのか","8:20",false,"決裁者本人に直接届く導線があり、無料の範囲でも接触できるため、法人営業の入口として機能します。"),
+    L("Section1","ヘッドラインと自己紹介の書き方","14:10",false,"何ができる人なのかが3秒で伝わる書き方を、実例つきで解説します。",["ヘッドラインと自己紹介を書き換える"]),
+    L("Section2","職歴・実績の見せ方","12:30",false,"実績がまだ少ない段階での書き方も含めて解説します。"),
+    L("Section3","実践：プロフィールを完成させる","課題",false,"最後まで書き切って、コーチのレビューを受けます。",["プロフィールを完成させてレビュー依頼を出す"])]},
+  { id:"sf-li-free", badge:"LI", tool:"LinkedIn", title:"LinkedIn 無料でできる営業", sub:"つながり申請とメッセージ設計", tier:"standard",
+    about:["無料枠でできる範囲を把握する","返信が来るメッセージを書く"], lessons:[
+    L("Section0","無料アカウントでできること","7:40",false,"無料の範囲でどこまで営業できるか、制限も含めて整理します。"),
+    L("Section1","つながり申請の出し方","11:20",false,"承認されやすい相手の選び方と、申請時の一言を解説します。",["30件つながり申請を出す"]),
+    L("Section2","初回メッセージの型","13:50",false,"売り込まずに会話を始める型を、実際の文面で解説します。",["自分用のメッセージ文面を作る"]),
+    L("Section3","実践：20件送って反応を測る","課題",false,"実際に送信し、返信率を記録します。",["20件送信する","返信率を記録して提出する"])]},
+  { id:"sf-fb", badge:"FB", tool:"Facebook", title:"Facebook 無料施策", sub:"グループと投稿で見つけてもらう", tier:"standard",
+    about:["無料で接点を作る","嫌われない距離感を掴む"], lessons:[
+    L("Section0","Facebookが効く相手","7:10",false,"経営者層が動いているコミュニティがあり、無料でも接点を作れる場面を解説します。"),
+    L("Section1","グループの探し方と入り方","10:30",false,"どのグループに入るべきか、入った後の振る舞いを解説します。",["関連グループに3つ参加する"]),
+    L("Section2","友達申請とメッセージ","11:45",false,"いきなり売り込まずに関係を作る手順を解説します。"),
+    L("Section3","投稿で見つけてもらう","12:20",false,"何を投稿すると相談が来るのかを、実例つきで解説します。",["自己紹介投稿を1本出す"])]},
+  { id:"sf-form", badge:"フォ", tool:"営業", title:"フォーム営業 完全攻略", sub:"送信文の型と返信率の検証", tier:"standard",
+    about:["返信が来る送信文の型","50社に送って検証する"], lessons:[
+    L("Section0","フォーム営業の位置づけ","4:02",false,"費用がかからず、量を出せば必ず反応が返る手法として最初に置きます。"),
+    L("Section1","反響が出る送信文の型","11:20",false,"開封・返信されやすい文面の型を実例つきで解説します。",["自分用の送信文テンプレートを作る"]),
+    L("Section2","断られたときの切り返し","9:48",false,"断りの返信が来たときの再アプローチを、実際のやり取りで学びます。"),
+    L("Section3","実践：50社に送ってみる","課題",false,"実際に50社へ送り、返信率を記録します。",["50社に送信する","返信率をシートに記録する"])]},
+  { id:"sf-ref", badge:"紹介", tool:"営業", title:"知人・紹介からの営業", sub:"一番決まりやすい導線を先に使う", tier:"standard",
+    about:["身近な導線を洗い出す","紹介が続く状態を作る"], lessons:[
+    L("Section0","最初の1件は知人から出やすい","6:30",false,"実績ゼロの段階で最も決まりやすい導線として、知人・前職関係を先に使います。"),
+    L("Section1","声のかけ方と頼み方","10:15",false,"重くならない声のかけ方を、文面つきで解説します。",["声をかける候補を10人書き出す"])]},
+]},
+
+{ id:"sales-paid", kind:"practice", num:"営業", name:"営業：有料でやる施策", desc:"無料で反応が取れたら、お金をかけて量と質を上げる。", courses:[
+  { id:"sp-nav", badge:"Nav", tool:"LinkedIn", title:"Sales Navigatorの使い方", sub:"狙った決裁者だけを抽出する", tier:"standard",
+    about:["検索条件の組み方","リスト化と運用"], lessons:[
+    L("Section0","無料アカウントとの違い","8:10",false,"有料にすると何ができるようになるのか、費用に見合う場面を整理します。"),
+    L("Section1","検索条件の組み方","15:30",false,"業種・役職・従業員数・地域などの条件を組んで、狙った層だけを出す方法を解説します。",["自分のターゲット条件を保存検索に登録する"]),
+    L("Section2","リストの管理と優先順位づけ","12:40",false,"抽出した相手をどう捌くか、優先順位の付け方を解説します。"),
+    L("Section3","実践：100件のリストを作る","課題",false,"実際に条件を組んでリストを作り、提出します。",["リストを100件作成して提出する"])]},
+  { id:"sp-event", badge:"交流", tool:"交流会", title:"交流会の調べ方と回り方", sub:"どの会に出れば決まるのか", tier:"standard",
+    about:["出るべき会の見極め","その場での動き方"], lessons:[
+    L("Section0","交流会の探し方","9:20",false,"どこで開催情報を探すか、参加費と参加者層の見極め方を解説します。",["参加候補の交流会を3件調べる"]),
+    L("Section1","当日の動き方と名刺後のフォロー","13:10",false,"その場で売り込まず、後日の商談に繋げる動き方を解説します。"),
+    L("Section2","実践：1回参加してレポートする","課題",false,"実際に参加し、誰と何を話したかを記録します。",["交流会に1回参加してレポートを提出する"])]},
+  { id:"sp-expo", badge:"展示", tool:"展示会", title:"展示会の逆営業", sub:"出展している側に営業する", tier:"standard",
+    about:["逆営業という考え方","名刺交換から商談へ"], lessons:[
+    L("Section0","逆営業とは","10:40",false,"来場者として行き、出展している企業側に営業をかける手法です。出展企業は話を聞く体勢で待っているため、通常の飛び込みより圧倒的に会話が成立しやすい構造を解説します。"),
+    L("Section1","展示会の選び方","11:15",false,"どの展示会に自分の顧客が出ているのかを調べる方法を解説します。",["行くべき展示会を2件特定する"]),
+    L("Section2","ブースでの話し方","12:50",false,"短時間で興味を持たせ、後日のアポに繋げる会話の型を解説します。"),
+    L("Section3","実践：展示会に行って5社と話す","課題",false,"実際に行き、5社と会話して記録します。",["5社と名刺交換して記録を提出する"])]},
+  { id:"sp-tel", badge:"TEL", tool:"営業", title:"テレアポ・手紙DM", sub:"リストにお金をかけて量を出す", tier:"elite",
+    about:["切られないトークを作る","手紙が刺さる相手を選ぶ"], lessons:[
+    L("Section0","テレアポの位置づけ","4:40",false,"他の手法と組み合わせたときの役割を整理します。"),
+    L("Section1","トークスクリプトの基本形","10:10",false,"最初の10秒で切られないための型を解説します。",["自分用スクリプトを作る"]),
+    L("Section2","手紙DMで反響を取る","12:30",false,"フォームやテレアポが効かない層に手紙が有効な理由と、文面の型を解説します。"),
+    L("Section3","ロープレ：受付突破","課題",false,"コーチ相手にロープレを行います。",["ロープレを1回実施する"])]},
+]},
+
+{ id:"mk", kind:"practice", num:"マーケ", name:"マーケティング", desc:"追いかける営業から、向こうから来る状態へ。", courses:[
+  { id:"mk-base", badge:"基礎", tool:"マーケ", title:"マーケの全体像", sub:"営業との違いと役割分担", tier:"standard",
+    about:["営業とマーケの違いを理解する","自分がどこから手を付けるか決める"], lessons:[
+    L("Section0","営業とマーケの違い","8:30",false,"自分から取りに行く営業と、見つけてもらうマーケの違いと、個人がどの順番でやるべきかを解説します。"),
+    L("Section1","何から手を付けるか","10:20",false,"実績がない段階でやるべきことと、やっても無駄なことを線引きします。",["自分の着手順を決めて提出する"])]},
+  { id:"mk-x", badge:"X", tool:"マーケ", title:"X（旧Twitter）発信", sub:"画像コンテンツで認知を取る", tier:"standard",
+    about:["何を発信すると相談が来るか","続く運用にする"], lessons:[
+    L("Section0","発信の設計図","8:50",false,"画像コンテンツによるオーガニック発信の型を解説します。"),
+    L("Section1","ネタの作り方","12:15",false,"自分の学びと実績を、そのまま発信ネタに変える方法を解説します。",["投稿ネタを10個書き出す"]),
+    L("Section2","実践：初回投稿を作る","課題",false,"最初の投稿を作って出します。",["投稿を1本出す"])]},
+  { id:"mk-case", badge:"事例", tool:"マーケ", title:"実績・事例コンテンツの作り方", sub:"1件の実績を何度も使う", tier:"standard",
+    about:["実績を見せられる形にする","次の受注に繋げる"], lessons:[
+    L("Section0","実績の書き方","11:30",false,"守秘義務に配慮しながら、実績を見せられる形にする方法を解説します。",["自分の実績を1件、事例の形にする"]),
+    L("Section1","事例の使い回し方","9:45",false,"作った事例を提案・プロフィール・投稿でどう使い回すかを解説します。")]},
+  { id:"mk-lp", badge:"LP", tool:"マーケ", title:"LP・受け皿の作り方", sub:"問い合わせが来る導線を作る", tier:"standard",
+    about:["最低限の受け皿を用意する","AIで作ってしまう"], lessons:[
+    L("Section0","受け皿がないと取りこぼす","7:50",false,"興味を持った相手が問い合わせる場所を用意していないと、接触が無駄になります。"),
+    L("Section1","AIで1枚のLPを作る","14:20",false,"中級で学んだバイブコーディングを使って、自分のLPを作ります。",["自分のLPを1枚作る"])]},
+  { id:"mk-ad", badge:"広告", tool:"マーケ", title:"縦型動画広告の基本", sub:"お金をかけて認知を広げる", tier:"elite",
+    about:["広告を出す前の条件","最低限の作り方"], lessons:[
+    L("Section0","広告を出していい段階","9:10",false,"実績と受け皿が揃う前に広告を出すと溶けるだけ、という判断基準を解説します。"),
+    L("Section1","縦型動画の作り方","13:40",false,"個人でも作れる範囲での、動画広告の構成を解説します。")]},
+]},
+
+{ id:"side", kind:"practice", num:"副業", name:"副業・案件獲得", desc:"副業プラットフォームから案件を取る。ここはコーチングで一緒に探す。", courses:[
+  { id:"sd-cw", badge:"CW", tool:"クラウドワークス", title:"クラウドワークスでの案件の取り方", sub:"最初の1件を取るために使う", tier:"standard",
+    about:["受かる提案文を書く","単価の低さとの付き合い方"], lessons:[
+    L("Section0","クラウドワークスの位置づけ","9:30",false,"単価は低い一方、実績ゼロから最初の1件を取るには機能します。ここに居続けないことを前提に使い方を解説します。"),
+    L("Section1","受かる提案文の型","14:50",false,"通る提案文と落ちる提案文を並べて、違いを分解します。",["自分の提案文テンプレートを作る"]),
+    L("Section2","案件の選び方と避ける案件","11:20",false,"時間単価が破綻する案件、揉めやすい案件の見分け方を解説します。"),
+    L("Section3","実践：10件提案する","課題",false,"実際に提案を出し、通過率を記録します。",["10件提案する","結果を記録して提出する"])]},
+  { id:"sd-wt", badge:"WT", tool:"Wantedly", title:"Wantedlyでの副業の取り方", sub:"副業前提の募集を狙う", tier:"standard",
+    about:["副業募集の探し方","面談までの流れ"], lessons:[
+    L("Section0","Wantedlyの使い方","8:40",false,"副業・業務委託の募集がある場所として、どう探すかを解説します。"),
+    L("Section1","プロフィールと応募文","13:15",false,"会ってみたいと思わせるプロフィールの作り方を解説します。",["プロフィールを作成する"]),
+    L("Section2","カジュアル面談の進め方","11:50",false,"面談で何を聞かれ、何を確認すべきかを解説します。",["3社に応募する"])]},
+  { id:"sd-yt", badge:"YT", tool:"YOUTRUST", title:"YOUTRUSTでの副業の取り方", sub:"つながり経由で声がかかる", tier:"standard",
+    about:["信頼ベースの導線を作る","声がかかる状態にする"], lessons:[
+    L("Section0","YOUTRUSTの特徴","8:20",false,"知人のつながりを起点に副業の話が来る構造を解説します。他媒体との違いを整理します。"),
+    L("Section1","プロフィールと副業意欲の出し方","12:30",false,"副業を探していることをどう表明するか、書き方を解説します。",["プロフィールを整えて副業意欲を公開する"])]},
+  { id:"sd-prop", badge:"提案", tool:"副業", title:"提案文とポートフォリオ", sub:"どの媒体でも共通で必要になるもの", tier:"standard",
+    about:["使い回せる提案文を持つ","見せられる作品を用意する"], lessons:[
+    L("Section0","提案文の共通の型","12:10",false,"媒体が変わっても使える提案文の骨格を作ります。",["共通の提案文を作る"]),
+    L("Section1","ポートフォリオの作り方","13:35",false,"中級で作ったツールを、そのまま見せられる形に整えます。",["ポートフォリオを1枚作る"])]},
+  { id:"sd-price", badge:"単価", tool:"副業", title:"単価交渉と継続化", sub:"1件で終わらせない", tier:"elite",
+    about:["安く受けすぎない","継続契約に持ち込む"], lessons:[
+    L("Section0","最初の見積の出し方","11:40",false,"相場を踏まえて、安く受けすぎないための考え方を解説します。"),
+    L("Section1","継続契約に変える","13:20",false,"単発で終わらせず、月額に変えていく話の持っていき方を解説します。"),
+    L("Section2","稼働管理と確定申告の基本","10:50",false,"副業として続ける上で最低限おさえる事務を確認します。")]},
+]},
+];
+
+/* コーチングで使う工程型ロードマップ。
+   カリキュラム（CATS）とは別軸。「今どの工程にいるか」をコーチが管理し、
+   工程ごとに到達条件と関連コースを紐づける。 */
+const FLOW = [
+  { id:"f1", num:"01", name:"AIスキル基礎", status:"done",
+    goal:"AIで自分の業務を1つ置き換え、削減時間を数字で出せている",
+    desc:"まず道具を使えるようにする。ここで止まる人が最も多い。",
+    cats:["ai1"], courses:["a1-map","a1-gpt"] },
+  { id:"f2", num:"02", name:"商材化", status:"current",
+    goal:"売る商材を1つに絞り、見積を自分で出せる",
+    desc:"何を売るか決まっていないと営業に進めない。1本に絞る。",
+    cats:["ai2","ai3"], courses:["a2-html","a3-case"] },
+  { id:"f3", num:"03", name:"営業実践", status:"todo",
+    goal:"営業を送り、返信が3件来ている",
+    desc:"無料施策から始める。受注より先に反応を取る。",
+    cats:["sales-free","sales-paid"], courses:["sf-li-prof","sf-form"] },
+  { id:"f4", num:"04", name:"マーケ実践", status:"todo",
+    goal:"実績を見せられる事例と、問い合わせの受け皿が1つある",
+    desc:"追いかけるだけでなく、向こうから来る導線を作る。",
+    cats:["mk"], courses:["mk-case","mk-lp"] },
+  { id:"f5", num:"05", name:"案件獲得〜納品", status:"todo",
+    goal:"1件受注し、納品と検収まで終わっている",
+    desc:"納品まで終えて初めて実績になる。副業媒体も併用する。",
+    cats:["side"], courses:["sd-cw","sd-wt","sd-yt"] },
+  { id:"f6", num:"06", name:"継続・単価アップ", status:"todo",
+    goal:"月5万円を継続して超えている",
+    desc:"単発で終わらせず、継続契約と単価改善に入る。",
+    cats:["side"], courses:["sd-price"] },
+];
+
+/* コーチング議事録。
+   セクション別本文＋担当者別アクションアイテム（=宿題）を持つ。
+   アクションアイテムは画面最上部に出す。 */
+const AST = [["todo","未着手"],["doing","進行中"],["review","レビュー待ち"],["done","完了"]];
+const PRIO = {high:{l:"高",i:"↑",c:"var(--warn)"},mid:{l:"中",i:"=",c:"var(--dim)"},low:{l:"低",i:"↓",c:"var(--blue)"}};
+const isDone = a => a.status==="done";
+const stLabel = s => (AST.find(x=>x[0]===s)||AST[0])[1];
+
+/* コーチング議事録。セクション本文＋アクションアイテムを持つ。
+   アクションアイテムはJiraの課題と同じ構造（key/status/priority/担当/期限/親=工程）で管理する。 */
+const SESSIONS = [
+  { id:"s3", date:"2026/07/22", coach:"村田コーチ", mins:30, flow:"f2",
+    title:"営業の入口を決める（商材を1本に絞る）",
+    summary:"AIスキルは初級コースの半分まで進行。手が止まっている原因は「何を売るか決まっていない」ことだと特定した。まずHP制作とAI業務代行の2案から1本に絞り、無料でできる営業施策から着手する方針で合意。",
+    sections:[
+      { h:"現状の確認", body:"AI初心者コースはSection1まで完了。ChatGPTとGeminiは日常的に触れている状態で、道具としての不安はほぼない。一方で、学習が2週間ほど止まっていた。理由を掘ると「次に何をすればいいか分からない」ではなく「作ったものを誰に売るのか決まっていない」ことが原因だった。" },
+      { h:"商材を1本に絞る", body:"HP制作とAI業務代行の2案を比較。HP制作は需要が明確で相場も調べやすいが競合が多い。AI業務代行は本業の経験がそのまま効き、単価も上げやすい。今回はAI業務代行（議事録・レポート作成の巻き取り）を主軸に置き、HP制作は問い合わせが来たときだけ受ける扱いとした。" },
+      { h:"営業は無料施策から", body:"予算をかける前に、無料でできる範囲で反応が取れるか検証する。LinkedInのプロフィール整備とフォーム営業を先に回し、Sales Navigatorや交流会などの有料施策は返信率が見えてから判断する。今月は受注ではなく「返信3件」を目標に置いた。" },
+    ],
+    decisions:[
+      "商材はAI業務代行（議事録・レポート作成）に1本化する",
+      "HP制作は問い合わせが来たときのみ対応。自分から売らない",
+      "営業は無料施策のみ。有料施策は返信率が見えてから判断",
+      "今月の目標は返信3件。受注は追わない",
+    ],
+    actions:[
+      { id:"h1", key:"DJ-7", owner:"受講生", status:"doing", prio:"high", due:"2026/07/29",
+        text:"AI初心者コース「プロンプトの型を覚える」を完了する",
+        note:"手を動かす前に型を持つ。ここが終わらないと商材の説明資料も作れない。" },
+      { id:"h2", key:"DJ-8", owner:"受講生", status:"todo", prio:"high", due:"2026/07/29",
+        text:"LinkedInのプロフィールを書き換えてレビュー依頼を出す",
+        note:"ヘッドラインと自己紹介を先に直す。実績欄は後回しでよい。" },
+      { id:"h3", key:"DJ-9", owner:"受講生", status:"todo", prio:"mid", due:"2026/08/01",
+        text:"AI業務代行の提供メニューを1枚にまとめる",
+        note:"作業単位ではなく成果単位で書く。金額はレンジで置く。" },
+      { id:"h4", key:"DJ-10", owner:"受講生", status:"todo", prio:"mid", due:"2026/08/03",
+        text:"フォーム営業の送信先リストを30社作る",
+        note:"業種を絞る。まずは自分の本業に近い業種から。" },
+      { id:"h5", key:"DJ-6", owner:"コーチ", status:"done", prio:"mid", due:"2026/07/27",
+        text:"議事録自動化の受注事例（金額込み）を共有する",
+        note:"月額3万円で継続している案件の構成をそのまま渡す。" },
+    ]},
+  { id:"s2", date:"2026/07/08", coach:"村田コーチ", mins:30, flow:"f1",
+    title:"現状整理と目標設定",
+    summary:"本業の稼働は月160時間、学習に充てられるのは平日1時間・土日3時間と確認。最初の目標を「3ヶ月で月5万円」に設定し、単価の低い媒体は使わない方針を決めた。",
+    sections:[
+      { h:"使える時間の確認", body:"平日は帰宅後1時間、土日は3時間ずつが現実的なライン。これ以上を前提にすると崩れるため、週11時間を上限として計画を組んだ。" },
+      { h:"目標設定", body:"3ヶ月で月5万円に設定。いきなり高い数字を置くと単価の低い案件に飛びつく動きになるため、まずは「1件受注して納品まで終わらせる」ことを優先する。" },
+      { h:"使わない媒体を決める", body:"クラウドワークスは最初の1件の実績作りには使うが、居続けると時間単価が破綻するため、2件目以降は使わない前提とした。" },
+    ],
+    decisions:[
+      "目標は3ヶ月で月5万円。無理に高く置かない",
+      "学習は平日1時間・土日3時間の週11時間で固定",
+      "クラウドワークスは実績作りの1件のみ。継続利用はしない",
+    ],
+    actions:[
+      { id:"h6", key:"DJ-3", owner:"受講生", status:"done", prio:"high", due:"2026/07/15",
+        text:"AI初心者コース Section0・Section1を完了する", note:"" },
+      { id:"h7", key:"DJ-4", owner:"受講生", status:"done", prio:"low", due:"2026/07/12",
+        text:"目標収益と使える時間をコミュニティに投稿する", note:"" },
+      { id:"h8", key:"DJ-5", owner:"コーチ", status:"done", prio:"mid", due:"2026/07/11",
+        text:"週11時間前提の学習スケジュールを作って渡す", note:"" },
+    ]},
+  { id:"s1", date:"2026/06/24", coach:"村田コーチ", mins:45, flow:"f1",
+    title:"オンボーディング面談",
+    summary:"受講の目的は「本業の給与以外に収入の柱を作ること」。AI利用歴はChatGPTを月数回のみ。受講の進め方とコーチングの使い方を説明した。",
+    sections:[
+      { h:"受講の目的", body:"本業を辞める前提ではなく、給与以外の収入の柱を作りたいという動機。転職や独立は現時点で考えていないため、副業として月数万円から積み上げる設計が合う。" },
+      { h:"現在のAI利用状況", body:"ChatGPTを月数回、調べ物に使う程度。プロンプトという概念は知らない状態からのスタート。プログラミング経験はなし。" },
+      { h:"進め方の説明", body:"AIスキルは初級→中級→上級の順に積み上げる。案件探しと副業探しはコーチングで一緒にやるため、一人で抱えないこと。詰まったら次回セッションまで持たずにSlackで聞く運用とした。" },
+    ],
+    decisions:[
+      "AIスキルは初級から順番に進める",
+      "週1回は必ずログインする",
+      "詰まったら次回まで持たずにSlackで聞く",
+      "案件探し・副業探しはコーチングで一緒に進める",
+    ],
+    actions:[
+      { id:"h9", key:"DJ-1", owner:"受講生", status:"done", prio:"high", due:"2026/06/30",
+        text:"ChatGPT・Gemini・Claudeのアカウントを作る", note:"" },
+      { id:"h10", key:"DJ-2", owner:"受講生", status:"done", prio:"low", due:"2026/06/27",
+        text:"自己紹介をコミュニティに投稿する", note:"" },
+    ]},
+];
+
+/* ---- 運営側（個人受講生向け） ---- */
+const ADMIN = {
+  summary:{ students:"48名", hours:"8.7時間", earners:"12名" },
+  act7:[{d:"07/18",h:4.4},{d:"07/19",h:1.8},{d:"07/20",h:0.2},{d:"07/21",h:0.6},{d:"07/22",h:0.25},{d:"07/23",h:0.55},{d:"07/24",h:0.05}],
+  act28:[{d:"06/27",h:1.2},{d:"06/29",h:2.4},{d:"07/01",h:0.9},{d:"07/03",h:3.1},{d:"07/05",h:1.7},{d:"07/07",h:2.2},{d:"07/09",h:0.6},{d:"07/11",h:1.4},{d:"07/13",h:2.9},{d:"07/15",h:3.6},{d:"07/17",h:2.1},{d:"07/19",h:1.8},{d:"07/21",h:0.6},{d:"07/23",h:0.55}],
+  /* 受講生。hours=eラーニング視聴時間, lessons=完了レッスン数, last=最終ログイン,
+     tT/tD/tO = コーチング課題の 総数/完了/期限超過（消化率の算出元） */
+  students:[
+    { name:"中川 雄斗", mail:"t.nakagawa@example.jp", plan:"スタンダード", joined:"2026/06/24", coach:"村田",
+      pct:3, rev:"—", flow:"02 商材化", hours:"04:12:30", lessons:3, last:"2026/07/25", tT:10, tD:6, tO:0 },
+    { name:"佐々木 亮", mail:"r.sasaki@example.jp", plan:"エリート", joined:"2026/05/12", coach:"村田",
+      pct:29, rev:"¥184,000", flow:"03 営業実践", hours:"19:48:10", lessons:31, last:"2026/07/25", tT:24, tD:21, tO:1 },
+    { name:"井上 美咲", mail:"m.inoue@example.jp", plan:"エリート", joined:"2026/04/02", coach:"高橋",
+      pct:49, rev:"¥410,000", flow:"05 案件獲得〜納品", hours:"31:05:44", lessons:52, last:"2026/07/24", tT:38, tD:36, tO:0 },
+    { name:"大西 健太", mail:"k.onishi@example.jp", plan:"スタンダード", joined:"2026/06/01", coach:"高橋",
+      pct:16, rev:"¥38,000", flow:"02 商材化", hours:"09:22:05", lessons:17, last:"2026/07/22", tT:14, tD:9, tO:2 },
+    { name:"平野 さやか", mail:"s.hirano@example.jp", plan:"スタンダード", joined:"2026/07/10", coach:"村田",
+      pct:1, rev:"—", flow:"01 AIスキル基礎", hours:"01:04:12", lessons:1, last:"2026/07/20", tT:4, tD:1, tO:1 },
+    { name:"川口 拓也", mail:"t.kawaguchi@example.jp", plan:"エリート", joined:"2026/03/18", coach:"高橋",
+      pct:60, rev:"¥620,000", flow:"06 継続・単価アップ", hours:"42:17:09", lessons:64, last:"2026/07/25", tT:45, tD:45, tO:0 },
+    { name:"森本 千夏", mail:"c.morimoto@example.jp", plan:"スタンダード", joined:"2026/05/28", coach:"村田",
+      pct:24, rev:"¥72,000", flow:"03 営業実践", hours:"14:33:51", lessons:26, last:"2026/07/23", tT:19, tD:15, tO:0 },
+    { name:"藤原 悠", mail:"y.fujiwara@example.jp", plan:"スタンダード", joined:"2026/07/02", coach:"高橋",
+      pct:7, rev:"—", flow:"01 AIスキル基礎", hours:"03:41:20", lessons:7, last:"2026/07/18", tT:8, tD:3, tO:3 },
+    { name:"内田 直樹", mail:"n.uchida@example.jp", plan:"エリート", joined:"2026/04/20", coach:"村田",
+      pct:38, rev:"¥255,000", flow:"04 マーケ実践", hours:"24:56:33", lessons:41, last:"2026/07/24", tT:29, tD:26, tO:1 },
+    { name:"小林 芽衣", mail:"m.kobayashi@example.jp", plan:"スタンダード", joined:"2026/06/15", coach:"高橋",
+      pct:12, rev:"¥15,000", flow:"02 商材化", hours:"07:18:47", lessons:13, last:"2026/07/21", tT:12, tD:8, tO:1 },
+  ],
+  logs:[
+    { user:"井上 美咲", content:"実践：50社に送ってみる", action:"課題を提出しました。", at:"2026/07/24 21:40" },
+    { user:"川口 拓也", content:"高単価商談ロープレ", action:"コンテンツを受講完了しました。", at:"2026/07/24 09:12" },
+    { user:"佐々木 亮", content:"反響が出る送信文の型", action:"コンテンツを受講完了しました。", at:"2026/07/23 22:05" },
+    { user:"内田 直樹", content:"プロフィール設計", action:"コンテンツを受講完了しました。", at:"2026/07/23 20:31" },
+    { user:"森本 千夏", content:"テレアポ実践ロープレ", action:"コースを開始しました。", at:"2026/07/23 19:48" },
+    { user:"中川 雄斗", content:"ChatGPT / Geminiの基本操作", action:"コンテンツを受講完了しました。", at:"2026/07/22 23:10" },
+    { user:"中川 雄斗", content:"村田コーチ 1on1", action:"コーチングを受講しました。", at:"2026/07/22 20:00" },
+    { user:"大西 健太", content:"相場と見積もりの作り方", action:"コンテンツを受講完了しました。", at:"2026/07/22 12:22" },
+    { user:"小林 芽衣", content:"なぜHP制作から始めるのか", action:"コンテンツを受講完了しました。", at:"2026/07/21 21:05" },
+    { user:"藤原 悠", content:"プロンプトとは", action:"コンテンツを受講完了しました。", at:"2026/07/21 08:40" },
+    { user:"井上 美咲", content:"納品と検収の進め方", action:"コンテンツを受講完了しました。", at:"2026/07/20 22:55" },
+    { user:"平野 さやか", content:"オリエンテーション", action:"コンテンツを受講完了しました。", at:"2026/07/20 10:02" },
+    { user:"佐々木 亮", content:"実践：100件のリストを作る", action:"課題を提出しました。", at:"2026/07/19 23:31" },
+    { user:"森本 千夏", content:"AIでリストを作る流れ", action:"コンテンツを受講完了しました。", at:"2026/07/19 20:14" },
+    { user:"内田 直樹", content:"発信の設計図", action:"コンテンツを受講完了しました。", at:"2026/07/18 21:47" },
+  ],
+  stats:[
+    { name:"生成AI基礎コース", hours:"06:12:11", fin:14, contents:52, tasks:9, rev:2 },
+    { name:"フォーム営業 完全攻略", hours:"04:41:30", fin:8, contents:31, tasks:14, rev:6 },
+    { name:"HP制作を商品にする", hours:"03:23:45", fin:6, contents:24, tasks:7, rev:4 },
+    { name:"テレアポ実践ロープレ", hours:"02:08:19", fin:5, contents:15, tasks:5, rev:3 },
+    { name:"ChatGPTコース", hours:"01:54:02", fin:11, contents:29, tasks:0, rev:0 },
+    { name:"AIを使った営業リスト作成", hours:"01:14:09", fin:4, contents:9, tasks:4, rev:2 },
+  ],
+  templates:[
+    { id:"t1", name:"宿題リマインド（デフォルト）", type:"宿題リマインド",
+      subject:"[user_name]さん、コーチからの宿題の期限が近づいています。",
+      top:"[user_name]さん\n\nこんにちは。\n[coach_name]コーチから出ている宿題の期限が近づいています。\n\n期限までに提出できない場合は、無理に間に合わせるのではなく\nSlackで一言ご連絡ください。予定を組み直します。",
+      bottom:"道場サポートチーム\n\n※こちらは送信専用メールです。\n※本メールに心当たりのない場合は破棄をお願いいたします。" },
+    { id:"t2", name:"コーチング日程確定（デフォルト）", type:"コーチング案内",
+      subject:"[user_name]さん、次回コーチングの日程が確定しました。",
+      top:"[user_name]さん\n\n次回の1on1コーチングの日程が確定しました。\n前回の宿題の進捗を持ち込んでいただけると、密度が上がります。",
+      bottom:"道場サポートチーム\n\n※こちらは送信専用メールです。" },
+    { id:"t3", name:"議事録の共有（デフォルト）", type:"議事録共有",
+      subject:"[user_name]さん、本日のコーチング議事録と宿題をお送りします。",
+      top:"[user_name]さん\n\n本日のコーチングありがとうございました。\n決まったことと宿題をマイページに登録しました。\n下記URLからご確認ください。",
+      bottom:"道場サポートチーム\n\n※こちらは送信専用メールです。" },
+    { id:"t4", name:"学習リマインド（デフォルト）", type:"学習リマインド",
+      subject:"[user_name]さん、学習が止まっています。1レッスンだけ再開しませんか。",
+      top:"[user_name]さん\n\n最近ログインがないようです。\n1レッスンは10分程度から再開できます。\n\n止まっている原因が分からない場合も、コーチングでそのまま話してください。",
+      bottom:"道場サポートチーム\n\n※こちらは送信専用メールです。" },
+  ],
+};
+
+/* ============ 状態 ============ */
+const TODAY = "2026/07/25";
+const KEY = "dojo-lms-v1";
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const $$v = s => [...document.querySelectorAll("#view "+s)];  /* ビュー内に限定：サイドバーとのセレクタ衝突を防ぐ */
+const $v  = s => document.querySelector("#view "+s);
+const V = () => $("#view");
+
+let S = {
+  mode:"user", page:"dash", cid:null, li:0,
+  tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prog","g-mail"]),
+  q:"", qmode:"course", filter:"all", libFilter:"all", tmpl:"t1", chartRange:7, statTab:"amount",
+  page1:1, page2:1, done:null, cotab:"board", sid:"s3", iid:"h1", vu:"中川 雄斗",
+};
+
+function save(){
+  try{
+    const done={}; CATS.forEach(s=>s.courses.forEach(c=>done[c.id]=c.lessons.map(l=>!!l.done)));
+    const hw={}; SESSIONS.forEach(s=>s.actions.forEach(h=>hw[h.id]=h.status));
+    localStorage.setItem(KEY,JSON.stringify({tier:S.tier,favs:[...S.favs],done,hw}));
+  }catch(e){}
+}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(KEY)||"null"); if(!d)return;
+    if(d.tier)S.tier=d.tier;
+    if(Array.isArray(d.favs))S.favs=new Set(d.favs);
+    if(d.done)CATS.forEach(s=>s.courses.forEach(c=>{const a=d.done[c.id];
+      if(Array.isArray(a))c.lessons.forEach((l,i)=>{if(typeof a[i]==="boolean")l.done=a[i]})}));
+    if(d.hw)SESSIONS.forEach(s=>s.actions.forEach(h=>{const v=d.hw[h.id]; if(typeof v==="string"&&AST.some(a=>a[0]===v))h.status=v; else if(typeof v==="boolean")h.status=v?"done":"todo"}));
+  }catch(e){}
+}
+
+/* ============ ヘルパー ============ */
+const allCourses = () => CATS.flatMap(s=>s.courses.map(c=>({st:s,c})));
+const findC = id => allCourses().find(x=>x.c.id===id);
+const locked = c => c.tier==="elite" && S.tier==="standard";
+const dn = c => c.lessons.filter(l=>l.done).length;
+const pct = c => Math.round(dn(c)/c.lessons.length*100);
+const lstate = (c,i) => c.lessons[i].done?"done":(i===c.lessons.findIndex(l=>!l.done)?"current":"todo");
+const secs = d => {const m=/^(\d+):(\d+)$/.exec(d);return m?+m[1]*60+ +m[2]:0};
+const cSecs = c => c.lessons.reduce((a,l)=>a+secs(l.dur),0);
+const fmtM = s => {const m=Math.max(1,Math.round(s/60));return m>=60?`${Math.floor(m/60)}時間${m%60}分`:`${m}分`};
+const NEXT_SESSION = "2026/07/29 20:00";
+/* レベル別は「初級｜AI初心者」、実践は名前だけ。工程(FLOW)とは別軸 */
+const catLabel = ct => ct.kind==="level" ? `${ct.num}｜${ct.name}` : ct.name;
+const levelCats = () => CATS.filter(c=>c.kind==="level");
+const practiceCats = () => CATS.filter(c=>c.kind==="practice");
+const flowCur = () => FLOW.find(f=>f.status==="current") || FLOW[0];
+const catPct = st => {const cs=st.courses.filter(c=>!locked(c));
+  const t=cs.reduce((a,c)=>a+c.lessons.length,0),d=cs.reduce((a,c)=>a+dn(c),0);return t?Math.round(d/t*100):0};
+const tools = () => [...new Set(allCourses().map(x=>x.c.tool))];
+const allHw = () => SESSIONS.flatMap(s=>s.actions.map(h=>({...h,ses:s})));
+const overdue = h => !isDone(h) && h.due < TODAY;
+function resume(){
+  for(const st of CATS) for(const c of st.courses){
+    if(locked(c))continue; const i=c.lessons.findIndex(l=>!l.done); if(i>-1)return{st,c,i};
+  } return null;
+}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.dataset.show="true";
+  clearTimeout(toast._t);toast._t=setTimeout(()=>t.dataset.show="false",2600)}
+
+/* 修了時の次の一手を決める：同ステージに未修了コースが残ればそれ、
+   ステージ自体を修了したなら次のステージ、最終ステージならコーチングへ */
+function nextStep(st,c){
+  const rest=st.courses.filter(x=>!locked(x)&&pct(x)<100&&x.id!==c.id);
+  if(rest.length) return { kind:"course", title:`${c.title} を修了しました。`,
+    text:`${st.name} はあと${rest.length}コースです。`, label:`次は「${rest[0].title}」へ`,
+    go:()=>{S.done=null;go("course",{cid:rest[0].id})} };
+  const i=CATS.findIndex(s=>s.id===st.id), nx=CATS[i+1];
+  if(nx) return { kind:"stage", title:`${catLabel(st)} を修了しました。`,
+    text:`次は ${catLabel(nx)} です。`, label:`${nx.name}へ進む`,
+    go:()=>{S.done=null;go("stage",{cid:nx.id})} };
+  return { kind:"all", title:"受講できる全コースを修了しました。",
+    text:"あとは案件を取り切るところまで、コーチングで並走します。", label:"コーチングと宿題を見る",
+    go:()=>{S.done=null;go("coaching")} };
+}
+
+/* 一覧系ページのスクロール位置を覚えて戻ったときに復元する */
+const SCROLLKEEP = ["library","fav","stage","tool","search","course","students","logs"];
+/* cid が意味を持つページだけキーに含める。含めないと
+   go("library") 時に前ページの cid が残ってキーがずれ、復元に失敗する */
+const CIDPAGES = ["course","stage","tool"];
+const scrollMem = {};
+function scrollKeyOf(st){ return st.page + (CIDPAGES.includes(st.page) ? ":"+(st.cid||"") : "") }
+
+function go(page,params){
+  if(SCROLLKEEP.includes(S.page)) scrollMem[scrollKeyOf(S)] = window.scrollY;
+  Object.assign(S,{page},params||{});
+  if($("#side"))$("#side").dataset.open="false";
+  $("#scrim").dataset.open="false";
+  render();
+  const y = SCROLLKEEP.includes(S.page) ? (scrollMem[scrollKeyOf(S)]||0) : 0;
+  window.scrollTo({top:y,behavior:"instant"});
+}
+
+/* ============ サイドバー ============ */
+/* 受講生側は2本柱。eラーニング（親／コンテンツはここに集約）とコーチング（タスク管理＋議事録） */
+const USERNAV = [
+  { id:"g-lib", ic:"📘", label:"eラーニング", items:[
+    { p:"dash", label:"マイダッシュボード" },
+    { p:"library", label:"コース一覧（全て表示）" },
+    { p:"fav", label:"お気に入りコンテンツ" },
+  ]},
+  { id:"g-co", ic:"✅", label:"コーチング", items:[
+    { p:"coaching", label:"やることボード", badge:true },
+    { p:"co-flow", label:"工程（エピック）" },
+    { p:"co-mins", label:"議事録" },
+  ]},
+];
+const ADMINNAV = [
+  { id:"g-adash", ic:"🏠", label:"運営ダッシュボード", items:[{ p:"adash", label:"サマリー" }]},
+  { id:"g-prog", ic:"📊", label:"学習進捗管理", items:[
+    { p:"viewing", label:"eラーニング視聴状況" },
+    { p:"taskrate", label:"コーチングタスク消化率" },
+    { p:"logs", label:"学習活動履歴" },
+    { p:"stats", label:"コース別学習量" }]},
+  { id:"g-stu", ic:"👥", label:"受講生管理", items:[{ p:"students", label:"受講生一覧" }]},
+  { id:"g-coach", ic:"🎯", label:"コーチング管理", items:[{ p:"acoach", label:"セッション・議事録" }]},
+  { id:"g-mail", ic:"✉️", label:"メール", items:[{ p:"mail", label:"メールテンプレート" }]},
+];
+
+/* コーチングのタブもナビの選択状態に反映する */
+const navOn = p => p==="coaching" ? (S.page==="coaching"&&S.cotab==="board")
+  : p==="co-flow" ? (S.page==="coaching"&&S.cotab==="flow")
+  : p==="co-mins" ? (S.page==="coaching"&&(S.cotab==="mins"||S.cotab==="todo"))
+  : S.page===p;
+
+function renderSide(){
+  const el=$("#side");
+  const undoneHw=allHw().filter(h=>!isDone(h)).length;
+  let h=`<div class="modeseg" role="group" aria-label="表示切替">
+    <button id="m-user" aria-pressed="${S.mode==="user"}">ユーザー</button>
+    <button id="m-admin" aria-pressed="${S.mode==="admin"}">運営</button></div>`;
+
+  const grp=(g)=>{
+    const open=S.groups.has(g.id);
+    return `<div class="navgroup" data-open="${open}">
+      <button class="ghead" data-g="${g.id}"><span class="ic">${g.ic}</span>${g.label}<span class="cv">⌄</span></button>
+      <div class="glist">${g.items.map(it=>`
+        <button class="nav navtop" data-p="${it.p}" aria-current="${navOn(it.p)}">${it.label}
+        ${it.badge&&undoneHw?`<span class="cnt" style="color:var(--mag);font-weight:700">${undoneHw}</span>`:""}</button>`).join("")}</div></div>`;
+  };
+
+  if(S.mode==="user"){
+    h+=USERNAV.map(grp).join("");
+    /* AIスキルはレベル別（仕事の能力）、実践は営業・マーケ・副業（案件を取る） */
+    const lOpen=S.groups.has("g-level");
+    h+=`<div class="navgroup" data-open="${lOpen}">
+      <button class="ghead" data-g="g-level"><span class="ic">🪜</span>AIスキル（レベル別）<span class="cv">⌄</span></button>
+      <div class="glist">${levelCats().map(st=>`
+        <button class="nav" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
+        ${st.num}　${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`).join("")}</div></div>`;
+    const pOpen=S.groups.has("g-practice");
+    h+=`<div class="navgroup" data-open="${pOpen}">
+      <button class="ghead" data-g="g-practice"><span class="ic">🎯</span>実践コース<span class="cv">⌄</span></button>
+      <div class="glist">${practiceCats().map(st=>`
+        <button class="nav" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
+        ${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`).join("")}</div></div>`;
+    const tOpen=S.groups.has("g-tool");
+    h+=`<div class="navgroup" data-open="${tOpen}">
+      <button class="ghead" data-g="g-tool"><span class="ic">🧰</span>ツール別コース<span class="cv">⌄</span></button>
+      <div class="glist">${tools().map(t=>`
+        <button class="nav" data-tool="${t}" aria-current="${S.page==="tool"&&S.cid===t}">${t}</button>`).join("")}</div></div>`;
+    h+=`<div class="sidesearch">
+      <div class="lb">コース・コンテンツを検索</div>
+      <div class="radiorow">
+        <label><input type="radio" name="qm" value="course" ${S.qmode==="course"?"checked":""}>コース名</label>
+        <label><input type="radio" name="qm" value="content" ${S.qmode==="content"?"checked":""}>コンテンツ名</label>
+      </div>
+      <div class="sfield"><input id="q" type="search" placeholder="キーワードで検索" value="${S.q}"><button id="qgo" aria-label="検索">🔍</button></div>
+    </div>`;
+  }else{
+    h+=ADMINNAV.map(grp).join("");
+  }
+  el.innerHTML=h;
+
+  $("#m-user").onclick=()=>{S.mode="user";go("dash")};
+  $("#m-admin").onclick=()=>{S.mode="admin";go("adash")};
+  $$("#side .ghead").forEach(b=>b.onclick=()=>{
+    const g=b.dataset.g; S.groups.has(g)?S.groups.delete(g):S.groups.add(g); renderSide();});
+  /* コーチング配下のナビはタブを指定して同じ画面を開く */
+  const COMAP={ "coaching":"board", "co-flow":"flow", "co-mins":"mins" };
+  $$("#side .nav[data-p]").forEach(b=>b.onclick=()=>{
+    const p=b.dataset.p;
+    if(COMAP[p]){S.cotab=COMAP[p];go("coaching");return}
+    go(p);
+  });
+  $$("#side .nav[data-stage]").forEach(b=>b.onclick=()=>go("stage",{cid:b.dataset.stage}));
+  $$("#side .nav[data-tool]").forEach(b=>b.onclick=()=>go("tool",{cid:b.dataset.tool}));
+  const q=$("#q");
+  if(q){
+    q.oninput=e=>{S.q=e.target.value};
+    q.onkeydown=e=>{if(e.key==="Enter")go("search")};
+    $("#qgo").onclick=()=>go("search");
+    $$('input[name="qm"]').forEach(r=>r.onchange=e=>{S.qmode=e.target.value});
+  }
+}
+
+/* ============ 共通パーツ ============ */
+/* 修了バナー：次の一手をボタンで必ず示す（行き止まりを作らない） */
+function doneBanner(){
+  const d=S.done; if(!d)return "";
+  return `<div class="card pad" style="border-left:3px solid var(--ok);margin-bottom:16px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px">
+      <b style="color:var(--ok);font-size:14px">${d.kind==="all"?"🎓 ":"✓ "}${d.title}</b>
+      <div style="font-size:12.5px;color:var(--dim);margin-top:2px">${d.text}</div></div>
+    <button class="b b-pri" id="dbgo">${d.label}</button>
+    <button class="link" id="dbx">閉じる</button></div>`;
+}
+function wireDoneBanner(){
+  if(!S.done)return;
+  const g=$("#dbgo"); if(g)g.onclick=S.done.go;
+  const x=$("#dbx"); if(x)x.onclick=()=>{S.done=null;render()};
+}
+
+const crumb = parts => `<nav class="crumb" aria-label="現在位置">${parts.map((p,i)=>
+  i===parts.length-1?`<span class="here">${p.t}</span>`
+  :`<button data-cb="${i}">${p.t}</button><span>/</span>`).join("")}</nav>`;
+function wireCrumb(parts){$$v("[data-cb]").forEach(b=>{const p=parts[+b.dataset.cb];if(p&&p.go)b.onclick=p.go})}
+
+const thumb = (c,dur,small) => `<div class="thumb${locked(c)?" lock":""}">
+  <span class="bn">道場</span><span class="tt">${c.title}</span>
+  ${dur?`<span class="dur tnum">${dur}</span>`:""}${locked(c)?`<span class="lk">🔒</span>`:""}</div>`;
+
+function courseCard(st,c){
+  const p=pct(c),lk=locked(c);
+  return `<button class="lib" data-open="${c.id}">
+    ${thumb(c,fmtM(cSecs(c)))}
+    <div class="bd"><span class="nm">${c.title}</span>
+      <span class="mt">${c.sub}</span>
+      <div class="row" style="gap:8px">
+        <div class="bar${p===100?" ok":""}"><i style="width:${lk?0:p}%"></i></div>
+        <span class="mt tnum">${lk?"—":p+"%"}</span></div>
+      <span class="mt tnum">${lk?`全${c.lessons.length}レッスン`:`${dn(c)} / ${c.lessons.length}レッスン`}・計${fmtM(cSecs(c))}</span>
+    </div>
+    <div class="ft">
+      <span class="chip ${lk?"m":p===100?"g":p>0?"b":""}">${lk?"エリート":p===100?"修了":p>0?"受講中":"未着手"}</span>
+      <span><span class="iconb fav" data-fav="${c.id}" role="button" aria-pressed="${S.favs.has(c.id)}">${S.favs.has(c.id)?"♥":"♡"}</span>
+      <span class="iconb sh" data-share="${c.id}" role="button">⤴</span></span>
+    </div></button>`;
+}
+function wireCards(){
+  $$v("[data-open]").forEach(b=>b.onclick=e=>{
+    if(e.target.closest("[data-fav],[data-share]"))return;
+    const x=findC(b.dataset.open);
+    if(locked(x.c)){toast("エリートプランで解放されます");return}
+    go("course",{cid:b.dataset.open});
+  });
+  $$v("[data-fav]").forEach(b=>b.onclick=e=>{e.stopPropagation();
+    const id=b.dataset.fav; S.favs.has(id)?S.favs.delete(id):S.favs.add(id); save();
+    toast(S.favs.has(id)?"お気に入りに追加しました":"お気に入りから外しました"); render()});
+  $$v("[data-share]").forEach(b=>b.onclick=e=>{e.stopPropagation();toast("共有リンクをコピーしました（モック）")});
+}
+
+const LIBF=[["all","すべて"],["doing","受講中"],["todo","未着手"],["done","修了"],["fav","♥ お気に入り"]];
+function libraryView(title,list,sub){
+  const f=S.libFilter;
+  const shown=list.filter(({c})=>{
+    const p=pct(c);
+    if(f==="doing")return !locked(c)&&p>0&&p<100;
+    if(f==="todo")return !locked(c)&&p===0;
+    if(f==="done")return !locked(c)&&p===100;
+    if(f==="fav")return S.favs.has(c.id);
+    return true;
+  });
+  const mins=shown.reduce((a,x)=>a+cSecs(x.c),0);
+  let h=crumb([{t:"マイダッシュボード",go:()=>go("dash")},{t:title}]);
+  h+=`<h1 class="ptitle">${title}</h1>`;
+  if(sub)h+=`<p style="color:var(--dim);font-size:13px;margin:-8px 0 12px">${sub}</p>`;
+  h+=`<div class="row" style="gap:6px;margin-bottom:14px">
+    ${LIBF.map(([k,v])=>`<button class="b b-sm" data-lf="${k}"
+      ${f===k?'style="background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600"':""}
+      >${v}${k==="fav"&&S.favs.size?` (${S.favs.size})`:""}</button>`).join("")}
+    <span class="grow"></span>
+    <span style="font-size:12px;color:var(--dim)" class="tnum">${shown.length}コース・計${mins?fmtM(mins):"0分"}</span></div>`;
+  h+=shown.length?`<div class="libgrid">${shown.map(x=>courseCard(x.st,x.c)).join("")}</div>`
+    :`<div class="card empty">この条件に当てはまるコースはありません。<br>
+       <button class="b b-sm" id="lfr" style="margin-top:10px">絞り込みを解除する</button></div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("dash"));
+  $$v("[data-lf]").forEach(b=>b.onclick=()=>{S.libFilter=b.dataset.lf;render()});
+  if($("#lfr"))$("#lfr").onclick=()=>{S.libFilter="all";render()};
+  wireCards();
+}
+
+/* ============ 受講生: ダッシュボード ============ */
+function vDash(){
+  const r=resume();
+  const hw=allHw().filter(h=>!isDone(h)).sort((a,b)=>a.due<b.due?-1:1);
+  const done=allHw().filter(h=>isDone(h)).length;
+  const tot=CATS.flatMap(s=>s.courses).filter(c=>!locked(c));
+  const totL=tot.reduce((a,c)=>a+c.lessons.length,0),dnL=tot.reduce((a,c)=>a+dn(c),0);
+  const next=NEXT_SESSION;
+
+  let h=`<h1 class="ptitle">マイダッシュボード</h1>`+doneBanner();
+
+  h+= r?`<div class="resume">
+      <div><div class="eb">続きから</div>
+        <h2>${r.c.lessons[r.i].sec}　${r.c.lessons[r.i].title}</h2>
+        <div class="wh">${catLabel(r.st)} ／ ${r.c.title} ／ ${r.c.lessons[r.i].dur}</div>
+        <div class="bw"><div class="bar"><i style="width:${pct(r.c)}%"></i></div>
+          <span class="mt tnum" style="font-size:12px;color:var(--dim)">${dn(r.c)} / ${r.c.lessons.length}</span></div></div>
+      <button class="b b-pri b-lg" id="rgo">レッスンを再開する</button></div>`
+    :`<div class="resume" style="border-left-color:var(--ok)">
+      <div><div class="eb" style="color:var(--ok)">全レッスン修了</div>
+        <h2>受講できるレッスンをすべて終えました</h2>
+        <div class="wh">コーチングで次の案件獲得に進みましょう。</div></div>
+      <button class="b b-pri b-lg" id="rgo2">コーチングを見る</button></div>`;
+
+  h+=`<div class="grid2">
+    <div class="card pad">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px">
+        <div class="ch" style="margin:0">自分の課題（未完了${hw.length}件）</div>
+        <button class="link" id="hwmore">ボードを開く →</button></div>
+      ${hw.length?`<div style="display:flex;flex-direction:column;gap:8px">
+        ${hw.slice(0,4).map(issueCard).join("")}</div>`
+        :`<p style="font-size:13px;color:var(--dim);margin:0">未完了の課題はありません。次回のコーチングで次の課題が出ます。</p>`}
+      ${hw.length>4?`<div style="font-size:11.5px;color:var(--dim);margin-top:9px">ほか${hw.length-4}件</div>`:""}
+      <div class="hr"></div>
+      <div class="row">
+        <span class="chip g">完了 ${done}件</span>
+        <span class="chip ${hw.some(overdue)?"w":""}">未完了 ${hw.length}件</span>
+        <span class="grow"></span>
+        <span style="font-size:11px;color:var(--dim)">現在の工程：${flowCur().num} ${flowCur().name}</span></div>
+    </div>
+    <div class="card pad">
+      <div class="ch">次回コーチング</div>
+      <div class="row" style="align-items:flex-start;gap:11px">
+        <div class="av" style="width:34px;height:34px;background:var(--ok-s);color:var(--ok);font-weight:700">村</div>
+        <div><div style="font-size:14px;font-weight:700" class="tnum">${next}</div>
+          <div style="font-size:11.5px;color:var(--dim)">村田コーチ・1on1壁打ち30分</div></div></div>
+      <div class="hr"></div>
+      <div class="ch">今月の収益</div>
+      <div class="row" style="gap:6px;align-items:baseline;margin-bottom:8px">
+        <span style="font-size:22px;font-weight:700" class="tnum">¥12,000</span>
+        <span style="font-size:12px;color:var(--dim)" class="tnum">/ ¥50,000</span></div>
+      <div class="bar ok"><i style="width:24%"></i></div>
+      <div class="hr"></div>
+      <div class="ch">学習の進み</div>
+      <div class="row" style="gap:8px"><div class="bar"><i style="width:${totL?Math.round(dnL/totL*100):0}%"></i></div>
+        <span style="font-size:12px;color:var(--dim)" class="tnum">${dnL} / ${totL}</span></div>
+    </div></div>`;
+
+  const catBlock = list => `<div class="grid3" style="margin-bottom:18px">
+    ${list.map(st=>{const p=catPct(st);return `<button class="card pad" data-stage="${st.id}" style="text-align:left;cursor:pointer">
+      <div class="row" style="gap:8px;margin-bottom:7px">
+        <span class="chip ${p===100?"g":p>0?"b":""} tnum">${p===100?"✓":st.num}</span>
+        <b style="font-size:13.5px">${st.name}</b></div>
+      <div class="bar${p===100?" ok":""}" style="margin-bottom:6px"><i style="width:${p}%"></i></div>
+      <span style="font-size:11px;color:var(--dim)" class="tnum">${st.courses.length}コース・${p}%</span></button>`}).join("")}</div>`;
+
+  h+=`<div class="sectitle">AIスキル（仕事の能力）</div>`+catBlock(levelCats());
+  h+=`<div class="sectitle">実践コース（案件・副業を取る）</div>`+catBlock(practiceCats());
+
+  V().innerHTML=h;
+  wireDoneBanner(); wireBoard();
+  if($v("#rgo"))$v("#rgo").onclick=()=>go("lesson",{cid:r.c.id,li:r.i});
+  if($v("#rgo2"))$v("#rgo2").onclick=()=>go("coaching");
+  if($v("#hwmore"))$v("#hwmore").onclick=()=>{S.cotab="board";go("coaching")};
+  $$v("[data-stage]").forEach(b=>b.onclick=()=>go("stage",{cid:b.dataset.stage}));
+}
+
+/* ============ 受講生: コース詳細 ============ */
+function vCourse(){
+  const x=findC(S.cid); if(!x){go("library");return}
+  const {st,c}=x, p=pct(c), asg=c.lessons.filter(l=>l.dur==="課題").length;
+  /* 同ステージの次のコース（無ければ次ステージの先頭）へ繋ぐ */
+  const sIdx=st.courses.findIndex(y=>y.id===c.id);
+  const nxSame=st.courses.slice(sIdx+1).find(y=>!locked(y));
+  const nxStage=CATS[CATS.findIndex(s=>s.id===st.id)+1];
+  const nx=nxSame||(nxStage?nxStage.courses.find(y=>!locked(y)):null);
+  const parts=[{t:"マイダッシュボード",go:()=>go("dash")},{t:"コース一覧",go:()=>go("library")},{t:c.title}];
+  let h=crumb(parts)+doneBanner();
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <button class="b b-pri" id="back">↩ ライブラリーに戻る</button>
+    <div class="sns"><button class="tw" title="Xで共有">X</button><button class="fb" title="Facebookで共有">f</button><button class="ln" title="LINEで共有">L</button></div></div>`;
+  h+=`<div class="card pad" style="margin-bottom:20px"><div class="chead">
+    <div class="th">${thumb(c,null)}</div>
+    <div><h2>${c.title}</h2>
+      <p class="ab">${c.about.join("<br>")}</p>
+      <div class="row" style="gap:8px;margin-top:14px">
+        <span class="chip b">${catLabel(st)}</span><span class="chip">${c.tool}</span>
+        <span class="chip tnum">${c.lessons.length}レッスン</span><span class="chip tnum">計${fmtM(cSecs(c))}</span>
+        ${asg?`<span class="chip w">課題${asg}件</span>`:""}</div>
+      <div class="row" style="gap:10px;margin-top:14px">
+        <div class="bar${p===100?" ok":""}"><i style="width:${p}%"></i></div>
+        <span class="tnum" style="font-size:12.5px;color:var(--dim)">${p}%（${dn(c)} / ${c.lessons.length}）</span></div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="b b-pri" id="startc">${p===0?"最初から受講する":p===100?"復習する":"続きから受講する"}</button>
+      <button class="b" id="goal">${S.favs.has(c.id)?"♥ お気に入り解除":"♡ マイ目標コースに追加"}</button>
+      ${nx?`<button class="b" id="nextc">次のコース →</button>`:""}</div>
+  </div></div>`;
+  h+=`<div class="sectitle">レッスン一覧</div>
+    <div class="lesgrid">${c.lessons.map((l,i)=>{const s=lstate(c,i);
+      return `<button class="les" data-li="${i}" data-state="${s}">
+        <div class="top"><span class="sc">${l.sec}</span><div class="ti">${l.title}</div>
+          <span class="st">${s==="done"?"✓ 完了":s==="current"?"▶ 受講中":""}</span>
+          <span class="dr tnum">${l.dur}</span></div>
+        <div class="bt"><span style="font-size:11px;color:var(--dim)">${l.tasks.length?`課題${l.tasks.length}件`:"　"}</span>
+          <span><span class="iconb" role="button">♡</span><span class="iconb sh" role="button">⤴</span></span></div></button>`}).join("")}</div>`;
+  V().innerHTML=h;
+  wireCrumb(parts); wireDoneBanner();
+  $("#back").onclick=()=>go("library");
+  $("#startc").onclick=()=>{const i=Math.max(0,c.lessons.findIndex(l=>!l.done));go("lesson",{cid:c.id,li:i===-1?0:i})};
+  $("#goal").onclick=()=>{S.favs.has(c.id)?S.favs.delete(c.id):S.favs.add(c.id);save();
+    toast(S.favs.has(c.id)?"マイ目標コースに追加しました":"お気に入りから外しました");render()};
+  if($("#nextc"))$("#nextc").onclick=()=>go("course",{cid:nx.id});
+  $$v(".les").forEach(b=>b.onclick=e=>{if(e.target.closest(".iconb"))return;go("lesson",{cid:c.id,li:+b.dataset.li})});
+  $$v(".les .iconb").forEach(b=>b.onclick=e=>{e.stopPropagation();toast("モックのため保存されません")});
+}
+
+/* ============ 受講生: レッスン視聴 ============ */
+function vLesson(){
+  const x=findC(S.cid); if(!x){go("library");return}
+  const {st,c}=x, i=Math.min(S.li,c.lessons.length-1), l=c.lessons[i], last=i===c.lessons.length-1;
+  const parts=[{t:"マイダッシュボード",go:()=>go("dash")},{t:"コース一覧",go:()=>go("library")},
+    {t:c.title,go:()=>go("course",{cid:c.id})},{t:l.sec}];
+  let h=crumb(parts);
+  h+=`<div class="lgrid"><div>
+    <div class="video"><div class="pl">▶</div><div class="tm tnum">${l.dur}</div></div>
+    ${l.done?`<div style="font-size:11.5px;color:var(--ok);margin-bottom:6px">✓ 完了済み</div>`:""}
+    <h1 style="font-size:19px;margin:0 0 10px">${l.sec}　${l.title}</h1>
+    <p style="font-size:14px;color:var(--ink2);max-width:62ch;margin:0 0 18px">${l.body}</p>
+    <div class="navrow">
+      <button class="b" id="pv" ${i===0?"disabled":""}>← 前へ</button><span class="grow"></span>
+      ${l.done?`<button class="b" id="un">完了を取り消す</button>`:""}
+      <button class="b b-pri" id="nx">${l.done?(last?"コース詳細に戻る":"次へ →"):(last?"完了してコースを修了":"完了して次へ →")}</button></div>
+    <p class="kbd"><b>←</b><b>→</b> でレッスン移動、<b>Esc</b> でコースに戻る</p>
+  </div><div>
+    <div class="obox"><h4>${c.title}</h4>
+      ${c.lessons.map((ll,j)=>`<button class="orow" data-j="${j}" data-state="${lstate(c,j)}" aria-current="${j===i}">
+        <span class="dt">${lstate(c,j)==="done"?"✓":lstate(c,j)==="current"?"▶":ll.dur==="課題"?"✎":""}</span>
+        <span class="nm">${ll.title}</span><span class="dr tnum">${ll.dur}</span></button>`).join("")}</div>
+    <div class="obox"><h4>この回の課題</h4><div style="padding:13px">
+      ${l.tasks.length?l.tasks.map((t,k)=>`<label class="hw" data-done="false">
+        <input type="checkbox" data-tk="${k}"><span class="tx">${t}</span></label>`).join("")
+        :`<span style="font-size:12.5px;color:var(--dim)">この回に課題はありません。</span>`}</div></div>
+  </div></div>`;
+  V().innerHTML=h;
+  wireCrumb(parts);
+  $("#pv").onclick=()=>go("lesson",{cid:c.id,li:i-1});
+  if($("#un"))$("#un").onclick=()=>{l.done=false;save();render()};
+  $("#nx").onclick=()=>{
+    const was=l.done; l.done=true; save();
+    if(!last){go("lesson",{cid:c.id,li:i+1});return}
+    if(!was&&pct(c)===100)S.done=nextStep(st,c);
+    go("course",{cid:c.id});
+  };
+  $$v(".orow").forEach(b=>b.onclick=()=>go("lesson",{cid:c.id,li:+b.dataset.j}));
+  $$v("[data-tk]").forEach(cb=>cb.onchange=()=>{cb.closest(".hw").dataset.done=cb.checked});
+}
+
+/* ============ 受講生: コーチング＋宿題 ============ */
+/* ============ 受講生: コーチング（工程 / 議事録 / ToDo をタブで分ける） ============
+   カリキュラム（CATS）は「仕事の能力」を上げる場。
+   ここ（FLOW）は「案件・副業を取る」ための工程管理で、コーチが並走する。 */
+const COTABS = [["board","ボード"],["flow","工程（エピック）"],["mins","議事録"],["todo","課題一覧"]];
+
+/* Jira風の課題カード。key・優先度・担当・期限・親（工程）を出す */
+function issueCard(a){
+  const f=FLOW.find(x=>x.id===a.ses.flow);
+  const p=PRIO[a.prio]||PRIO.mid;
+  return `<div class="jcard" draggable="true" data-issue="${a.id}" tabindex="0" role="button">
+    <div class="jtx">${a.text}</div>
+    <div class="jmeta">
+      ${f?`<span class="epic">工程${f.num} ${f.name}</span>`:""}
+      <span class="grow"></span>
+      <span class="prio" style="color:${p.c}" title="優先度${p.l}">${p.i}${p.l}</span>
+      <span class="jkey tnum">${a.key}</span>
+      <span class="jav" title="${a.owner}">${a.owner==="コーチ"?"コ":"自"}</span>
+    </div>
+    <div class="jdue tnum ${overdue(a)?"over":""}">${overdue(a)?"期限超過 ":""}${a.due}</div>
+  </div>`;
+}
+
+function jiraBoard(){
+  const all=allHw();
+  return `<div class="board">${AST.map(([k,lb])=>{
+    const list=all.filter(a=>a.status===k).sort((a,b)=>a.due<b.due?-1:1);
+    return `<div class="bcol" data-col="${k}">
+      <div class="bhead">${lb}<span class="bn tnum">${list.length}</span></div>
+      <div class="blist" data-drop="${k}">
+        ${list.length?list.map(issueCard).join(""):`<div class="bempty">ここにドラッグ</div>`}</div></div>`}).join("")}</div>`;
+}
+
+function wireBoard(){
+  let dragId=null;
+  $$v("[data-issue]").forEach(el=>{
+    el.ondragstart=e=>{dragId=el.dataset.issue;el.classList.add("dragging");e.dataTransfer.effectAllowed="move"};
+    el.ondragend=()=>{el.classList.remove("dragging");dragId=null};
+    el.onclick=()=>go("issue",{iid:el.dataset.issue});
+    el.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go("issue",{iid:el.dataset.issue})}};
+  });
+  $$v("[data-drop]").forEach(z=>{
+    z.ondragover=e=>{e.preventDefault();z.classList.add("over")};
+    z.ondragleave=()=>z.classList.remove("over");
+    z.ondrop=e=>{e.preventDefault();z.classList.remove("over");
+      if(!dragId)return;
+      setStatus(dragId,z.dataset.drop);
+    };
+  });
+}
+
+function setStatus(id,st){
+  let hit=null;
+  SESSIONS.forEach(s=>s.actions.forEach(a=>{if(a.id===id){a.status=st;hit=a}}));
+  if(hit){save();toast(`${hit.key} を「${stLabel(st)}」に移動しました`);render()}
+}
+
+function ownerChip(o){ return o==="コーチ" ? `<span class="chip b">@コーチ</span>` : `<span class="chip">@受講生</span>` }
+
+/* アクションアイテム1行。議事録・ToDo・ダッシュボードで共通に使う */
+function actionRow(x,opt){
+  const o=opt||{};
+  return `<label class="hw" data-done="${isDone(x)}" data-over="${overdue(x)}">
+    <input type="checkbox" data-hw="${x.id}" ${isDone(x)?"checked":""}>
+    <span class="tx">${x.text}
+      <span class="due tnum" style="display:block">${ownerChip(x.owner)}　期限 ${x.due}${overdue(x)?"（超過）":isDone(x)?"（完了）":""}</span>
+      ${o.src?`<span class="src">${x.ses.date} ${x.ses.coach}との1on1</span>`:""}</span></label>`;
+}
+
+function vCoaching(){
+  const parts=[{t:"マイダッシュボード",go:()=>go("dash")},{t:"コーチング"}];
+  const all=allHw(), un=all.filter(h=>!isDone(h));
+  const cur=flowCur();
+  let h=crumb(parts)+`<h1 class="ptitle">コーチング</h1>`;
+
+  /* 上部の固定サマリー：今どの工程にいるか＋未完了のアクションアイテム件数 */
+  h+=`<div class="card pad" style="margin-bottom:14px">
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div style="min-width:220px">
+        <div class="ch" style="margin-bottom:6px">現在の工程</div>
+        <div style="font-size:17px;font-weight:700">${cur.num}　${cur.name}</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:2px">到達条件：${cur.goal}</div></div>
+      <div style="min-width:200px">
+        <div class="ch" style="margin-bottom:6px">次回セッション</div>
+        <div style="font-size:15px;font-weight:700" class="tnum">${NEXT_SESSION}</div>
+        <div style="font-size:11.5px;color:var(--dim)">村田コーチ・1on1 30分</div>
+        <button class="link" id="resc" style="margin-top:6px">日程を変更する</button></div>
+      <div class="row" style="gap:8px">
+        <span class="chip ${un.length?"w":"g"}">未完了 ${un.length}件</span>
+        <span class="chip g">完了 ${all.length-un.length}件</span></div></div>
+    <div class="hr"></div>
+    <p style="font-size:12.5px;color:var(--dim);margin:0">
+      仕事の能力はコース（AIスキル）で上げ、案件探し・副業探しはこのコーチングで一緒に進めます。
+      セッションの内容は毎回議事録として残り、アクションアイテムがここに追加されます。</p></div>`;
+
+  h+=`<div class="tabs" role="tablist">${COTABS.map(([k,v])=>
+    `<button role="tab" data-ct="${k}" aria-selected="${S.cotab===k}">${v}${k==="todo"&&un.length?`（${un.length}）`:""}</button>`).join("")}</div>`;
+
+  if(S.cotab==="board"){
+    h+=`<p style="font-size:12px;color:var(--dim);margin:0 0 10px">
+      カードをドラッグして状態を動かせます。カードを押すと課題の詳細が開きます。</p>`;
+    h+=jiraBoard();
+  }
+
+  if(S.cotab==="flow"){
+    h+=`<div class="flowwrap">${FLOW.map(f=>{
+      const cs=f.cats.map(id=>CATS.find(c=>c.id===id)).filter(Boolean);
+      const acts=all.filter(a=>a.ses.flow===f.id);
+      const au=acts.filter(a=>!isDone(a)).length;
+      return `<div class="fstep" data-st="${f.status}">
+        <div class="fnum">${f.status==="done"?"✓":f.num}</div>
+        <div class="fbody">
+          <div class="row" style="gap:8px;margin-bottom:3px">
+            <b style="font-size:15px">${f.name}</b>
+            <span class="chip ${f.status==="done"?"g":f.status==="current"?"b":""}">${f.status==="done"?"通過":f.status==="current"?"いまここ":"未着手"}</span>
+            ${acts.length?`<span class="chip ${au?"w":"g"}">ToDo ${acts.length-au}/${acts.length}</span>`:""}</div>
+          <div style="font-size:12.5px;color:var(--ink2);margin-bottom:6px">${f.desc}</div>
+          <div class="goalbox">到達条件：${f.goal}</div>
+          <div class="row" style="gap:6px;margin-top:8px">
+            <span style="font-size:11px;color:var(--dim)">関連コース</span>
+            ${f.courses.map(id=>{const x=findC(id);return x?`<button class="b b-sm" data-oc="${id}">${x.c.title}</button>`:""}).join("")}
+            ${cs.map(c=>`<button class="b b-sm" data-ocat="${c.id}">${c.name}</button>`).join("")}</div>
+        </div></div>`}).join("")}</div>`;
+  }
+
+  if(S.cotab==="mins"){
+    h+=`<div class="mins">${SESSIONS.map(s=>{
+      const u=s.actions.filter(x=>!isDone(x)).length;
+      const f=FLOW.find(x=>x.id===s.flow);
+      return `<button class="min minlink" data-ms="${s.id}">
+        <div class="hd">
+          <span class="dt tnum">${s.date}</span><span class="co">${s.coach}・${s.mins}分</span>
+          ${f?`<span class="chip b">工程${f.num} ${f.name}</span>`:""}
+          <span class="grow"></span>
+          <span class="chip ${u?"w":"g"}">アクション ${s.actions.length-u}/${s.actions.length}</span></div>
+        <div class="bd" style="padding:13px 15px">
+          <b style="font-size:14.5px">${s.title}</b>
+          <p class="sum" style="margin:6px 0 0;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden">${s.summary}</p>
+          <div style="font-size:11.5px;color:var(--blue);margin-top:8px">議事録を開く →</div></div></button>`}).join("")}</div>`;
+  }
+
+  if(S.cotab==="todo"){
+    const byOwner=[["受講生","自分のアクションアイテム"],["コーチ","コーチのアクションアイテム"]];
+    h+=`<div class="grid2" style="align-items:start">${byOwner.map(([o,lb])=>{
+      const list=all.filter(a=>a.owner===o).sort((a,b)=>(isDone(a)-isDone(b))||(a.due<b.due?-1:1));
+      return `<div class="card pad"><div class="ch">${lb}（未完了${list.filter(x=>!isDone(x)).length}件）</div>
+        ${list.length?list.map(x=>actionRow(x,{src:true})).join(""):`<p style="font-size:13px;color:var(--dim);margin:0">ありません。</p>`}</div>`}).join("")}</div>`;
+  }
+
+  V().innerHTML=h;
+  wireCrumb(parts);
+  if($v("#resc"))$v("#resc").onclick=()=>toast("日程変更フォーム（モック）");
+  $$v("[data-ct]").forEach(b=>b.onclick=()=>{S.cotab=b.dataset.ct;render()});
+  $$v("[data-ms]").forEach(b=>b.onclick=()=>go("minutes",{sid:b.dataset.ms}));
+  $$v("[data-oc]").forEach(b=>b.onclick=()=>go("course",{cid:b.dataset.oc}));
+  $$v("[data-ocat]").forEach(b=>b.onclick=()=>go("stage",{cid:b.dataset.ocat}));
+  wireActions(); wireBoard();
+}
+
+/* ============ 課題の詳細（Jira風）============
+   左に説明と出典議事録、右にステータス・担当・優先度・期限・親工程 */
+function vIssue(){
+  const a=allHw().find(x=>x.id===S.iid)||allHw()[0];
+  const s=a.ses, f=FLOW.find(x=>x.id===s.flow), p=PRIO[a.prio]||PRIO.mid;
+  const parts=[{t:"コーチング",go:()=>{S.cotab="board";go("coaching")}},{t:"ボード",go:()=>{S.cotab="board";go("coaching")}},{t:a.key}];
+  let h=crumb(parts);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <button class="b b-pri" id="iback">↩ ボードに戻る</button>
+    <span class="chip ${isDone(a)?"g":overdue(a)?"w":"b"}">${stLabel(a.status)}</span></div>`;
+  h+=`<div class="ilayout">
+    <div>
+      <div class="card pad" style="margin-bottom:14px">
+        <div class="row" style="gap:8px;margin-bottom:8px">
+          <span class="jkey tnum" style="font-size:12px">${a.key}</span>
+          ${f?`<span class="epic">工程${f.num} ${f.name}</span>`:""}</div>
+        <h1 style="font-size:20px;font-weight:700;line-height:1.5">${a.text}</h1>
+      </div>
+      <div class="card pad" style="margin-bottom:14px">
+        <div class="ch">コーチのメモ</div>
+        <p style="font-size:13.5px;line-height:1.85;color:var(--ink2);margin:0">
+          ${a.note?a.note:"補足はありません。"}</p>
+      </div>
+      <div class="card pad" style="margin-bottom:14px">
+        <div class="ch">この課題が決まった経緯</div>
+        <p style="font-size:13px;color:var(--ink2);margin:0 0 10px">
+          <b class="tnum">${s.date}</b> の${s.coach}との1on1「${s.title}」で設定されました。</p>
+        <button class="b b-sm" id="tomin">議事録を開く →</button>
+      </div>
+      <div class="card pad">
+        <div class="ch">状態を動かす</div>
+        <div class="row" style="gap:6px">
+          ${AST.map(([k,lb])=>`<button class="b b-sm" data-mv="${k}"
+            ${a.status===k?'style="background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600"':""}
+            >${lb}</button>`).join("")}</div>
+      </div>
+    </div>
+    <div class="card pad">
+      <div class="ch">詳細</div>
+      <dl class="idl">
+        <dt>ステータス</dt><dd><span class="chip ${isDone(a)?"g":"b"}">${stLabel(a.status)}</span></dd>
+        <dt>担当</dt><dd><span class="jav" style="display:inline-grid">${a.owner==="コーチ"?"コ":"自"}</span> ${a.owner==="コーチ"?s.coach:"あなた"}</dd>
+        <dt>優先度</dt><dd style="color:${p.c};font-weight:700">${p.i} ${p.l}</dd>
+        <dt>期限</dt><dd class="tnum ${overdue(a)?"over":""}">${a.due}${overdue(a)?"（超過）":""}</dd>
+        <dt>親（工程）</dt><dd>${f?`工程${f.num} ${f.name}`:"—"}</dd>
+        <dt>出典</dt><dd class="tnum">${s.date} 1on1</dd>
+      </dl>
+    </div></div>`;
+  V().innerHTML=h;
+  wireCrumb(parts);
+  $v("#iback").onclick=()=>{S.cotab="board";go("coaching")};
+  $v("#tomin").onclick=()=>go("minutes",{sid:s.id});
+  $$v("[data-mv]").forEach(b=>b.onclick=()=>setStatus(a.id,b.dataset.mv));
+}
+
+/* アクションアイテムのチェックは全画面共通 */
+function wireActions(){
+  $$v("[data-hw]").forEach(cb=>cb.onchange=()=>{
+    SESSIONS.forEach(s=>s.actions.forEach(x=>{if(x.id===cb.dataset.hw)x.status=cb.checked?"done":"todo"}));
+    save(); toast(cb.checked?"完了にしました":"未完了に戻しました"); render();
+  });
+}
+
+/* ============ 議事録の詳細============
+   アクションアイテムを最上部に置く。会議の要約と本文はその下。 */
+function vMinutes(){
+  const s=SESSIONS.find(x=>x.id===S.sid)||SESSIONS[0];
+  const f=FLOW.find(x=>x.id===s.flow);
+  const un=s.actions.filter(x=>!isDone(x));
+  const mine=s.actions.filter(x=>x.owner==="受講生");
+  const theirs=s.actions.filter(x=>x.owner==="コーチ");
+  const parts=[{t:"マイダッシュボード",go:()=>go("dash")},{t:"コーチング",go:()=>go("coaching")},{t:s.date}];
+
+  let h=crumb(parts);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <button class="b b-pri" id="mback">↩ 議事録一覧に戻る</button>
+    <div class="row" style="gap:7px">
+      <button class="b b-sm" id="mcopy">テキストをコピー</button>
+      <button class="b b-sm" id="mpdf">PDFで保存</button></div></div>`;
+
+  h+=`<div class="doc">
+    <div class="dochead">
+      <div class="row" style="gap:8px;margin-bottom:8px">
+        <span class="chip b tnum">${s.date}</span>
+        <span class="chip">${s.coach}・${s.mins}分</span>
+        ${f?`<span class="chip">工程${f.num} ${f.name}</span>`:""}</div>
+      <h1 class="doctitle">${s.title}</h1></div>
+
+    <!-- アクションアイテムを最上部に大きく出す -->
+    <section class="acts">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px">
+        <h2 class="actsh">アクションアイテム</h2>
+        <span class="chip ${un.length?"w":"g"}">未完了 ${un.length} / ${s.actions.length}件</span></div>
+      <div class="grid2" style="margin-bottom:0;align-items:start">
+        <div class="actcol"><div class="ch">@受講生（あなた）</div>
+          ${mine.length?mine.map(x=>actionRow(x)).join(""):`<p class="empty2">なし</p>`}</div>
+        <div class="actcol"><div class="ch">@${s.coach}</div>
+          ${theirs.length?theirs.map(x=>actionRow(x)).join(""):`<p class="empty2">なし</p>`}</div></div>
+      ${un.length?`<div class="nextnote">次回セッション（<b class="tnum">${NEXT_SESSION}</b>）は、この未完了分の確認から始めます。</div>`:
+        `<div class="nextnote ok">すべて完了しています。次回は新しい工程に進みます。</div>`}
+    </section>
+
+    <section class="docsec">
+      <h2>要約</h2>
+      <p class="lead">${s.summary}</p>
+    </section>
+
+    ${s.sections.map(sec=>`<section class="docsec"><h2>${sec.h}</h2><p>${sec.body}</p></section>`).join("")}
+
+    <section class="docsec">
+      <h2>決まったこと</h2>
+      <ul class="decs">${s.decisions.map(d=>`<li>${d}</li>`).join("")}</ul>
+    </section>
+  </div>`;
+
+  V().innerHTML=h;
+  wireCrumb(parts);
+  $v("#mback").onclick=()=>{S.cotab="mins";go("coaching")};
+  $v("#mcopy").onclick=()=>toast("議事録をコピーしました（モック）");
+  $v("#mpdf").onclick=()=>toast("PDFを書き出しました（モック）");
+  wireActions();
+}
+
+/* ============ 運営: ダッシュボード ============ */
+function chart(data){
+  const W=Math.max(560,data.length*78),H=210,PL=52,PR=14,PT=12,PB=28;
+  const max=Math.max(5,Math.ceil(Math.max(...data.map(d=>d.h))));
+  const xs=i=>PL+(W-PL-PR)*(data.length===1?0.5:i/(data.length-1));
+  const ys=v=>PT+(H-PT-PB)*(1-v/max);
+  const pts=data.map((d,i)=>`${xs(i)},${ys(d.h)}`).join(" ");
+  let g="";
+  for(let v=0;v<=max;v++)g+=`<line x1="${PL}" y1="${ys(v)}" x2="${W-PR}" y2="${ys(v)}" stroke="var(--line)"/>
+    <text x="${PL-8}" y="${ys(v)+4}" text-anchor="end" font-size="10" fill="var(--dim)">${v}時間</text>`;
+  const lb=data.map((d,i)=>`<text x="${xs(i)}" y="${H-8}" text-anchor="middle" font-size="10" fill="var(--dim)">${d.d}</text>`).join("");
+  const dots=data.map((d,i)=>`<circle cx="${xs(i)}" cy="${ys(d.h)}" r="3" fill="var(--blue)"/>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="最近の活動状況">
+    ${g}<polyline points="${pts}" fill="none" stroke="var(--blue)" stroke-width="2"/>${dots}${lb}
+    <text x="14" y="${H/2}" font-size="10" fill="var(--dim)" transform="rotate(-90 14 ${H/2})" text-anchor="middle">学習時間</text></svg>`;
+}
+function vAdash(){
+  const d=S.chartRange===7?ADMIN.act7:ADMIN.act28;
+  let h=crumb([{t:"運営ダッシュボード"}])+`<h1 class="ptitle">運営ダッシュボード</h1>`;
+  h+=`<div class="card pad" style="margin-bottom:16px"><div class="sectitle">サマリー</div>
+    <div class="metrics">
+      <div class="metric"><div class="lb">受講生数</div><div class="circ tnum">${ADMIN.summary.students}</div>
+        <div class="un">在籍中（定員60名）</div><button class="b b-sm" id="d1" style="margin-top:8px">詳しく見る</button></div>
+      <div class="metric"><div class="lb">平均学習時間</div><div class="circ tnum">${ADMIN.summary.hours}</div>
+        <div class="un">1人あたり・直近30日</div></div>
+      <div class="metric"><div class="lb">収益化した受講生</div><div class="circ tnum">${ADMIN.summary.earners}</div>
+        <div class="un">1円以上を売上げた人数（25%）</div></div>
+    </div></div>`;
+  h+=`<div class="card pad" style="margin-bottom:16px">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <div class="sectitle" style="margin:0">最近の活動状況</div>
+      <div class="row" style="gap:0">
+        <button class="b" id="r7" style="border-radius:var(--r2) 0 0 var(--r2);${S.chartRange===7?"background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600":""}">過去7日間</button>
+        <button class="b" id="r28" style="border-radius:0 var(--r2) var(--r2) 0;border-left:none;${S.chartRange===28?"background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600":""}">過去28日間</button></div></div>
+    <div class="chartwrap">${chart(d)}</div></div>`;
+  h+=`<div class="card pad"><div class="sectitle">管理機能一覧</div><div class="funcs">
+    <div class="fn"><div class="ic">👥</div><div><h4>受講生管理</h4>
+      <button data-g2="students">受講生一覧</button><button data-g2="students">プラン・請求状況</button><button data-g2="students">退会・休会申請</button></div></div>
+    <div class="fn"><div class="ic">🎯</div><div><h4>コーチング管理</h4>
+      <button data-g2="acoach">セッション・議事録</button><button data-g2="acoach">宿題の提出状況</button><button data-g2="acoach">コーチ割り当て</button></div></div>
+    <div class="fn"><div class="ic">📘</div><div><h4>コース管理</h4>
+      <button data-g2="stats">コース別学習量</button><button data-g2="library">ライブラリー</button></div></div>
+    <div class="fn"><div class="ic">📊</div><div><h4>学習進捗管理</h4>
+      <button data-g2="logs">学習活動履歴</button><button data-g2="stats">コース</button><button data-g2="students">受講生</button></div></div>
+    <div class="fn"><div class="ic">✉️</div><div><h4>メール</h4>
+      <button data-g2="mail">メールテンプレート</button><button data-g2="mail">お知らせ通知</button></div></div>
+    <div class="fn"><div class="ic">💰</div><div><h4>収益実績管理</h4>
+      <button data-g2="students">受講生の売上報告</button><button data-g2="students">事例掲載の承認</button></div></div>
+  </div></div>`;
+  V().innerHTML=h;
+  $("#r7").onclick=()=>{S.chartRange=7;render()};
+  $("#r28").onclick=()=>{S.chartRange=28;render()};
+  if($("#d1"))$("#d1").onclick=()=>go("students");
+  $$v("[data-g2]").forEach(b=>b.onclick=()=>{
+    const p=b.dataset.g2;
+    if(p==="library"){S.mode="user";go("library")}else go(p)});
+}
+
+/* ============ 運営: テーブル系 ============ */
+function pager(total,page,per,onGo){
+  const pages=Math.max(1,Math.ceil(total/per)),from=total?(page-1)*per+1:0,to=Math.min(total,page*per);
+  return {html:`<div class="pager"><span style="font-size:12px;color:var(--dim)" class="tnum">全 ${total} 件中 ${from} - ${to}</span>
+    <span class="grow"></span><div class="pg">
+    <button data-pg="1" ${page===1?"disabled":""}>|◀</button>
+    <button data-pg="${page-1}" ${page===1?"disabled":""}>◀</button>
+    <button data-pg="${page+1}" ${page>=pages?"disabled":""}>▶</button>
+    <button data-pg="${pages}" ${page>=pages?"disabled":""}>▶|</button></div></div>`,
+    wire:()=>$$v("[data-pg]").forEach(b=>b.onclick=()=>onGo(Math.max(1,Math.min(pages,+b.dataset.pg))))};
+}
+
+function vStudents(){
+  const per=6, q=(S.q||"").toLowerCase();
+  let rows=ADMIN.students.filter(u=>!q||(u.name+u.mail+u.plan+u.coach+u.flow).toLowerCase().includes(q));
+  if(S.filter==="elite")rows=rows.filter(u=>u.plan==="エリート");
+  if(S.filter==="risk")rows=rows.filter(u=>u.tO>0);
+  if(S.filter==="earn")rows=rows.filter(u=>u.rev!=="—");
+  const pg=pager(rows.length,S.page1,per,p=>{S.page1=p;render()});
+  const view=rows.slice((S.page1-1)*per,S.page1*per);
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"受講生一覧"}]);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <h1 class="ptitle" style="margin:0">受講生一覧</h1>
+    <div class="row" style="gap:8px"><button class="b" id="ex">CSVダウンロード</button>
+      <button class="b b-pri" id="inv">受講生を招待</button></div></div>`;
+  h+=`<div class="card pad" style="margin-bottom:14px">
+    <div class="filters">
+      <div class="f"><label>フリーワード</label><input id="fq" value="${S.q||""}" placeholder="氏名・メール・担当コーチ">
+        <div class="hint">氏名・メールアドレス・担当コーチ・工程</div></div>
+      <div class="f"><label>プラン</label><select id="fp"><option>すべて</option><option>スタンダード</option><option>エリート</option></select></div>
+      <div class="f"><label>担当コーチ</label><select><option>すべて</option><option>村田</option><option>高橋</option></select></div>
+      <div class="f"><label>入会日</label><input type="date"></div>
+    </div>
+    <div class="row" style="gap:6px">
+      ${[["all","すべて"],["elite","エリートのみ"],["risk","期限超過あり"],["earn","収益あり"]].map(([k,v])=>
+        `<button class="b b-sm" data-f="${k}" ${S.filter===k?'style="background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600"':""}>${v}</button>`).join("")}
+      <span class="grow"></span><span style="font-size:12px;color:var(--dim)" class="tnum">在籍 48名 / 定員 60名</span></div></div>`;
+  h+=pg.html+`<div class="tablewrap"><table><thead><tr>
+    <th style="width:34px"><input type="checkbox" aria-label="全選択"></th><th>受講生</th><th>プラン</th><th>入会日</th>
+    <th>担当コーチ</th><th>現在の工程</th><th class="num">進捗</th><th class="num">売上実績</th><th class="num">課題消化</th><th style="width:60px"></th></tr></thead><tbody>
+    ${view.length?view.map(u=>`<tr>
+      <td><input type="checkbox" aria-label="${u.name}を選択"></td>
+      <td><div class="row" style="gap:8px;flex-wrap:nowrap"><span class="av">${u.name[0]}</span>
+        <span><b style="font-size:12.5px">${u.name}</b><br><span style="font-size:11px;color:var(--dim)">${u.mail}</span></span></div></td>
+      <td><span class="chip ${u.plan==="エリート"?"m":""}">${u.plan}</span></td>
+      <td class="tnum">${u.joined}</td><td>${u.coach}</td><td style="font-size:12px">${u.flow}</td>
+      <td class="num"><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">
+        <div class="bar" style="width:52px;flex:none"><i style="width:${u.pct}%"></i></div><span>${u.pct}%</span></div></td>
+      <td class="num">${u.rev}</td>
+      <td><span class="chip ${u.tD===u.tT?"g":u.tD===0?"":"w"}">${u.tD}/${u.tT}</span></td>
+      <td><button class="link" data-st="${u.name}">詳細</button></td></tr>`).join("")
+      :`<tr><td colspan="10" class="empty">該当する受講生はいません。</td></tr>`}
+  </tbody></table></div>`;
+  V().innerHTML=h; pg.wire();
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $("#fq").oninput=e=>{S.q=e.target.value;S.page1=1;render();$("#fq").focus()};
+  $$v("[data-f]").forEach(b=>b.onclick=()=>{S.filter=b.dataset.f;S.page1=1;render()});
+  $("#ex").onclick=()=>toast("CSVを書き出しました（モック）");
+  $("#inv").onclick=()=>toast("招待メールの作成画面へ（モック）");
+  $$v("[data-st]").forEach(b=>b.onclick=()=>go("viewdetail",{vu:b.dataset.st}));
+}
+
+function vLogs(){
+  const per=8;
+  const pg=pager(ADMIN.logs.length,S.page2,per,p=>{S.page2=p;render()});
+  const view=ADMIN.logs.slice((S.page2-1)*per,S.page2*per);
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"学習活動履歴"}]);
+  h+=`<h1 class="ptitle">学習活動履歴</h1>`;
+  h+=`<div class="card pad" style="margin-bottom:14px"><div class="filters">
+    <div class="f"><label>開始日</label><input type="date"></div>
+    <div class="f"><label>終了日</label><input type="date"></div>
+    <div class="f"><label>受講生名</label><input placeholder="氏名"></div>
+    <div class="f"><label>コース名・コンテンツ名</label><input placeholder="キーワード"></div>
+    <div class="f"><label>アクション</label><select><option>すべて</option><option>コンテンツを受講完了しました。</option>
+      <option>課題を提出しました。</option><option>コーチングを受講しました。</option><option>コースを開始しました。</option></select></div>
+    </div><div class="row"><button class="b b-pri" id="dl">ダウンロード ⤓</button>
+    <span class="grow"></span><span style="font-size:12px;color:var(--dim)">表示件数</span>
+    <select class="b" style="padding:5px 8px"><option>8</option><option>20</option><option>50</option></select></div></div>`;
+  h+=pg.html+`<div class="tablewrap"><table><thead><tr>
+    <th>受講生名</th><th>コース名・コンテンツ名</th><th>アクション</th><th>日付</th></tr></thead><tbody>
+    ${view.map(x=>`<tr><td><div class="row" style="gap:8px;flex-wrap:nowrap"><span class="av">${x.user[0]}</span>${x.user}</div></td>
+      <td>${x.content}</td><td style="font-size:12px;color:var(--ink2)">${x.action}</td><td class="tnum">${x.at}</td></tr>`).join("")}
+  </tbody></table></div>`;
+  V().innerHTML=h; pg.wire();
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $("#dl").onclick=()=>toast("CSVを書き出しました（モック）");
+}
+
+function vStats(){
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"コース別学習量"}]);
+  h+=`<h1 class="ptitle">コース別学習量</h1>`;
+  h+=`<div class="tabs" role="tablist">
+    <button role="tab" aria-selected="${S.statTab==="progress"}" id="tb1">進捗</button>
+    <button role="tab" aria-selected="${S.statTab==="amount"}" id="tb2">学習量</button></div>`;
+  h+=`<div class="card pad" style="margin-bottom:14px"><div class="filters">
+    <div class="f"><label>開始日</label><input type="date"></div>
+    <div class="f"><label>終了日</label><input type="date"></div>
+    <div class="f"><label>フリーワード</label><input placeholder="コース名"></div>
+    <div class="f"><label>カテゴリ</label><select><option>すべて</option>${CATS.map(s=>`<option>${s.num} ${s.name}</option>`).join("")}</select></div>
+    <div class="f"><label>プラン</label><select><option>すべて</option><option>スタンダード</option><option>エリート</option></select></div>
+    </div><div class="row"><button class="b b-pri" id="dl2">ダウンロード ⤓</button>
+    <span class="grow"></span><span style="font-size:12px;color:var(--dim)" class="tnum">全 ${ADMIN.stats.length} 件</span></div></div>`;
+  h+=`<div class="tablewrap"><table><thead><tr><th>コース名</th>
+    ${S.statTab==="amount"
+      ?`<th class="num">総学習時間</th><th class="num">コース完了人数</th><th class="num">コンテンツ完了数</th><th class="num">課題提出数</th><th class="num">収益化した人数</th>`
+      :`<th class="num">受講中</th><th class="num">修了率</th><th class="num">平均進捗</th><th>滞留者</th>`}
+    </tr></thead><tbody>
+    ${ADMIN.stats.map(s=>S.statTab==="amount"
+      ?`<tr><td><b style="font-size:12.5px">${s.name}</b></td><td class="num">${s.hours}</td><td class="num">${s.fin}</td>
+        <td class="num">${s.contents}</td><td class="num">${s.tasks}</td>
+        <td class="num">${s.rev?`<span class="chip g">${s.rev}名</span>`:"0"}</td></tr>`
+      :`<tr><td><b style="font-size:12.5px">${s.name}</b></td><td class="num">${s.fin+3}</td>
+        <td class="num">${Math.round(s.fin/(s.fin+3)*100)}%</td>
+        <td class="num"><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">
+          <div class="bar" style="width:52px;flex:none"><i style="width:${Math.min(100,s.fin*7)}%"></i></div><span>${Math.min(100,s.fin*7)}%</span></div></td>
+        <td>${s.fin<6?`<span class="chip w">${6-s.fin}名</span>`:`<span class="chip g">なし</span>`}</td></tr>`).join("")}
+  </tbody></table></div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $("#tb1").onclick=()=>{S.statTab="progress";render()};
+  $("#tb2").onclick=()=>{S.statTab="amount";render()};
+  $("#dl2").onclick=()=>toast("CSVを書き出しました（モック）");
+}
+
+/* ============ 運営: コーチング管理 ============ */
+function vAcoach(){
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"セッション・議事録"}]);
+  h+=`<h1 class="ptitle">コーチング管理（セッション・議事録）</h1>`;
+  const un=allHw().filter(h=>!isDone(h));
+  h+=`<div class="grid3" style="margin-bottom:18px">
+    <div class="card pad"><div class="ch">今週のセッション</div><div style="font-size:22px;font-weight:700" class="tnum">7件</div>
+      <div style="font-size:11px;color:var(--dim)">村田4件・高橋3件</div></div>
+    <div class="card pad"><div class="ch">議事録の未作成</div><div style="font-size:22px;font-weight:700;color:var(--warn)" class="tnum">2件</div>
+      <div style="font-size:11px;color:var(--dim)">セッション後24時間以内に作成</div></div>
+    <div class="card pad"><div class="ch">宿題の未提出</div><div style="font-size:22px;font-weight:700" class="tnum">${un.length}件</div>
+      <div style="font-size:11px;color:var(--dim)">期限超過は個別フォロー</div></div></div>`;
+  h+=`<div class="card pad" style="margin-bottom:18px"><div class="sectitle">議事録を作成して宿題を出す</div>
+    <div class="filters">
+      <div class="f"><label>受講生</label><select id="nw-u">${ADMIN.students.map(u=>`<option>${u.name}</option>`).join("")}</select></div>
+      <div class="f"><label>実施日</label><input type="date" value="2026-07-25"></div>
+      <div class="f"><label>担当コーチ</label><select><option>村田</option><option>高橋</option></select></div>
+      <div class="f"><label>テーマ</label><input placeholder="例：営業の入口を決める"></div>
+    </div>
+    <div class="f" style="margin-bottom:10px"><label>話したこと（議事録本文）</label>
+      <textarea rows="4" placeholder="現状と、手が止まっている原因を書きます。"></textarea></div>
+    <div class="f" style="margin-bottom:10px"><label>決まったこと（1行1件）</label>
+      <textarea rows="3" placeholder="商材はHP制作1本に絞る&#10;営業手法はフォーム営業から開始"></textarea></div>
+    <div class="f" style="margin-bottom:10px"><label>宿題（1行1件・末尾に期限）</label>
+      <textarea rows="3" placeholder="Section2を完了する @2026/08/01&#10;見積テンプレートを提出する @2026/08/03"></textarea>
+      <div class="hint">保存すると受講生のマイページに宿題として表示され、期限前にリマインドメールが送られます。</div></div>
+    <div class="row"><button class="b b-pri" id="sv">議事録を保存して宿題を配信</button>
+      <button class="b" id="dr">下書き保存</button></div></div>`;
+  h+=`<div class="sectitle">最近の議事録</div><div class="tablewrap"><table><thead><tr>
+    <th>実施日</th><th>受講生</th><th>コーチ</th><th>テーマ</th><th class="num">宿題</th><th>状態</th><th style="width:60px"></th></tr></thead><tbody>
+    ${SESSIONS.map(s=>{const u=s.actions.filter(x=>!isDone(x)).length;
+      return `<tr><td class="tnum">${s.date}</td><td>中川 雄斗</td><td>${s.coach.replace("コーチ","")}</td><td>${s.title}</td>
+      <td class="num tnum">${s.actions.length-u} / ${s.actions.length}</td>
+      <td><span class="chip ${u?"w":"g"}">${u?`未提出${u}件`:"提出済"}</span></td>
+      <td><button class="link" data-vs="${s.id}">開く</button></td></tr>`}).join("")}
+    <tr><td class="tnum">2026/07/24</td><td>佐々木 亮</td><td>高橋</td><td>—</td><td class="num">—</td>
+      <td><span class="chip w">議事録未作成</span></td><td><button class="link" data-vs="new">作成</button></td></tr>
+  </tbody></table></div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $("#sv").onclick=()=>toast("議事録を保存し、宿題を受講生に配信しました（モック）");
+  $("#dr").onclick=()=>toast("下書きを保存しました（モック）");
+  $$v("[data-vs]").forEach(b=>b.onclick=()=>{
+    if(b.dataset.vs==="new"){toast("新規議事録フォーム（モック）");return}
+    S.mode="user";go("coaching")});
+}
+
+
+/* ============ 運営: eラーニング視聴状況（誰がどれくらい見ているか）============ */
+const hhmmToH = s => { const [h,m]=s.split(":").map(Number); return h+m/60 };
+function vViewing(){
+  const rows=[...ADMIN.students].sort((a,b)=>hhmmToH(b.hours)-hhmmToH(a.hours));
+  const totalH=rows.reduce((a,u)=>a+hhmmToH(u.hours),0);
+  const maxH=Math.max(...rows.map(u=>hhmmToH(u.hours)));
+  const totalL=rows.reduce((a,u)=>a+u.lessons,0);
+  const active=rows.filter(u=>u.last>="2026/07/19").length;
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"eラーニング視聴状況"}]);
+  h+=`<h1 class="ptitle">eラーニング視聴状況</h1>`;
+  h+=`<div class="grid3" style="margin-bottom:16px">
+    <div class="card pad"><div class="ch">総視聴時間</div>
+      <div style="font-size:23px;font-weight:700" class="tnum">${Math.round(totalH)}時間</div>
+      <div style="font-size:11px;color:var(--dim)">受講生${rows.length}名の合計</div></div>
+    <div class="card pad"><div class="ch">1人あたり平均</div>
+      <div style="font-size:23px;font-weight:700" class="tnum">${(totalH/rows.length).toFixed(1)}時間</div>
+      <div style="font-size:11px;color:var(--dim)">完了レッスン計${totalL}本</div></div>
+    <div class="card pad"><div class="ch">7日以内にログイン</div>
+      <div style="font-size:23px;font-weight:700" class="tnum">${active} / ${rows.length}名</div>
+      <div style="font-size:11px;color:var(--dim)">${Math.round(active/rows.length*100)}%が稼働中</div></div></div>`;
+  h+=`<div class="card pad" style="margin-bottom:14px"><div class="filters">
+    <div class="f"><label>フリーワード</label><input placeholder="氏名・メール"></div>
+    <div class="f"><label>プラン</label><select><option>すべて</option><option>スタンダード</option><option>エリート</option></select></div>
+    <div class="f"><label>期間</label><select><option>累計</option><option>直近7日</option><option>直近30日</option></select></div>
+    </div><div class="row"><button class="b b-pri" id="dlv">ダウンロード ⤓</button>
+    <span class="grow"></span><span style="font-size:12px;color:var(--dim)">視聴時間の多い順</span></div></div>`;
+  h+=`<div class="tablewrap"><table><thead><tr>
+    <th>アカウント</th><th>プラン</th><th class="num">視聴時間</th><th>視聴量</th>
+    <th class="num">完了レッスン</th><th class="num">コース進捗</th><th>最終ログイン</th><th style="width:56px"></th></tr></thead><tbody>
+    ${rows.map(u=>{const stale=u.last<"2026/07/19";
+      return `<tr><td><div class="row" style="gap:8px;flex-wrap:nowrap"><span class="av">${u.name[0]}</span>
+        <span><b style="font-size:12.5px">${u.name}</b><br><span style="font-size:11px;color:var(--dim)">${u.mail}</span></span></div></td>
+      <td><span class="chip ${u.plan==="エリート"?"m":""}">${u.plan}</span></td>
+      <td class="num tnum">${u.hours}</td>
+      <td><div class="bar" style="width:110px"><i style="width:${Math.round(hhmmToH(u.hours)/maxH*100)}%"></i></div></td>
+      <td class="num tnum">${u.lessons}</td>
+      <td class="num"><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">
+        <div class="bar" style="width:48px;flex:none"><i style="width:${u.pct}%"></i></div><span class="tnum">${u.pct}%</span></div></td>
+      <td class="tnum">${u.last}${stale?` <span class="chip w">停滞</span>`:""}</td>
+      <td><button class="link" data-vw="${u.name}">詳細</button></td></tr>`}).join("")}
+  </tbody></table></div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $v("#dlv").onclick=()=>toast("CSVを書き出しました（モック）");
+  $$v("[data-vw]").forEach(b=>b.onclick=()=>go("viewdetail",{vu:b.dataset.vw}));
+}
+
+/* ============ 運営: 受講生ひとりの視聴明細（何の動画を見たか）============
+   視聴履歴はカリキュラム順に u.lessons 件を完了、次の1件を視聴中として決定的に組み立てる。
+   氏名から作る簡易ハッシュで視聴率と日付の散らばりを出す（再描画しても変わらない）。 */
+const totalLessons = () => allCourses().reduce((a,x)=>a+x.c.lessons.length,0);
+const seedOf = s => [...s].reduce((a,ch)=>(a*31+ch.charCodeAt(0))>>>0, 7);
+function shiftDate(ymd,minusDays){
+  const [y,m,d]=ymd.split("/").map(Number);
+  const dt=new Date(y,m-1,d); dt.setDate(dt.getDate()-minusDays);
+  return `${dt.getFullYear()}/${String(dt.getMonth()+1).padStart(2,"0")}/${String(dt.getDate()).padStart(2,"0")}`;
+}
+function watchLog(u){
+  const flat=allCourses().flatMap(({st,c})=>c.lessons.map((l,i)=>({st,c,l,i})));
+  const seed=seedOf(u.name);
+  const rows=[];
+  const n=Math.min(u.lessons,flat.length);
+  for(let k=0;k<n;k++){
+    const x=flat[k];
+    /* 新しいものほど最終ログインに近い日付にする */
+    const back=Math.floor((n-1-k)*1.4)+((seed+k)%2);
+    rows.push({...x, date:shiftDate(u.last,back), rate:100, state:"done"});
+  }
+  const nx=flat[n];
+  if(nx) rows.push({...nx, date:u.last, rate:20+((seed+n)%6)*11, state:"doing"});
+  /* 課題は動画ではないので視聴率を持たせない */
+  rows.forEach(r=>{ r.isTask = r.l.dur==="課題"; if(r.isTask) r.rate=null; });
+  return rows.reverse();  /* 新しい順 */
+}
+function vViewDetail(){
+  const u=ADMIN.students.find(x=>x.name===S.vu)||ADMIN.students[0];
+  const log=watchLog(u);
+  const doing=log.filter(r=>r.state==="doing");
+  /* コース別に集計 */
+  const byCourse={};
+  log.forEach(r=>{
+    const k=r.c.id;
+    byCourse[k]=byCourse[k]||{c:r.c,st:r.st,done:0,secs:0};
+    if(r.state==="done"){byCourse[k].done++; byCourse[k].secs+=secs(r.l.dur)}
+    else byCourse[k].secs+=Math.round(secs(r.l.dur)*r.rate/100);
+  });
+  const courses=Object.values(byCourse).sort((a,b)=>b.secs-a.secs);
+  const parts=[{t:"運営ダッシュボード",go:()=>go("adash")},
+    {t:"eラーニング視聴状況",go:()=>go("viewing")},{t:u.name}];
+
+  let h=crumb(parts);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:14px">
+    <div class="row" style="gap:11px">
+      <span class="av" style="width:40px;height:40px;font-size:14px">${u.name[0]}</span>
+      <div><h1 style="font-size:19px;font-weight:700">${u.name}</h1>
+        <div style="font-size:11.5px;color:var(--dim)">${u.mail}・${u.plan}・担当${u.coach}コーチ</div></div></div>
+    <div class="row" style="gap:8px">
+      <button class="b" id="vback">↩ 一覧に戻る</button>
+      <button class="b b-pri" id="vcsv">視聴明細をCSV出力</button></div></div>`;
+
+  h+=`<div class="grid3" style="margin-bottom:16px">
+    <div class="card pad"><div class="ch">総視聴時間</div>
+      <div style="font-size:22px;font-weight:700" class="tnum">${u.hours}</div>
+      <div style="font-size:11px;color:var(--dim)">入会 ${u.joined}</div></div>
+    <div class="card pad"><div class="ch">完了レッスン</div>
+      <div style="font-size:22px;font-weight:700" class="tnum">${u.lessons}本</div>
+      <div style="font-size:11px;color:var(--dim)" class="tnum">全${totalLessons()}本中・${u.pct}%</div></div>
+    <div class="card pad"><div class="ch">${doing.length&&doing[0].isTask?"いま取り組んでいる課題":"いま見ている動画"}</div>
+      ${doing.length?`<div style="font-size:13.5px;font-weight:700;line-height:1.5">${doing[0].l.title}</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:3px">${doing[0].c.title}</div>
+        ${doing[0].isTask?`<div style="font-size:11.5px;color:var(--dim);margin-top:6px">課題のため視聴率はありません</div>`
+        :`<div class="row" style="gap:7px;margin-top:6px"><div class="bar" style="width:80px;flex:none"><i style="width:${doing[0].rate}%"></i></div>
+        <span class="tnum" style="font-size:11.5px;color:var(--dim)">${doing[0].rate}%まで視聴</span></div>`}`
+        :`<div style="font-size:13px;color:var(--dim)">視聴中の動画はありません</div>`}</div></div>`;
+
+  h+=`<div class="sectitle">コース別の視聴状況</div>
+    <div class="tablewrap" style="margin-bottom:20px"><table><thead><tr>
+      <th>コース</th><th>カテゴリ</th><th class="num">視聴時間</th><th class="num">視聴レッスン</th><th>進み</th></tr></thead><tbody>
+    ${courses.map(x=>{const tot=x.c.lessons.length,r=Math.round(x.done/tot*100);
+      return `<tr><td><b style="font-size:12.5px">${x.c.title}</b></td>
+      <td style="font-size:11.5px;color:var(--dim)">${catLabel(x.st)}</td>
+      <td class="num tnum">${fmtM(x.secs)}</td>
+      <td class="num tnum">${x.done} / ${tot}</td>
+      <td><div class="row" style="gap:7px;flex-wrap:nowrap">
+        <div class="bar ${r===100?"ok":""}" style="width:90px;flex:none"><i style="width:${r}%"></i></div>
+        <span class="tnum" style="font-size:11.5px">${r}%</span></div></td></tr>`}).join("")}
+  </tbody></table></div>`;
+
+  h+=`<div class="sectitle">視聴した動画の履歴（新しい順・${log.length}件）</div>
+    <div class="tablewrap"><table><thead><tr>
+      <th>視聴日</th><th>動画（レッスン）</th><th>コース</th><th class="num">長さ</th><th>視聴率</th><th>状態</th></tr></thead><tbody>
+    ${log.slice(0,40).map(r=>`<tr>
+      <td class="tnum">${r.date}</td>
+      <td><b style="font-size:12.5px">${r.l.title}</b>
+        <div style="font-size:10.5px;color:var(--dim)">${r.l.sec}${r.isTask?"・課題":"・動画"}</div></td>
+      <td style="font-size:11.5px;color:var(--dim)">${r.c.title}</td>
+      <td class="num tnum">${r.isTask?"—":r.l.dur}</td>
+      <td>${r.isTask?`<span style="font-size:11.5px;color:var(--dim)">—</span>`
+        :`<div class="row" style="gap:7px;flex-wrap:nowrap">
+        <div class="bar ${r.rate===100?"ok":""}" style="width:70px;flex:none"><i style="width:${r.rate}%"></i></div>
+        <span class="tnum" style="font-size:11.5px">${r.rate}%</span></div>`}</td>
+      <td><span class="chip ${r.state==="done"?"g":"b"}">${
+        r.isTask?(r.state==="done"?"提出済":"未提出"):(r.state==="done"?"視聴完了":"視聴中")}</span></td></tr>`).join("")}
+  </tbody></table></div>
+  ${log.length>40?`<p style="font-size:11.5px;color:var(--dim);margin-top:9px">
+    直近40件を表示しています（全${log.length}件）。全件はCSV出力で確認できます。</p>`:""}`;
+
+  V().innerHTML=h;
+  wireCrumb(parts);
+  $v("#vback").onclick=()=>go("viewing");
+  $v("#vcsv").onclick=()=>toast(`${u.name} の視聴明細を書き出しました（モック）`);
+}
+
+/* ============ 運営: コーチングタスクの消化率 ============ */
+function vTaskRate(){
+  const rows=[...ADMIN.students].map(u=>({...u,rate:u.tT?Math.round(u.tD/u.tT*100):0}))
+    .sort((a,b)=>a.rate-b.rate);
+  const tT=rows.reduce((a,u)=>a+u.tT,0), tD=rows.reduce((a,u)=>a+u.tD,0), tO=rows.reduce((a,u)=>a+u.tO,0);
+  const rate=tT?Math.round(tD/tT*100):0;
+  const risky=rows.filter(u=>u.tO>0);
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"コーチングタスク消化率"}]);
+  h+=`<h1 class="ptitle">コーチングタスク消化率</h1>`;
+  h+=`<div class="grid3" style="margin-bottom:16px">
+    <div class="card pad"><div class="ch">全体の消化率</div>
+      <div style="font-size:26px;font-weight:700" class="tnum">${rate}%</div>
+      <div class="bar ${rate>=80?"ok":""}" style="margin:8px 0 6px"><i style="width:${rate}%"></i></div>
+      <div style="font-size:11px;color:var(--dim)" class="tnum">完了 ${tD} / 全 ${tT}件</div></div>
+    <div class="card pad"><div class="ch">期限超過</div>
+      <div style="font-size:26px;font-weight:700;color:${tO?"var(--warn)":"var(--ok)"}" class="tnum">${tO}件</div>
+      <div style="font-size:11px;color:var(--dim)">該当${risky.length}名。個別フォローが必要</div></div>
+    <div class="card pad"><div class="ch">消化率が低い受講生</div>
+      <div style="font-size:26px;font-weight:700" class="tnum">${rows.filter(u=>u.rate<60).length}名</div>
+      <div style="font-size:11px;color:var(--dim)">60%未満。離脱の予兆として扱う</div></div></div>`;
+  h+=`<div class="card pad" style="margin-bottom:14px"><div class="filters">
+    <div class="f"><label>担当コーチ</label><select><option>すべて</option><option>村田</option><option>高橋</option></select></div>
+    <div class="f"><label>工程</label><select><option>すべて</option>${FLOW.map(f=>`<option>${f.num} ${f.name}</option>`).join("")}</select></div>
+    <div class="f"><label>消化率</label><select><option>すべて</option><option>60%未満</option><option>期限超過あり</option></select></div>
+    </div><div class="row"><button class="b b-pri" id="dlt">ダウンロード ⤓</button>
+    <span class="grow"></span><span style="font-size:12px;color:var(--dim)">消化率の低い順</span></div></div>`;
+  h+=`<div class="tablewrap"><table><thead><tr>
+    <th>受講生</th><th>担当</th><th>現在の工程</th><th class="num">課題数</th><th class="num">完了</th>
+    <th class="num">超過</th><th>消化率</th><th style="width:70px"></th></tr></thead><tbody>
+    ${rows.map(u=>`<tr>
+      <td><div class="row" style="gap:8px;flex-wrap:nowrap"><span class="av">${u.name[0]}</span>
+        <b style="font-size:12.5px">${u.name}</b></div></td>
+      <td>${u.coach}</td><td style="font-size:12px">${u.flow}</td>
+      <td class="num tnum">${u.tT}</td><td class="num tnum">${u.tD}</td>
+      <td class="num">${u.tO?`<span class="chip w tnum">${u.tO}</span>`:`<span class="tnum" style="color:var(--dim)">0</span>`}</td>
+      <td><div class="row" style="gap:7px;flex-wrap:nowrap">
+        <div class="bar ${u.rate>=80?"ok":""}" style="width:88px;flex:none"><i style="width:${u.rate}%"></i></div>
+        <span class="tnum" style="font-weight:700;color:${u.rate<60?"var(--warn)":"inherit"}">${u.rate}%</span></div></td>
+      <td><button class="link" data-tb="${u.name}">ボード</button></td></tr>`).join("")}
+  </tbody></table></div>`;
+  h+=`<div class="sectitle" style="margin-top:20px">工程別の消化率</div>
+    <div class="tablewrap"><table><thead><tr><th>工程</th><th class="num">課題数</th><th class="num">完了</th><th>消化率</th><th>状態</th></tr></thead><tbody>
+    ${FLOW.map((f,i)=>{const t=[6,10,14,8,9,4][i]||5, d=[6,7,8,3,2,0][i]||0, r=Math.round(d/t*100);
+      return `<tr><td><b style="font-size:12.5px">${f.num} ${f.name}</b></td>
+      <td class="num tnum">${t}</td><td class="num tnum">${d}</td>
+      <td><div class="row" style="gap:7px;flex-wrap:nowrap"><div class="bar ${r>=80?"ok":""}" style="width:88px;flex:none"><i style="width:${r}%"></i></div>
+        <span class="tnum">${r}%</span></div></td>
+      <td><span class="chip ${r>=80?"g":r>=50?"b":"w"}">${r>=80?"順調":r>=50?"進行中":"停滞"}</span></td></tr>`}).join("")}
+  </tbody></table></div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $v("#dlt").onclick=()=>toast("CSVを書き出しました（モック）");
+  $$v("[data-tb]").forEach(b=>b.onclick=()=>{S.mode="user";S.cotab="board";go("coaching")});
+}
+/* ============ 運営: メールテンプレート ============ */
+function vMail(){
+  const t=ADMIN.templates.find(x=>x.id===S.tmpl)||ADMIN.templates[0];
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"メールテンプレート"}]);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <h1 class="ptitle" style="margin:0">メールテンプレート</h1>
+    <div class="row" style="gap:8px"><button class="b b-pri" id="reg">登録</button></div></div>`;
+  h+=`<div class="mail3">
+    <div class="card" style="overflow:hidden"><div style="padding:10px 13px;border-bottom:1px solid var(--line);
+      font-size:11px;letter-spacing:.08em;color:var(--dim);font-weight:700">テンプレート名</div>
+      <div class="tlist">${ADMIN.templates.map(x=>`<button data-t="${x.id}" aria-current="${x.id===t.id}">${x.name}</button>`).join("")}</div></div>
+    <div class="card pad">
+      <div class="row" style="justify-content:flex-end;gap:8px;margin-bottom:14px">
+        <button class="b b-pri" id="msv">保存</button><button class="b" id="mdel">削除</button></div>
+      <div class="f" style="margin-bottom:11px"><label>タイプ *</label>
+        <select disabled><option>${t.type}</option></select></div>
+      <div class="f" style="margin-bottom:11px"><label>テンプレート名 *</label>
+        <input id="mn" value="${t.name}"><div class="hint">※推奨：〜32文字</div></div>
+      <div class="f" style="margin-bottom:11px"><label>件名 *</label>
+        <textarea id="msub" rows="2">${t.subject}</textarea><div class="hint">※推奨：〜300文字</div></div>
+      <div class="tagins"><span class="lb">ⓘ タグ挿入</span>
+        <button data-tag="[user_name]">＋ 受講生名</button><button data-tag="[coach_name]">＋ 担当コーチ</button>
+        <button data-tag="[course_name]">＋ コース名</button><button data-tag="[due_date]">＋ 宿題の期限</button></div>
+      <div class="f" style="margin-bottom:11px"><label>本文上部 *</label>
+        <textarea id="mtop" rows="8">${t.top}</textarea><div class="hint">※推奨：〜2000文字</div></div>
+      <div class="row" style="justify-content:flex-end;margin-bottom:14px">
+        <button class="b b-sm" id="mrst">本文上部をデフォルトにリセット</button></div>
+      <div class="ro">コース名：[コース名が記載されます]</div>
+      <div class="ro">宿題の期限：[期限が記載されます]</div>
+      <div class="ro">URL：[URLが記載されます]</div>
+      <div class="f"><label>本文下部 *</label><textarea id="mbot" rows="5">${t.bottom}</textarea></div>
+    </div></div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $$v("[data-t]").forEach(b=>b.onclick=()=>{S.tmpl=b.dataset.t;render()});
+  $$v("[data-tag]").forEach(b=>b.onclick=()=>{
+    const ta=$("#mtop"),tag=b.dataset.tag,p=ta.selectionStart||ta.value.length;
+    ta.value=ta.value.slice(0,p)+tag+ta.value.slice(p);ta.focus();
+    ta.selectionStart=ta.selectionEnd=p+tag.length;toast(`${tag} を挿入しました`)});
+  $("#msv").onclick=()=>toast("テンプレートを保存しました（モック）");
+  $("#mdel").onclick=()=>toast("削除は確認ダイアログが出ます（モック）");
+  $("#reg").onclick=()=>toast("新規テンプレート作成（モック）");
+  $("#mrst").onclick=()=>{$("#mtop").value=t.top;toast("本文上部をリセットしました")};
+}
+
+/* ============ ルーター ============ */
+function render(){
+  renderSide();
+  const P=S.page;
+  if(S.mode==="user"){
+    if(P==="dash")vDash();
+    else if(P==="course")vCourse();
+    else if(P==="lesson")vLesson();
+    else if(P==="coaching")vCoaching();
+    else if(P==="minutes")vMinutes();
+    else if(P==="issue")vIssue();
+    else if(P==="fav")libraryView("お気に入りコンテンツ",allCourses().filter(x=>S.favs.has(x.c.id)),"コース詳細の「マイ目標コースに追加」で登録できます。");
+    else if(P==="stage"){const st=CATS.find(s=>s.id===S.cid)||CATS[0];
+      libraryView(`${catLabel(st)}`,st.courses.map(c=>({st,c})),st.desc)}
+    else if(P==="tool")libraryView(`${S.cid} のコース`,allCourses().filter(x=>x.c.tool===S.cid));
+    else if(P==="search"){const q=(S.q||"").trim().toLowerCase();
+      const list=allCourses().filter(({c})=>{
+        if(!q)return true;
+        return S.qmode==="course"?(c.title+c.sub+c.tool).toLowerCase().includes(q)
+          :c.lessons.some(l=>l.title.toLowerCase().includes(q))});
+      libraryView(q?`「${S.q}」の検索結果`:"コース一覧",list,`${S.qmode==="course"?"コース名":"コンテンツ名"}で検索・${list.length}件`)}
+    else libraryView("コース一覧",allCourses(),"レベル別・実践コースをすべて表示しています。");
+  }else{
+    if(P==="students")vStudents();
+    else if(P==="logs")vLogs();
+    else if(P==="stats")vStats();
+    else if(P==="viewing")vViewing();
+    else if(P==="viewdetail")vViewDetail();
+    else if(P==="taskrate")vTaskRate();
+    else if(P==="acoach")vAcoach();
+    else if(P==="mail")vMail();
+    else vAdash();
+  }
+}
+
+/* ============ グローバル操作 ============ */
+document.addEventListener("keydown",e=>{
+  if(S.mode!=="user"||S.page!=="lesson")return;
+  const tg=(e.target.tagName||"").toLowerCase();
+  if(tg==="input"||tg==="textarea"||tg==="select")return;
+  const x=findC(S.cid); if(!x)return;
+  const n=x.c.lessons.length;
+  if(e.key==="Escape"){e.preventDefault();go("course",{cid:S.cid})}
+  if(e.key==="ArrowLeft"&&S.li>0){e.preventDefault();go("lesson",{cid:S.cid,li:S.li-1})}
+  if(e.key==="ArrowRight"&&S.li<n-1){e.preventDefault();go("lesson",{cid:S.cid,li:S.li+1})}
+});
+$("#burger").onclick=()=>{const s=$("#side");const o=s.dataset.open!=="true";
+  s.dataset.open=String(o);$("#scrim").dataset.open=String(o)};
+$("#scrim").onclick=()=>{$("#side").dataset.open="false";$("#scrim").dataset.open="false"};
+$("#ic-mail").onclick=()=>toast("メッセージ一覧（モック）");
+$("#ic-bell").onclick=()=>toast("お知らせ：宿題の期限が2件近づいています");
+
+load();
+render();
+</script>
 </body>
 </html>
