@@ -86,18 +86,21 @@
 
   /* ===== shell ===== */
   .shell{display:grid;grid-template-columns:236px minmax(0,1fr)}
-  @media (max-width:900px){
-    .shell{grid-template-columns:1fr}
-    .side{position:fixed;inset:56px auto 0 0;width:270px;z-index:35;transform:translateX(-100%);
-      transition:transform .18s ease;overflow-y:auto;box-shadow:var(--sh2)}
-    .side[data-open="true"]{transform:none}
-    .scrim{position:fixed;inset:56px 0 0 0;background:rgba(10,17,32,.4);z-index:34;display:none}
-    .scrim[data-open="true"]{display:block}
-  }
+  @media (max-width:900px){ .shell{grid-template-columns:1fr} }
+  .scrim{display:none}
 
   /* ===== sidebar ===== */
   .side{background:var(--card);border-right:1px solid var(--line);align-self:start;
     position:sticky;top:56px;max-height:calc(100vh - 56px);overflow-y:auto}
+  /* 狭幅ではドロワー。基本ルールの position:sticky を上書きするため、
+     必ずこのブロックより後ろに置くこと（同一詳細度は後勝ち） */
+  @media (max-width:900px){
+    .side{position:fixed;inset:56px auto 0 0;width:min(280px,84vw);max-height:none;z-index:35;
+      transform:translateX(-100%);transition:transform .18s ease;overflow-y:auto;box-shadow:var(--sh2)}
+    .side[data-open="true"]{transform:none}
+    .scrim{position:fixed;inset:56px 0 0 0;background:rgba(10,17,32,.45);z-index:34}
+    .scrim[data-open="true"]{display:block}
+  }
   .modeseg{display:flex;padding:10px 12px 8px;gap:0}
   .modeseg button{flex:1;background:var(--card);border:1px solid var(--line2);color:var(--dim);
     font-size:12.5px;padding:6px 4px;cursor:pointer}
@@ -116,6 +119,10 @@
     padding:8px 14px 8px 30px;text-align:left;color:var(--ink2);font-size:12.5px;border-left:3px solid transparent}
   .nav:hover{background:var(--card2);color:var(--ink)}
   .nav[aria-current="true"]{background:var(--blue-s);color:var(--blue);font-weight:600;border-left-color:var(--blue)}
+  .subhead{padding:7px 14px 3px 30px;font-size:11px;color:var(--dim);font-weight:700;letter-spacing:.04em}
+  .nav.sub{padding-left:42px}
+  .nav.sub::before{content:"└";position:absolute;margin-left:-14px;color:var(--line2);font-size:10px}
+  .nav{position:relative}
   .nav .cnt{margin-left:auto;font-size:10.5px;color:var(--dim)}
   .nav[aria-current="true"] .cnt{color:var(--blue)}
   .navtop{padding-left:14px}
@@ -346,6 +353,31 @@
   .decs{margin:0;padding-left:1.25em;font-size:13.5px;line-height:1.9;color:var(--ink2)}
   .decs li{margin-bottom:3px}
 
+  /* ===== 狭幅での詰め（タップ領域と余白）===== */
+  @media (max-width:900px){
+    .ticon{padding:9px 10px;font-size:16px}
+    .burger{padding:9px 10px;font-size:19px}
+    .link{padding:7px 0;display:inline-block}
+    .b-sm{padding:8px 12px}
+    .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .tabs button{white-space:nowrap;padding:10px 14px}
+    /* テーブルは横スクロールになるので、スクロールできることを見た目で示す */
+    .tablewrap{position:relative}
+    .tablewrap::after{content:"→ 横にスクロールできます";position:absolute;top:-19px;right:2px;
+      font-size:10.5px;color:var(--dim)}
+    .doc{padding:18px 15px 24px}
+    .doctitle{font-size:19px}
+    .acts{padding:13px 13px}
+    .filters{grid-template-columns:1fr}
+    .ptitle{font-size:17px}
+  }
+  @media (max-width:560px){
+    .board{grid-auto-columns:min(78vw,260px)}
+    .libgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+    .lesgrid{grid-template-columns:1fr 1fr;gap:10px}
+    .grid3,.grid2{gap:10px}
+  }
+
   /* ===== admin ===== */
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;text-align:center}
   .metric .lb{font-size:12.5px;font-weight:700;margin-bottom:10px}
@@ -519,7 +551,7 @@ const CATS = [
     L("Section1","構築と精度の調整","16:20",false,"実際に構築し、狙った回答が出ない場合の調整方法を解説します。")]},
 ]},
 
-{ id:"sales-free", kind:"practice", num:"営業", name:"営業：無料でできる施策", desc:"お金をかけずに反応を取る。まずここだけで案件は取れる。", courses:[
+{ id:"sales-free", kind:"practice", num:"営業", group:"営業", name:"無料編", desc:"お金をかけずに反応を取る。まずここだけで案件は取れる。", courses:[
   { id:"sf-li-prof", badge:"LI", tool:"LinkedIn", title:"LinkedIn プロフィールの作り方", sub:"見られる前提で整える", tier:"standard",
     about:["発注したくなるプロフィールにする","検索で見つかる状態にする"], lessons:[
     L("Section0","なぜLinkedInが法人営業に向くのか","8:20",false,"決裁者本人に直接届く導線があり、無料の範囲でも接触できるため、法人営業の入口として機能します。"),
@@ -550,7 +582,7 @@ const CATS = [
     L("Section1","声のかけ方と頼み方","10:15",false,"重くならない声のかけ方を、文面つきで解説します。",["声をかける候補を10人書き出す"])]},
 ]},
 
-{ id:"sales-paid", kind:"practice", num:"営業", name:"営業：有料でやる施策", desc:"無料で反応が取れたら、お金をかけて量と質を上げる。", courses:[
+{ id:"sales-paid", kind:"practice", num:"営業", group:"営業", name:"有料編", desc:"無料で反応が取れたら、お金をかけて量と質を上げる。", courses:[
   { id:"sp-nav", badge:"Nav", tool:"LinkedIn", title:"Sales Navigatorの使い方", sub:"狙った決裁者だけを抽出する", tier:"standard",
     about:["検索条件の組み方","リスト化と運用"], lessons:[
     L("Section0","無料アカウントとの違い","8:10",false,"有料にすると何ができるようになるのか、費用に見合う場面を整理します。"),
@@ -594,7 +626,20 @@ const CATS = [
     about:["最低限の受け皿を用意する","AIで作ってしまう"], lessons:[
     L("Section0","受け皿がないと取りこぼす","7:50",false,"興味を持った相手が問い合わせる場所を用意していないと、接触が無駄になります。"),
     L("Section1","AIで1枚のLPを作る","14:20",false,"中級で学んだバイブコーディングを使って、自分のLPを作ります。",["自分のLPを1枚作る"])]},
-  { id:"mk-ad", badge:"広告", tool:"マーケ", title:"縦型動画広告の基本", sub:"お金をかけて認知を広げる", tier:"elite",
+  { id:"mk-ana", badge:"解析", tool:"アクセス解析", title:"アクセス解析の見方", sub:"数字を見て次の一手を決める", tier:"standard",
+    about:["GA4で最低限見るべき指標を知る","数字から改善点を特定する"], lessons:[
+    L("Section0","何のために数字を見るのか","7:30",false,"感覚で判断せず、どこで人が離脱しているかを数字で特定するために見ます。全部の指標を見る必要はありません。"),
+    L("Section1","GA4の画面と最低限の指標","14:20",false,"ユーザー数・セッション・直帰率・コンバージョンなど、最初に見るべき指標だけに絞って解説します。",["自分のサイトにGA4を設置する"]),
+    L("Section2","流入元の見方（どこから来たか）","11:45",false,"検索・SNS・広告・直接流入をどう見分け、どれを伸ばすか判断する方法を解説します。"),
+    L("Section3","改善点の当て方","12:10",false,"数字を見て「次に何を直すか」を決めるまでの手順を、実例で追います。",["自分のサイトの課題を3つ書き出す"])]},
+  { id:"mk-listing", badge:"広告", tool:"リスティング広告", title:"リスティング広告の基礎知識", sub:"検索連動型広告の仕組みと始め方", tier:"standard",
+    about:["検索広告の仕組みを理解する","予算を溶かさない出し方を知る"], lessons:[
+    L("Section0","リスティング広告とは","9:15",false,"検索結果に出る広告の仕組みと、なぜ「今すぐ客」に強いのかを解説します。SEOとの違いも整理します。"),
+    L("Section1","広告用語の基礎（CPC・CPA・ROAS）","11:40",false,"クリック単価・獲得単価・広告費用対効果など、最低限おさえる用語を計算式つきで解説します。"),
+    L("Section2","キーワードの選び方","14:30",false,"買う気のあるキーワードと、費用だけかかるキーワードの見分け方を解説します。除外キーワードの設定も扱います。",["自分の商材のキーワードを20個出す"]),
+    L("Section3","予算と入札の考え方","12:55",false,"いくらから始めるべきか、日予算と入札戦略の決め方を解説します。"),
+    L("Section4","広告文の作り方","10:20",false,"クリックされる広告文の型を、実例を分解して解説します。",["広告文を3パターン作る"])]},
+  { id:"mk-ad", badge:"動画", tool:"マーケ", title:"縦型動画広告の基本", sub:"お金をかけて認知を広げる", tier:"elite",
     about:["広告を出す前の条件","最低限の作り方"], lessons:[
     L("Section0","広告を出していい段階","9:10",false,"実績と受け皿が揃う前に広告を出すと溶けるだけ、という判断基準を解説します。"),
     L("Section1","縦型動画の作り方","13:40",false,"個人でも作れる範囲での、動画広告の構成を解説します。")]},
@@ -863,7 +908,8 @@ const cSecs = c => c.lessons.reduce((a,l)=>a+secs(l.dur),0);
 const fmtM = s => {const m=Math.max(1,Math.round(s/60));return m>=60?`${Math.floor(m/60)}時間${m%60}分`:`${m}分`};
 const NEXT_SESSION = "2026/07/29 20:00";
 /* レベル別は「初級｜AI初心者」、実践は名前だけ。工程(FLOW)とは別軸 */
-const catLabel = ct => ct.kind==="level" ? `${ct.num}｜${ct.name}` : ct.name;
+const catLabel = ct => ct.kind==="level" ? `${ct.num}｜${ct.name}`
+  : ct.group ? `${ct.group}：${ct.name}` : ct.name;
 const levelCats = () => CATS.filter(c=>c.kind==="level");
 const practiceCats = () => CATS.filter(c=>c.kind==="practice");
 const flowCur = () => FLOW.find(f=>f.status==="current") || FLOW[0];
@@ -974,9 +1020,12 @@ function renderSide(){
     const pOpen=S.groups.has("g-practice");
     h+=`<div class="navgroup" data-open="${pOpen}">
       <button class="ghead" data-g="g-practice"><span class="ic">🎯</span>実践コース<span class="cv">⌄</span></button>
-      <div class="glist">${practiceCats().map(st=>`
-        <button class="nav" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
-        ${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`).join("")}</div></div>`;
+      <div class="glist">${(()=>{let prev=null;return practiceCats().map(st=>{
+        /* 同じ group（例：営業）が続く場合は親見出しを一度だけ出し、子を字下げする */
+        const head = st.group && st.group!==prev ? `<div class="subhead">${st.group}</div>` : "";
+        prev = st.group||null;
+        return head+`<button class="nav${st.group?" sub":""}" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
+        ${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`}).join("")})()}</div></div>`;
     const tOpen=S.groups.has("g-tool");
     h+=`<div class="navgroup" data-open="${tOpen}">
       <button class="ghead" data-g="g-tool"><span class="ic">🧰</span>ツール別コース<span class="cv">⌄</span></button>
