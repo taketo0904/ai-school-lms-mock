@@ -379,6 +379,120 @@
   }
 
 
+
+  /* ===== ホーム：呼びかけ帯 ===== */
+  .hero{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:16px;align-items:center;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;
+    box-shadow:var(--sh1);margin-bottom:16px}
+  @media (max-width:720px){.hero{grid-template-columns:40px minmax(0,1fr);}
+    .hero .b-lg{grid-column:1/-1;width:100%}}
+  .heroav{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:19px;font-weight:700;
+    background:linear-gradient(135deg,var(--blue),var(--mag));color:#fff}
+  @media (max-width:720px){.heroav{width:40px;height:40px;font-size:15px}}
+  .herotx p{margin:0 0 7px;font-size:13.5px;line-height:1.7}
+  .steps{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--dim);flex-wrap:wrap}
+  .dots{display:flex;gap:4px}
+  .dots i{width:22px;height:4px;border-radius:999px;background:var(--line2);display:block}
+  .dots i.on{background:var(--mag)}
+
+  /* ===== 道のり ===== */
+  .journey{margin-bottom:4px}
+  .jstats{display:flex;gap:18px;flex-wrap:wrap}
+  .jstats>div{text-align:center;min-width:52px}
+  .jsn{display:block;font-size:19px;font-weight:700;line-height:1.2}
+  .jsl{display:block;font-size:10px;color:var(--dim)}
+  .jline{position:relative;padding:6px 0 46px}
+  .jtrack{height:4px;border-radius:999px;background:var(--line);position:relative;overflow:hidden}
+  .jtrack>i{display:block;height:100%;background:linear-gradient(90deg,var(--mag),var(--blue))}
+  .jpts{position:relative;height:0}
+  .jpt{position:absolute;top:-9px;transform:translateX(-50%);text-align:center;white-space:nowrap}
+  .jpt:first-child{left:0;transform:none;text-align:left}
+  .jpt.end{left:auto;right:0;transform:none;text-align:right}
+  .jd{width:13px;height:13px;border-radius:50%;background:var(--card);border:2px solid var(--line2);display:block;margin:0 auto 5px}
+  .jpt:first-child .jd,.jpt.end .jd{margin-left:0}
+  .jpt.end .jd{margin-left:auto;margin-right:0}
+  .jpt.done .jd{background:var(--mag);border-color:var(--mag)}
+  .jpt.now .jd{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 4px var(--blue-s)}
+  .jpt b{display:block;font-size:11.5px}
+  .jpt .js{display:block;font-size:10px;color:var(--dim)}
+  @media (max-width:700px){.jpt:not(:first-child):not(.end):not(.now){display:none}}
+  .jfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border-top:1px solid var(--line);padding-top:12px;flex-wrap:wrap}
+
+  /* ===== バナー ===== */
+  .banners{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:16px}
+  .bnr{text-align:left;border:none;border-radius:var(--r);padding:16px 18px;cursor:pointer;color:#fff;
+    display:flex;flex-direction:column;gap:5px;min-height:112px}
+  .bnr.a{background:linear-gradient(130deg,#8d1b5e,#1f3f86)}
+  .bnr.b{background:linear-gradient(130deg,#12507e,#0d7a63)}
+  .bnr.c{background:linear-gradient(130deg,#3a3f7a,#7a3560)}
+  .bnr:hover{filter:brightness(1.08)}
+  .bnrtag{font-size:10px;letter-spacing:.1em;opacity:.9;background:rgba(255,255,255,.2);
+    padding:2px 8px;border-radius:999px;align-self:flex-start}
+  .bnr b{font-size:16px}
+  .bnrs{font-size:11.5px;line-height:1.6;opacity:.92}
+
+  /* ===== イベント ===== */
+  .evwrap{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(236px,1fr);gap:12px;overflow-x:auto;padding-bottom:8px}
+  .evday{display:flex;flex-direction:column;gap:8px;min-width:236px}
+  .evdate{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;padding-bottom:4px;
+    border-bottom:2px solid var(--line)}
+  .evdate span{font-size:11px;color:var(--dim);font-weight:400}
+  .evc{display:flex;flex-direction:column;gap:4px;text-align:left;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r2);padding:10px 12px;cursor:pointer;box-shadow:var(--sh1)}
+  .evc:hover{border-color:var(--blue)}
+  .evt{font-size:11px;color:var(--dim);font-weight:700}
+  .evc b{font-size:12.5px;line-height:1.5}
+  .evk{font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:3px;align-self:flex-start}
+  .k-相談{background:var(--blue-s);color:var(--blue)}
+  .k-作業{background:var(--ok-s);color:var(--ok)}
+  .k-ウェビナー{background:var(--mag-s);color:var(--mag)}
+  .k-事例{background:var(--warn-s);color:var(--warn)}
+  .k-実践{background:var(--card2);color:var(--ink2)}
+  .evn{font-size:10.5px;color:var(--dim);line-height:1.5}
+  .evlist{display:flex;flex-direction:column;gap:8px}
+  .evrow{display:grid;grid-template-columns:104px 62px minmax(0,1fr) auto;gap:12px;align-items:center;
+    padding:9px 0;border-top:1px solid var(--line)}
+  .evrow:first-child{border-top:none}
+  @media (max-width:660px){.evrow{grid-template-columns:1fr auto}.evrow .evk{grid-row:1}}
+
+  /* ===== お知らせ ===== */
+  .newslist{overflow:hidden}
+  .newsrow{width:100%;display:grid;grid-template-columns:92px auto minmax(0,1fr);gap:12px;align-items:center;
+    padding:11px 15px;border-top:1px solid var(--line);background:none;border-left:none;border-right:none;
+    border-bottom:none;text-align:left;cursor:pointer}
+  .newsrow.static{cursor:default}
+  .newsrow:first-child{border-top:none}
+  .newsrow:not(.static):hover{background:var(--card2)}
+  .nwd{font-size:11.5px;color:var(--dim)}
+  .nwt{font-size:12.5px}
+  @media (max-width:600px){.newsrow{grid-template-columns:auto minmax(0,1fr)}.newsrow .nwd{grid-column:1/-1}}
+
+  /* ===== AIコーチ ===== */
+  #coachdock{position:fixed;right:18px;bottom:18px;z-index:50}
+  @media (max-width:600px){#coachdock{right:12px;bottom:12px}}
+  .coachfab{display:flex;align-items:center;gap:8px;background:var(--blue);color:var(--blue-ink);
+    border:none;border-radius:999px;padding:11px 18px;font-size:13px;font-weight:600;cursor:pointer;
+    box-shadow:var(--sh2)}
+  .coachfab:hover{background:var(--blue-d)}
+  .coachpanel{width:min(340px,calc(100vw - 24px));background:var(--card);border:1px solid var(--line2);
+    border-radius:var(--r);box-shadow:var(--sh2);display:flex;flex-direction:column;overflow:hidden}
+  .cphead{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);
+    background:var(--blue);color:var(--blue-ink)}
+  .cphead b{font-size:13.5px}
+  .cpx{background:none;border:none;color:inherit;font-size:17px;cursor:pointer;line-height:1;padding:0 2px}
+  .cpbody{padding:13px 14px;display:flex;flex-direction:column;gap:9px;max-height:270px;overflow-y:auto}
+  .cpmsg{font-size:12.5px;line-height:1.75;padding:9px 11px;border-radius:var(--r2);max-width:92%}
+  .cpmsg.bot{background:var(--card2);color:var(--ink2);align-self:flex-start}
+  .cpmsg.me{background:var(--blue);color:var(--blue-ink);align-self:flex-end}
+  .cpquick{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 11px}
+  .cpquick button{background:var(--card);border:1px solid var(--line2);border-radius:999px;
+    font-size:11px;padding:5px 10px;cursor:pointer;color:var(--ink2)}
+  .cpquick button:hover{background:var(--blue-s);border-color:var(--blue);color:var(--blue)}
+  .cpin{display:flex;gap:7px;padding:11px 14px;border-top:1px solid var(--line)}
+  .cpin input{flex:1;min-width:0;background:var(--card);border:1px solid var(--line2);
+    border-radius:var(--r2);padding:8px 10px;font-size:12.5px}
+
   /* ===== コーチング：キックオフ ===== */
   .kick{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:20px;background:var(--blue-s);
     border:1px solid var(--blue);border-radius:var(--r);padding:20px 22px;margin-bottom:20px}
@@ -550,6 +664,7 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="coachdock"></div>
 
 <script>
 /* ============ データ ============ */
@@ -1011,10 +1126,10 @@ const $v  = s => document.querySelector("#view "+s);
 const V = () => $("#view");
 
 let S = {
-  mode:"user", page:"dash", cid:null, li:0,
-  tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prog","g-mail"]),
+  mode:"user", page:"home", cid:null, li:0,
+  tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-info","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prog","g-mail"]),
   q:"", qmode:"course", filter:"all", libFilter:"all", tmpl:"t1", chartRange:7, statTab:"amount",
-  page1:1, page2:1, done:null, cotab:"program", sid:"s3", iid:"h1", ws:"w1", vu:"中川 雄斗",
+  page1:1, page2:1, done:null, cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
 };
 
 function save(){
@@ -1103,9 +1218,14 @@ function go(page,params){
 /* 受講生側は2本柱。eラーニング（親／コンテンツはここに集約）とコーチング（タスク管理＋議事録） */
 const USERNAV = [
   { id:"g-lib", ic:"📘", label:"eラーニング", items:[
+    { p:"home", label:"ホーム" },
     { p:"dash", label:"マイダッシュボード" },
     { p:"library", label:"コース一覧（全て表示）" },
     { p:"fav", label:"お気に入りコンテンツ" },
+  ]},
+  { id:"g-info", ic:"📣", label:"情報", items:[
+    { p:"news", label:"お知らせ" },
+    { p:"events", label:"イベント" },
   ]},
   { id:"g-co", ic:"✅", label:"コーチング", items:[
     { p:"co-prog", label:"プログラム" },
@@ -1825,6 +1945,215 @@ function wireProgram(){
   if($v("#k-ws"))$v("#k-ws").onclick=()=>go("worksheet");
   $$v("[data-ws2]").forEach(b=>b.onclick=()=>go("worksheet",{ws:b.dataset.ws2}));
   $$v("[data-oc]").forEach(b=>b.onclick=()=>go("course",{cid:b.dataset.oc}));
+}
+
+
+/* ============ ホーム画面のデータ ============ */
+const ME = { name:"中川", joined:"2026/06/24", streak:6, hours:4.2, watched:3, badges:2, targetH:10 };
+
+const NEWS = [
+  { d:"2026/07/28", cat:"アップデート", t:"マーケ実践に「Meta広告」「ホワイトペーパー」のコースを追加しました" },
+  { d:"2026/07/25", cat:"イベント", t:"8/5（水）事例シェア会：AI業務代行で月3万円の継続契約を取った話" },
+  { d:"2026/07/22", cat:"アップデート", t:"コーチングにワークシート（現状把握・GOAL設計）を追加しました" },
+  { d:"2026/07/18", cat:"お知らせ", t:"よろず相談室の開催枠を平日毎日に拡大しました" },
+];
+
+const BANNERS = [
+  { tag:"来月開催", t:"道場合宿 2026 夏", s:"1日で商材を決めて、その場で営業を送るところまで。GOAL設計から伴走します。", c:"a" },
+  { tag:"毎週金曜", t:"事例シェア会", s:"実際に受注した人が、金額と経緯をそのまま話す会。質問し放題です。", c:"b" },
+  { tag:"はじめての方へ", t:"入門ガイド", s:"最初の2週間で何をすればいいか。迷ったらここから。", c:"c" },
+];
+
+const EVENTS = [
+  { day:"7/29", w:"水", today:true, list:[
+    { t:"11:00 - 13:00", n:"よろず相談室（昼の部）", k:"相談", note:"予約不要・出入り自由" },
+    { t:"13:30 - 16:30", n:"もくもく作業会", k:"作業", note:"課題を持ち込んで進める" },
+    { t:"19:00 - 20:00", n:"ウェビナー：AIの最前線", k:"ウェビナー", note:"今月出た新機能の総ざらい" },
+    { t:"21:00 - 23:00", n:"よろず相談室（夜の部）", k:"相談", note:"予約不要・出入り自由" },
+  ]},
+  { day:"7/30", w:"木", today:false, list:[
+    { t:"11:00 - 13:00", n:"よろず相談室（昼の部）", k:"相談", note:"予約不要・出入り自由" },
+    { t:"20:00 - 21:00", n:"商談ロープレ会", k:"実践", note:"コーチ相手に本番形式" },
+    { t:"21:30 - 22:30", n:"ウェビナー：バイブコーディング実演", k:"ウェビナー", note:"その場でツールを1本作る" },
+  ]},
+  { day:"7/31", w:"金", today:false, list:[
+    { t:"12:00 - 13:00", n:"事例シェア会", k:"事例", note:"受注した人が金額込みで話す" },
+    { t:"19:00 - 21:00", n:"もくもく作業会", k:"作業", note:"課題を持ち込んで進める" },
+  ]},
+];
+
+/* AIコーチのクイック返答。モックなので定型 */
+const COACHQ = [
+  { q:"今日は何からやればいい？", a:"未完了の課題が4件あります。期限が近いのは「AI初心者コース Section2を完了する（7/29）」です。10分あれば1レッスン進みます。まずはそこからどうぞ。" },
+  { q:"GOALがまだ決まっていない", a:"GOAL設計は一人だと難しいところです。先にワークシート01の現状把握（8領域の満足度）だけ埋めてください。次回のセッションで、そこを起点に一緒に言語化します。" },
+  { q:"営業のやり方が分からない", a:"いまの工程は「02 商材化」なので、営業はまだ先で大丈夫です。商材が1つに決まってから、営業の無料編（LinkedInプロフィール→フォーム営業）に進みます。" },
+  { q:"学習が止まってしまった", a:"止まる原因はたいてい「次に何をするか決まっていない」ことです。原因を探すより、5分で終わるものを1つ片付けるほうが早く戻れます。よろず相談室にそのまま来ていただいても構いません。" },
+];
+
+/* ============ ホーム ============ */
+function vHome(){
+  const r=resume(), un=allHw().filter(h=>!isDone(h));
+  const cur=flowCur();
+  const kicked=wsGet("kickoff:done")==="1";
+  const step=[kicked,!!wsGet("sat:work"),!!wsGet("g:qual"),un.length<allHw().length,ME.hours>=ME.targetH].filter(Boolean).length;
+  const pctH=Math.min(100,Math.round(ME.hours/ME.targetH*100));
+
+  /* 1. 呼びかけ帯：いま一番やってほしいことを1つだけ出す */
+  const call = !kicked
+    ? { t:`${ME.name}さん、まずはキックオフ面談を予約しましょう。ここで何がしたいかを2時間かけて全部出し切ります。`, b:"日程を予約する", go:()=>{S.cotab="program";go("coaching")} }
+    : un.length
+    ? { t:`${ME.name}さん、コーチからの課題が${un.length}件あります。期限が近いものから片付けましょう。`, b:"やることを見る", go:()=>{S.cotab="board";go("coaching")} }
+    : { t:`${ME.name}さん、今週のふりかえりはまだですか？記録するとコーチが次回までに目を通します。`, b:"ふりかえりを書く", go:()=>toast("ふりかえりフォーム（モック）") };
+
+  let h=`<div class="hero">
+    <div class="heroav">${ME.name[0]}</div>
+    <div class="herotx">
+      <p>${call.t}</p>
+      <div class="steps"><span class="tnum">STEP ${step} / 5</span>
+        <span class="dots">${[1,2,3,4,5].map(i=>`<i class="${i<=step?"on":""}"></i>`).join("")}</span>
+        <button class="link" id="h-steps">全ステップを表示</button></div></div>
+    <button class="b b-pri b-lg" id="h-call">${call.b}</button></div>`;
+
+  /* 2. 道のり（ジャーニー）＋ 数字 */
+  h+=`<div class="card pad journey">
+    <div class="row" style="justify-content:space-between;margin-bottom:14px">
+      <div class="row" style="gap:9px"><b style="font-size:15px">あなたの道のり</b>
+        <button class="link" id="h-j">詳細を見る →</button></div>
+      <div class="jstats">
+        <div><span class="jsn tnum">${ME.streak}</span><span class="jsl">連続学習（日）</span></div>
+        <div><span class="jsn tnum">${ME.hours}</span><span class="jsl">累計学習（時間）</span></div>
+        <div><span class="jsn tnum">${ME.watched}</span><span class="jsl">視聴（本）</span></div>
+        <div><span class="jsn tnum">${ME.badges}</span><span class="jsl">バッジ</span></div></div></div>
+    <div class="jline">
+      <div class="jtrack"><i style="width:${pctH}%"></i></div>
+      <div class="jpts">
+        <div class="jpt done"><span class="jd"></span><b>入門</b><span class="js tnum">${ME.joined}</span></div>
+        <div class="jpt now" style="left:${pctH}%"><span class="jd"></span><b>現在</b><span class="js">${cur.num} ${cur.name}</span></div>
+        <div class="jpt" style="left:72%"><span class="jd"></span><b>学習10時間</b><span class="js tnum">あと${(ME.targetH-ME.hours).toFixed(1)}時間</span></div>
+        <div class="jpt end"><span class="jd"></span><b>GOAL</b><span class="js">${wsGet("g:qual")?"設定済み":"これから決める"}</span></div>
+      </div></div>
+    <div class="jfoot">
+      <div><b style="font-size:13px">今月のふりかえり</b>
+        <span style="font-size:11.5px;color:var(--dim);display:block">3分で書けます。コーチが次回までに目を通します。</span></div>
+      <button class="b" id="h-look">記録する</button></div></div>`;
+
+  /* 3. 続きから */
+  if(r) h+=`<div class="resume" style="margin-top:16px">
+    <div><div class="eb">続きから</div>
+      <h2>${r.c.lessons[r.i].sec}　${r.c.lessons[r.i].title}</h2>
+      <div class="wh">${catLabel(r.st)} ／ ${r.c.title} ／ ${r.c.lessons[r.i].dur}</div></div>
+    <button class="b b-pri" id="h-go">レッスンを再開する</button></div>`;
+
+  /* 4. バナー */
+  h+=`<div class="banners">${BANNERS.map(b=>`<button class="bnr ${b.c}" data-bn="${b.t}">
+    <span class="bnrtag">${b.tag}</span><b>${b.t}</b><span class="bnrs">${b.s}</span></button>`).join("")}</div>`;
+
+  /* 5. イベント */
+  h+=`<div class="row" style="justify-content:space-between;margin:22px 0 12px">
+      <b style="font-size:15px">イベントの予定</b><button class="link" id="h-ev">すべて見る →</button></div>
+    <div class="evwrap">${EVENTS.map(d=>`<div class="evday">
+      <div class="evdate">${d.day}<span>（${d.w}）</span>${d.today?`<span class="chip b">今日</span>`:""}</div>
+      ${d.list.map(e=>`<button class="evc" data-ev="${e.n}">
+        <span class="evt tnum">${e.t}</span><b>${e.n}</b>
+        <span class="evk k-${e.k}">${e.k}</span><span class="evn">${e.note}</span></button>`).join("")}
+    </div>`).join("")}</div>`;
+
+  /* 6. おすすめコース */
+  const rec=recommend();
+  h+=`<div class="row" style="justify-content:space-between;margin:24px 0 12px">
+      <b style="font-size:15px">あなたに勧めるコース</b><button class="link" id="h-all">コース一覧へ →</button></div>
+    <p style="font-size:12px;color:var(--dim);margin:-6px 0 12px">いまの工程「${cur.num} ${cur.name}」に紐づくコースを先に出しています。</p>
+    <div class="libgrid">${rec.map(x=>courseCard(x.st,x.c)).join("")}</div>`;
+
+  /* 7. お知らせ */
+  h+=`<div class="row" style="justify-content:space-between;margin:24px 0 12px">
+      <b style="font-size:15px">お知らせ</b><button class="link" id="h-news">すべて見る →</button></div>
+    <div class="card newslist">${NEWS.slice(0,4).map(n=>`<button class="newsrow" data-nw="${n.t}">
+      <span class="tnum nwd">${n.d}</span><span class="chip">${n.cat}</span><span class="nwt">${n.t}</span></button>`).join("")}</div>`;
+
+  V().innerHTML=h;
+  $v("#h-call").onclick=call.go;
+  $v("#h-steps").onclick=()=>toast(`いまSTEP ${step}／5。次は${["キックオフ面談の予約","現状把握シートの記入","GOALの言語化","課題の消化","学習10時間の到達"][Math.min(step,4)]}です`);
+  $v("#h-j").onclick=()=>{S.cotab="program";go("coaching")};
+  $v("#h-look").onclick=()=>toast("ふりかえりフォーム（モック）");
+  if($v("#h-go"))$v("#h-go").onclick=()=>go("lesson",{cid:r.c.id,li:r.i});
+  $v("#h-ev").onclick=()=>go("events");
+  $v("#h-all").onclick=()=>go("library");
+  $v("#h-news").onclick=()=>go("news");
+  $$v("[data-bn]").forEach(b=>b.onclick=()=>toast(`${b.dataset.bn} の詳細（モック）`));
+  $$v("[data-ev]").forEach(b=>b.onclick=()=>toast(`${b.dataset.ev} に申し込みました（モック）`));
+  $$v("[data-nw]").forEach(b=>b.onclick=()=>go("news"));
+  wireCards();
+}
+
+/* いまの工程に紐づくコースを優先して勧める */
+function recommend(){
+  const cur=flowCur();
+  const ids=new Set(cur.courses);
+  const catIds=new Set(cur.cats);
+  const all=allCourses().filter(x=>!locked(x.c));
+  const first=all.filter(x=>ids.has(x.c.id));
+  const second=all.filter(x=>!ids.has(x.c.id)&&catIds.has(x.st.id)&&pct(x.c)<100);
+  const third=all.filter(x=>!ids.has(x.c.id)&&!catIds.has(x.st.id)&&pct(x.c)===0);
+  return [...first,...second,...third].slice(0,10);
+}
+
+/* ============ お知らせ ============ */
+function vNews(){
+  const parts=[{t:"ホーム",go:()=>go("home")},{t:"お知らせ"}];
+  let h=crumb(parts)+`<h1 class="ptitle">お知らせ</h1>
+    <div class="card newslist">${NEWS.map(n=>`<div class="newsrow static">
+      <span class="tnum nwd">${n.d}</span><span class="chip">${n.cat}</span><span class="nwt">${n.t}</span></div>`).join("")}</div>`;
+  V().innerHTML=h; wireCrumb(parts);
+}
+
+/* ============ イベント ============ */
+function vEvents(){
+  const parts=[{t:"ホーム",go:()=>go("home")},{t:"イベント"}];
+  let h=crumb(parts)+`<h1 class="ptitle">イベント</h1>
+    <p style="font-size:13px;color:var(--dim);margin:-6px 0 16px;max-width:64ch">
+      よろず相談室は予約不要で出入り自由です。もくもく作業会は課題を持ち込んで進める時間、
+      事例シェア会は実際に受注した人が金額込みで話す会です。</p>`;
+  h+=EVENTS.map(d=>`<div class="card pad" style="margin-bottom:12px">
+    <div class="row" style="gap:8px;margin-bottom:10px"><b style="font-size:15px">${d.day}（${d.w}）</b>
+      ${d.today?`<span class="chip b">今日</span>`:""}</div>
+    <div class="evlist">${d.list.map(e=>`<div class="evrow">
+      <span class="tnum evt">${e.t}</span><span class="evk k-${e.k}">${e.k}</span>
+      <span><b style="font-size:13px">${e.n}</b><span class="evn" style="display:block">${e.note}</span></span>
+      <button class="b b-sm" data-ev2="${e.n}">申し込む</button></div>`).join("")}</div></div>`).join("");
+  V().innerHTML=h; wireCrumb(parts);
+  $$v("[data-ev2]").forEach(b=>b.onclick=()=>toast(`${b.dataset.ev2} に申し込みました（モック）`));
+}
+
+/* ============ AIコーチ（浮かぶ相談パネル）============ */
+function renderCoachPanel(){
+  const el=$("#coachdock");
+  if(!el)return;
+  if(!S.coachOpen){ el.innerHTML=`<button class="coachfab" id="cfab" aria-label="AIコーチに相談する">🎯<span>AIコーチ</span></button>`;
+    $("#cfab").onclick=()=>{S.coachOpen=true;renderCoachPanel()}; return; }
+  el.innerHTML=`<div class="coachpanel" role="dialog" aria-label="AIコーチ">
+    <div class="cphead"><b>AIコーチ</b><span class="grow"></span>
+      <button class="cpx" id="cpmin" aria-label="閉じる">×</button></div>
+    <div class="cpbody" id="cpbody">
+      <div class="cpmsg bot">こんにちは。学習の進め方でもGOALのことでも、詰まっているところをそのまま書いてください。
+        答えられないことは、次回のセッションでコーチに引き継ぎます。</div>
+      ${S.coachLog.map(m=>`<div class="cpmsg ${m.me?"me":"bot"}">${m.t}</div>`).join("")}
+    </div>
+    <div class="cpquick">${COACHQ.map((q,i)=>`<button data-cq="${i}">${q.q}</button>`).join("")}</div>
+    <div class="cpin"><input id="cpi" placeholder="相談したいことを書く" autocomplete="off">
+      <button class="b b-pri b-sm" id="cpsend">送る</button></div></div>`;
+  $("#cpmin").onclick=()=>{S.coachOpen=false;renderCoachPanel()};
+  $$("[data-cq]").forEach(b=>b.onclick=()=>{
+    const q=COACHQ[+b.dataset.cq];
+    S.coachLog.push({me:true,t:q.q}); S.coachLog.push({me:false,t:q.a});
+    renderCoachPanel(); const bd=$("#cpbody"); bd.scrollTop=bd.scrollHeight;
+  });
+  const send=()=>{const v=$("#cpi").value.trim(); if(!v)return;
+    S.coachLog.push({me:true,t:v});
+    S.coachLog.push({me:false,t:"受け取りました。この内容は次回のセッションの議題として、議事録に下書きしておきます。急ぐ場合はよろず相談室にそのまま来てください。"});
+    renderCoachPanel(); const bd=$("#cpbody"); bd.scrollTop=bd.scrollHeight;};
+  $("#cpsend").onclick=send;
+  $("#cpi").onkeydown=e=>{if(e.key==="Enter")send()};
 }
 
 const COTABS = [["program","プログラム"],["board","ボード"],["mins","議事録"],["todo","課題一覧"]];
@@ -2572,14 +2901,18 @@ function vMail(){
 /* ============ ルーター ============ */
 function render(){
   renderSide();
+  renderCoachPanel();
   const P=S.page;
   if(S.mode==="user"){
-    if(P==="dash")vDash();
+    if(P==="home")vHome();
+    else if(P==="dash")vDash();
     else if(P==="course")vCourse();
     else if(P==="lesson")vLesson();
     else if(P==="coaching")vCoaching();
     else if(P==="minutes")vMinutes();
     else if(P==="worksheet")vWorksheet();
+    else if(P==="news")vNews();
+    else if(P==="events")vEvents();
     else if(P==="issue")vIssue();
     else if(P==="fav")libraryView("お気に入りコンテンツ",allCourses().filter(x=>S.favs.has(x.c.id)),"コース詳細の「マイ目標コースに追加」で登録できます。");
     else if(P==="stage"){const st=CATS.find(s=>s.id===S.cid)||CATS[0];
