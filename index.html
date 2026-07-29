@@ -589,6 +589,13 @@
   .cz.goal{background:var(--blue-s);border:1px solid var(--blue)}
   .czl{display:block;font-size:10.5px;font-weight:700;color:var(--dim);margin-bottom:5px}
   .cz.goal .czl{color:var(--blue)}
+  /* 決断シートの番号付きリスト */
+  .declist{display:flex;flex-direction:column;gap:6px}
+  .decrow{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:center}
+  .decn{font-size:11px;color:var(--dim);text-align:right;font-weight:700}
+  .decrow.on .decn{color:var(--blue)}
+  .decrow .wsin{padding:7px 9px;font-size:12.5px}
+  .decrow.on .wsin{border-color:var(--blue);background:var(--blue-s)}
   .wsblock.decide{border-left:3px solid var(--mag)}
   .wsblock.agree{border-left:3px solid var(--blue)}
   @media print{.side,.topbar,.wsnav,.crumb,.b{display:none!important}.wslayout{grid-template-columns:1fr}}
@@ -1654,7 +1661,18 @@ function ti(k,ph){
 }
 function wireWs(){
   $$v(".wsin").forEach(el=>{
-    el.oninput=()=>wsSet(el.dataset.k, el.value);
+    el.oninput=()=>{
+      wsSet(el.dataset.k, el.value);
+      /* 番号付きリストは、再描画せずにその場で件数と行の状態だけ更新する
+         （再描画すると入力中のフォーカスが飛ぶため） */
+      const m=/^(d:(?:not|do)):(\d+)$/.exec(el.dataset.k||"");
+      if(m){
+        const row=el.closest(".decrow"); if(row)row.classList.toggle("on", !!el.value.trim());
+        const chip=$v(`[data-cnt="${m[1]}"]`);
+        if(chip){const n=Array.from({length:10},(_,i)=>wsGet(`${m[1]}:${i+1}`)).filter(Boolean).length;
+          chip.textContent=`${n} / 10`;}
+      }
+    };
   });
   $$v("[data-sat]").forEach(sel=>{
     sel.onchange=()=>{ wsSet(sel.dataset.sat, sel.value); render(); };
@@ -1761,12 +1779,23 @@ function sheetFunc(){
   let h=`<h2 class="wsh2">自己機能</h2>
     <p class="wsdesc">動詞の経歴から出てきたものを、「自己欲求（したい）」「自己能力（できる）」に整理し、
       その2つが人の役に立つ形＝自己機能として言語化します。ここがGOAL設計の土台になります。</p>`;
-  const trio=[["want","自己欲求","どんな時に（発動条件）／誰・何に対して（対象）／どのように（価値提供の手段）"],
-    ["able","自己能力","価値提供の手段をさらに具体化する"],
-    ["func","自己機能","自己欲求・自己能力に由来する、人の役に立つ形"]];
-  h+=`<div class="wsgrid3">${trio.map(([k,n,d])=>`<div class="wsblock" style="margin:0">
+  /* 元シートは項目が分かれている。1つの空欄にまとめると何を書けばいいか分からなくなる */
+  const trio=[
+    ["want","自己欲求","したいこと。ここが動機の源になる。",
+      [["when","どんな時に（発動条件）"],["who","誰・何に対して（対象）"],["how","どのように（価値提供の手段）"]]],
+    ["able","自己能力","できること。手段をさらに具体化する。",
+      [["how1","価値提供の手段を具体化する"],["how2","もう一段、具体化する"]]],
+    ["func","自己機能","自己欲求と自己能力が重なった、人の役に立つ形。",
+      [["when","どんな時に（発動条件）"],["who","誰・何に対して（対象）"],["how","どのように（価値提供の手段）"],["val","何を提供しているのか（提供価値）"]]],
+  ];
+  h+=`<div class="wsgrid3">${trio.map(([k,n,d,fields])=>`<div class="wsblock" style="margin:0">
     <div class="wsblockhead"><b>${n}</b></div>
-    <p class="wsnote" style="margin-bottom:8px">${d}</p>${ta("fn:"+k,"",7)}</div>`).join("")}</div>`;
+    <p class="wsnote" style="margin:0 0 10px">${d}</p>
+    ${fields.map(([fk,fl])=>`<div style="margin-bottom:9px">
+      <label class="wslb">${fl}</label>${ta(`fn:${k}:${fk}`,"",2)}</div>`).join("")}
+  </div>`).join("")}</div>
+  <p class="wsnote" style="margin:-4px 0 14px">
+    自己機能は、左の2つが埋まってからセッション中に一緒に言語化します。先に埋まらなくて構いません。</p>`;
   h+=`<div class="wsblock"><div class="wsblockhead"><b>自己機能を発揮した未来を描く</b></div>
     ${SELFQ.map((q,i)=>`<div style="margin-bottom:12px"><label class="wslb">${q}</label>${ta("fq:"+i,"",3)}</div>`).join("")}</div>`;
   return h;
@@ -1807,10 +1836,23 @@ function sheetDecide(){
   let h=`<h2 class="wsh2">決断</h2>
     <p class="wsdesc">GOALを手に入れるためのパワフルな決断は何ですか。
       コンフォートゾーンを動かすため、身体がゾクゾク・ソワソワする決断が効果的です。</p>`;
+  /* 元シートは1〜10の番号付き。番号があるから10個ひねり出せるので、空欄1つにまとめない */
+  const decList=(k,ph)=>`<div class="declist">${Array.from({length:10},(_,i)=>{
+    const n=i+1; const filled=!!wsGet(`${k}:${n}`);
+    return `<div class="decrow ${filled?"on":""}"><span class="decn tnum">${n}</span>
+      ${ti(`${k}:${n}`, n===1?ph:"")}</div>`}).join("")}</div>`;
+  const cnt=k=>Array.from({length:10},(_,i)=>wsGet(`${k}:${i+1}`)).filter(Boolean).length;
+  h+=`<p class="wsnote" style="margin:-8px 0 12px">
+    それぞれ10個ずつ、具体的な事実で書き出します。埋まらなくても構いませんが、
+    数を出すほど「いまの自分」との差がはっきりします。</p>`;
   h+=`<div class="wsgrid2"><div class="wsblock" style="margin:0">
-      <div class="wsblockhead"><b>GOAL世界の私が「やっていないこと」</b></div>${ta("d:not","1行に1つ、具体的な事実で書く",8)}</div>
+      <div class="wsblockhead"><b>GOAL世界の私が「やっていないこと」</b>
+        <span class="wstag tnum" data-cnt="d:not">${cnt("d:not")} / 10</span></div>
+      ${decList("d:not","例）朝までスマホを見ている")}</div>
     <div class="wsblock" style="margin:0">
-      <div class="wsblockhead"><b>GOAL世界の私が「やっていること」</b></div>${ta("d:do","1行に1つ、具体的な事実で書く",8)}</div></div>`;
+      <div class="wsblockhead"><b>GOAL世界の私が「やっていること」</b>
+        <span class="wstag tnum" data-cnt="d:do">${cnt("d:do")} / 10</span></div>
+      ${decList("d:do","例）毎朝1時間、手を動かしている")}</div></div>`;
   h+=`<div class="wsgrid2" style="margin-top:14px">
     <div class="wsblock decide" style="margin:0"><div class="wsblockhead"><b>何を断つと決めるか？</b></div>
       ${ta("d:cut","",3)}<label class="wslb" style="margin-top:8px">いつやるか</label>${ti("d:cutd","例）2026年9月30日")}</div>
