@@ -589,6 +589,26 @@
   .cz.goal{background:var(--blue-s);border:1px solid var(--blue)}
   .czl{display:block;font-size:10.5px;font-weight:700;color:var(--dim);margin-bottom:5px}
   .cz.goal .czl{color:var(--blue)}
+  /* 業務内容：書き出してから色分けする */
+  .verblist{display:flex;flex-direction:column;gap:6px}
+  .verbrow{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center}
+  .verbn{font-size:11px;color:var(--dim);text-align:right;font-weight:700}
+  .verbrow .wsin{padding:7px 9px;font-size:12.5px}
+  .verbrow.red .wsin{border-color:var(--warn);background:var(--warn-s);color:var(--warn);font-weight:600}
+  .verbrow.blue .wsin{border-color:var(--blue);background:var(--blue-s);color:var(--blue);font-weight:600}
+  .verbsw{display:flex;border:1px solid var(--line2);border-radius:var(--r2);overflow:hidden;flex-shrink:0}
+  .verbsw button{background:var(--card);border:none;border-left:1px solid var(--line);
+    font-size:11px;padding:6px 9px;cursor:pointer;color:var(--dim);min-width:30px}
+  .verbsw button:first-child{border-left:none}
+  .verbsw button:hover{background:var(--card2)}
+  .verbsw button.on{background:var(--ink2);color:var(--paper);font-weight:700}
+  .verbsw button.red.on{background:var(--warn);color:#fff}
+  .verbsw button.blue.on{background:var(--blue);color:var(--blue-ink)}
+  .picklist{display:flex;flex-direction:column;gap:6px}
+  .pickrow{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:center}
+  .pickrow select{padding:7px 9px;font-size:12.5px}
+  .hintbox ul li{margin-bottom:3px}
+
   /* 決断シートの番号付きリスト */
   .declist{display:flex;flex-direction:column;gap:6px}
   .decrow{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:center}
@@ -1677,6 +1697,20 @@ function wireWs(){
   $$v("[data-sat]").forEach(sel=>{
     sel.onchange=()=>{ wsSet(sel.dataset.sat, sel.value); render(); };
   });
+  /* 業務内容の色分け。押した行だけその場で塗り替え、件数を更新する */
+  $$v("[data-cc]").forEach(b=>b.onclick=()=>{
+    const [n,c]=b.dataset.cc.split(":");
+    wsSet(`cr:c:${n}`, c);
+    const row=$v(`[data-vr="${n}"]`);
+    row.className="verbrow "+c;
+    row.querySelectorAll(".verbsw button").forEach(x=>
+      x.classList.toggle("on", x.dataset.cc===b.dataset.cc));
+    ["red","blue"].forEach(k=>{
+      const chip=$v(`[data-ccnt="${k}"]`);
+      if(chip){const cnt=Array.from({length:16},(_,i)=>wsGet(`cr:c:${i+1}`)).filter(v=>v===k).length;
+        chip.textContent=`${k==="red"?"赤":"青"} ${cnt}`;}
+    });
+  });
 }
 
 /* 満足度の平均。定量として見せる */
@@ -1746,23 +1780,59 @@ function sheetHistory(){
 /* ---- 03 自己理解（動詞の経歴） ---- */
 function sheetCareer(){
   let h=`<h2 class="wsh2">自己理解（動詞の経歴シート）</h2>
-    <p class="wsdesc">これまでの職歴を「動詞」で分解します。①〜⑧を埋めたうえで、業務を2色に分けてください。
-      それ以外の欄はセッション中にコーチと一緒に埋めます。</p>
-    <div class="card pad" style="margin-bottom:14px">
-      <div class="row" style="gap:14px">
-        <span class="colorkey red">■ 苦なくやっていたこと／夢中にやっていたこと</span>
-        <span class="colorkey blue">■ とにかく苦しかったこと／身体が拒否反応をしていたもの</span></div>
-      <p class="wsnote" style="margin-top:8px">外部環境は関係なく、その業務単体で見たときにどうだったかで分けます。</p></div>`;
+    <p class="wsdesc">これまでの職歴を「動詞」で分解します。①〜⑧を埋め、業務を書き出してから色分けしてください。
+      その先の分解はセッション中にコーチと一緒に進めます。</p>`;
   const fields=[["c1","①所属していた組織","株式会社〇〇"],["c2","②どんな事業をしている組織なのか？","ToCのリフォームを提供している"],
     ["c3","③所属していた期間","2年"],["c4","④部署","営業"],["c5","⑤役職（マネジメント経験ありは人数も）","プレイヤー"],
     ["c6","⑥何をする部署でどんな役職なのか？","ToCでリフォームの営業をしてお客様に工事を提案する"]];
   h+=`<div class="wsblock"><div class="wsblockhead"><b>直近の経歴</b><span class="wstag">1社目</span></div>
     <div class="wsgrid2">${fields.map(([k,l,ex])=>`<div><label class="wslb">${l}</label>${ti("cr:"+k,"例）"+ex)}</div>`).join("")}</div>
-    <div class="wsgrid2" style="margin-top:12px">
-      <div><label class="wslb">⑦業務内容<span class="wstag red">夢中だったもの</span></label>${ta("cr:red","1行に1つ書く",6)}</div>
-      <div><label class="wslb">⑦業務内容<span class="wstag blue">苦しかったもの</span></label>${ta("cr:blue","1行に1つ書く",6)}</div></div>
     <div style="margin-top:12px"><label class="wslb">⑧残した成果・褒められたこと</label>${ta("cr:win","例）年間売上1位／説明が上手／よく話を理解し整理している",4)}</div>
   </div>`;
+
+  /* ⑦業務内容。元シートの流れどおり「まず全部書き出す → あとから色分けする」 */
+  const N=16;
+  const nRed=Array.from({length:N},(_,i)=>wsGet(`cr:c:${i+1}`)).filter(c=>c==="red").length;
+  const nBlue=Array.from({length:N},(_,i)=>wsGet(`cr:c:${i+1}`)).filter(c=>c==="blue").length;
+  h+=`<div class="wsblock"><div class="wsblockhead"><b>⑦業務内容</b>
+      <span class="wstag red tnum" data-ccnt="red">赤 ${nRed}</span>
+      <span class="wstag blue tnum" data-ccnt="blue">青 ${nBlue}</span></div>
+    <p class="wsnote" style="margin:0 0 12px">
+      <b>まず、やっていた業務を思い出せるだけ書き出してください。</b>
+      分類は後からで構いません。全部出してから、1行ずつ赤か青を選びます。</p>
+    <div class="verblist">${Array.from({length:N},(_,i)=>{const n=i+1;const c=wsGet(`cr:c:${n}`);
+      return `<div class="verbrow ${c}" data-vr="${n}">
+        <span class="verbn tnum">${n}</span>
+        <input class="wsin" data-k="cr:t:${n}" value="${wsGet(`cr:t:${n}`)}" placeholder="${n===1?"例）ヒアリング":""}">
+        <span class="verbsw">
+          <button data-cc="${n}:" class="${!c?"on":""}" title="未分類">—</button>
+          <button data-cc="${n}:red" class="red ${c==="red"?"on":""}" title="夢中だった">赤</button>
+          <button data-cc="${n}:blue" class="blue ${c==="blue"?"on":""}" title="苦しかった">青</button>
+        </span></div>`}).join("")}</div>
+    <div class="hintbox" style="margin-top:12px">
+      <b>色分けの基準</b>
+      <ul><li><span class="colorkey red">赤</span>　苦なくやっていたこと／夢中にやっていたこと</li>
+        <li><span class="colorkey blue">青</span>　とにかく苦しかったこと／身体が拒否反応をしていたもの</li></ul>
+      <p class="wsnote" style="margin-top:6px">外部環境（上司・待遇など）は関係なく、その業務単体で見たときにどうだったかで分けます。</p></div>
+  </div>`;
+
+  /* 色分けが終わったら、そこから優先順位の高いものを選ぶ */
+  const picks=(kind,label)=>{
+    const items=Array.from({length:N},(_,i)=>({n:i+1,t:wsGet(`cr:t:${i+1}`),c:wsGet(`cr:c:${i+1}`)}))
+      .filter(x=>x.c===kind&&x.t.trim());
+    return `<div class="wsblock" style="margin:0"><div class="wsblockhead"><b>${label}</b>
+        <span class="wstag tnum">${items.length}件から選ぶ</span></div>
+      ${items.length?`<div class="picklist">${[1,2,3,4,5,6].map(i=>`<div class="pickrow">
+          <span class="verbn tnum">${i}</span>
+          <select class="wsin" data-k="cr:p${kind}:${i}">
+            <option value="">選択してください</option>
+            ${items.map(x=>`<option ${wsGet(`cr:p${kind}:${i}`)===x.t?"selected":""}>${x.t}</option>`).join("")}
+          </select></div>`).join("")}</div>`
+        :`<p class="wsnote" style="margin:0">上の一覧で${kind==="red"?"赤":"青"}を選ぶと、ここから優先順位を付けられます。</p>`}
+    </div>`;
+  };
+  h+=`<div class="wsgrid2" style="margin-bottom:12px">
+    ${picks("red","特に優先順位が高い赤の業務")}${picks("blue","特に優先順位が高い青の業務")}</div>`;
   h+=`<div class="wsblock"><div class="wsblockhead"><b>夢中だった業務の分解</b><span class="wstag">セッションで実施</span></div>
     <p class="wsnote" style="margin-bottom:10px">最も優先順位の高い業務を1つ選び、ステップに割ってから「何が自分を夢中にさせているのか」を言語化します。</p>
     <div class="wsgrid2">
