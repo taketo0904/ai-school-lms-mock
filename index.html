@@ -636,6 +636,29 @@
   .demobox b{font-size:15px;display:block;margin-bottom:3px}
   .demobox p{margin:0;font-size:12.5px;color:var(--ink2);max-width:46ch}
 
+
+  /* アカウント設計 */
+  .rolegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+  .rolecard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--sh1)}
+  .rolecard p{margin:0;font-size:12px;color:var(--ink2);line-height:1.75}
+  .pm{font-weight:700}
+  .pm-y{color:var(--ok)}
+  .pm-p{color:var(--warn)}
+  .pm-n{color:var(--line2)}
+  /* アップロード */
+  .uplayout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+  @media (max-width:900px){.uplayout{grid-template-columns:1fr}}
+  .dropzone{border:2px dashed var(--line2);border-radius:var(--r);padding:34px 20px;text-align:center;
+    background:var(--card);display:flex;flex-direction:column;align-items:center;gap:5px}
+  .dropzone b{font-size:15px}
+  .dropzone span{font-size:11.5px;color:var(--dim)}
+  .dzic{font-size:28px;color:var(--blue)}
+  .steplist{margin:0;padding-left:1.2em;font-size:12.5px;line-height:1.8}
+  .steplist li{margin-bottom:9px}
+  .steplist b{display:block}
+  .steplist span{color:var(--dim);font-size:11.5px}
+  .guardlist{margin:0;padding-left:1.2em;font-size:12.5px;line-height:1.95;color:var(--ink2)}
+
   /* ===== admin ===== */
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;text-align:center}
   .metric .lb{font-size:12.5px;font-weight:700;margin-bottom:10px}
@@ -1199,7 +1222,7 @@ let S = {
   mode:"user", page:"home", cid:null, li:0,
   tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-info","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prod","g-prog","g-mail"]),
   q:"", qmode:"course", filter:"all", libFilter:"all", tmpl:"t1", chartRange:7, statTab:"amount",
-  page1:1, page2:1, done:null, prodF:"all", cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
+  page1:1, page2:1, done:null, prodF:"all", acctF:"all", cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
 };
 
 function save(){
@@ -1313,9 +1336,13 @@ const ADMINNAV = [
     { p:"taskrate", label:"コーチングタスク消化率" },
     { p:"logs", label:"学習活動履歴" },
     { p:"stats", label:"コース別学習量" }]},
-  { id:"g-stu", ic:"👥", label:"受講生管理", items:[{ p:"students", label:"受講生一覧" }]},
+  { id:"g-stu", ic:"👥", label:"受講生管理", items:[
+    { p:"students", label:"受講生一覧" },
+    { p:"accounts", label:"アカウント管理" }]},
   { id:"g-coach", ic:"🎯", label:"コーチング管理", items:[{ p:"acoach", label:"セッション・議事録" }]},
-  { id:"g-prod", ic:"🎬", label:"コンテンツ管理", items:[{ p:"production", label:"制作進捗" }]},
+  { id:"g-prod", ic:"🎬", label:"コンテンツ管理", items:[
+    { p:"production", label:"制作進捗" },
+    { p:"upload", label:"動画をアップロード" }]},
   { id:"g-mail", ic:"✉️", label:"メール", items:[{ p:"mail", label:"メールテンプレート" }]},
 ];
 
@@ -2416,7 +2443,7 @@ function vProduction(){
   $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
   $$v("[data-pf]").forEach(b=>b.onclick=()=>{S.prodF=b.dataset.pf;render()});
   $v("#p-csv").onclick=()=>toast("制作一覧を書き出しました（モック）");
-  $v("#p-up").onclick=()=>toast("動画アップロード画面（モック）");
+  $v("#p-up").onclick=()=>go("upload");
   $$v("[data-pn]").forEach(b=>b.onclick=()=>{
     const x=rows[+b.dataset.pn];
     const i=PSTAT.findIndex(p=>p[0]===x.st);
@@ -2424,6 +2451,166 @@ function vProduction(){
       toast(`「${x.t}」を${PSTAT[i+1][1]}にしました`); render();}
     else toast("すでに公開済みです");
   });
+}
+
+
+/* ============ アカウント設計 ============
+   ロールは5種。制作側と受講生側を分離し、受講生データは制作・レビューから見えないようにする。 */
+const ROLES=[
+  { id:"student", n:"受講生", d:"コースを視聴し、課題とワークシートを埋める。見えるのは自分のデータのみ。", who:"48名", c:"" },
+  { id:"coach",   n:"コーチ", d:"担当する受講生の進捗と課題を見て、議事録を書き課題を出す。担当外は見えない。", who:"2名", c:"b" },
+  { id:"editor",  n:"制作",   d:"動画のアップロードとコース編集。受講生の個人データにはアクセスできない。", who:"2名", c:"g" },
+  { id:"reviewer",n:"レビュー", d:"制作物を見てレビューの可否を出す。編集と公開はできない。", who:"1名", c:"w" },
+  { id:"admin",   n:"運営管理者", d:"全権限。アカウント発行と権限付与、売上と視聴データの閲覧。", who:"2名", c:"m" },
+];
+/* ○=可 / △=担当分のみ / ×=不可 */
+const PERMS=[
+  { f:"コースを視聴する",            student:"○", coach:"○", editor:"○", reviewer:"○", admin:"○" },
+  { f:"課題・ワークシートを記入する", student:"○", coach:"×", editor:"×", reviewer:"×", admin:"×" },
+  { f:"受講生の進捗を見る",          student:"×", coach:"△", editor:"×", reviewer:"×", admin:"○" },
+  { f:"議事録を書く・課題を出す",    student:"×", coach:"△", editor:"×", reviewer:"×", admin:"○" },
+  { f:"動画をアップロードする",      student:"×", coach:"×", editor:"○", reviewer:"×", admin:"○" },
+  { f:"コース・レッスンを編集する",  student:"×", coach:"×", editor:"○", reviewer:"×", admin:"○" },
+  { f:"制作物をレビューする",        student:"×", coach:"×", editor:"×", reviewer:"○", admin:"○" },
+  { f:"コンテンツを公開する",        student:"×", coach:"×", editor:"×", reviewer:"×", admin:"○" },
+  { f:"売上・視聴データを見る",      student:"×", coach:"×", editor:"×", reviewer:"×", admin:"○" },
+  { f:"アカウントを発行・停止する",  student:"×", coach:"×", editor:"×", reviewer:"×", admin:"○" },
+];
+const ACCOUNTS=[
+  { n:"中川 雄斗", m:"t.nakagawa@example.jp", r:"admin", st:"有効", last:"2026/08/04", note:"" },
+  { n:"蘭丸", m:"ranmaru@example.jp", r:"editor", st:"有効", last:"2026/08/04", note:"コンテンツ制作の主担当" },
+  { n:"小林", m:"kobayashi@example.jp", r:"editor", st:"有効", last:"2026/08/03", note:"" },
+  { n:"カンタ", m:"kanta@example.jp", r:"reviewer", st:"有効", last:"2026/08/03", note:"デザインレビュー担当" },
+  { n:"村田", m:"murata@example.jp", r:"coach", st:"有効", last:"2026/08/04", note:"担当5名" },
+  { n:"高橋", m:"takahashi@example.jp", r:"coach", st:"有効", last:"2026/08/02", note:"担当5名" },
+  { n:"佐々木 亮", m:"r.sasaki@example.jp", r:"student", st:"有効", last:"2026/08/04", note:"エリート" },
+  { n:"平野 さやか", m:"s.hirano@example.jp", r:"student", st:"休会", last:"2026/07/20", note:"8月末まで休会" },
+];
+
+function vAccounts(){
+  const f=S.acctF||"all";
+  const rows=ACCOUNTS.filter(a=>f==="all"||a.r===f);
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"アカウント管理"}]);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:14px">
+    <h1 class="ptitle" style="margin:0">アカウント管理</h1>
+    <button class="b b-pri" id="ac-new">アカウントを発行する</button></div>`;
+
+  h+=`<div class="sectitle">ロール</div>
+    <div class="rolegrid">${ROLES.map(r=>`<div class="rolecard">
+      <div class="row" style="gap:8px;margin-bottom:6px">
+        <span class="chip ${r.c}">${r.n}</span><span class="tnum" style="font-size:11px;color:var(--dim)">${r.who}</span></div>
+      <p>${r.d}</p></div>`).join("")}</div>`;
+
+  h+=`<div class="sectitle" style="margin-top:20px">権限</div>
+    <p style="font-size:12px;color:var(--dim);margin:-6px 0 10px">
+      ○＝可　△＝担当分のみ　×＝不可。制作とレビューからは、受講生の個人データが見えない作りにしています。</p>
+    <div class="tablewrap"><table><thead><tr><th>できること</th>
+      ${ROLES.map(r=>`<th style="text-align:center">${r.n}</th>`).join("")}</tr></thead><tbody>
+      ${PERMS.map(p=>`<tr><td style="font-size:12.5px">${p.f}</td>
+        ${ROLES.map(r=>`<td style="text-align:center" class="pm pm-${p[r.id]==="○"?"y":p[r.id]==="△"?"p":"n"}">${p[r.id]}</td>`).join("")}
+      </tr>`).join("")}</tbody></table></div>`;
+
+  h+=`<div class="sectitle" style="margin-top:22px">アカウント一覧</div>
+    <div class="row" style="gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      ${[["all","すべて"],...ROLES.map(r=>[r.id,r.n])].map(([k,l])=>`<button class="b b-sm" data-af="${k}"
+        ${f===k?'style="background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600"':""}>${l}</button>`).join("")}</div>
+    <div class="tablewrap"><table><thead><tr>
+      <th>氏名</th><th>メール</th><th>ロール</th><th>状態</th><th>最終ログイン</th><th>備考</th><th style="width:110px"></th></tr></thead><tbody>
+      ${rows.map((a,i)=>{const r=ROLES.find(x=>x.id===a.r);
+        return `<tr><td><div class="row" style="gap:8px;flex-wrap:nowrap"><span class="av">${a.n[0]}</span>
+          <b style="font-size:12.5px">${a.n}</b></div></td>
+        <td style="font-size:11.5px;color:var(--dim)">${a.m}</td>
+        <td><span class="chip ${r.c}">${r.n}</span></td>
+        <td><span class="chip ${a.st==="有効"?"g":"w"}">${a.st}</span></td>
+        <td class="tnum" style="font-size:11.5px">${a.last}</td>
+        <td style="font-size:11.5px;color:var(--dim)">${a.note||"—"}</td>
+        <td><button class="link" data-ae="${i}">権限を変更</button></td></tr>`}).join("")}
+    </tbody></table></div>`;
+
+  h+=`<div class="sectitle" style="margin-top:22px">発行のしかた</div>
+    <div class="grid3">
+      <div class="card pad"><div class="ch">受講生</div>
+        <p class="wsnote" style="margin:0">決済が完了すると自動で発行します。初回ログイン時に本人がパスワードを設定します。
+          退会・休会にすると視聴は止まりますが、記入したワークシートは残ります。</p></div>
+      <div class="card pad"><div class="ch">コーチ・制作・レビュー</div>
+        <p class="wsnote" style="margin:0">運営管理者が招待メールを送って発行します。担当する受講生の割り当ても同時に行います。
+          業務委託の場合は契約終了時に停止します。</p></div>
+      <div class="card pad"><div class="ch">アカウント共有への対応</div>
+        <p class="wsnote" style="margin:0">同時視聴は1アカウント1台までに制限します。
+          再生画面に受講生IDを薄く重ねるため、外に出た場合に出所が分かります。</p></div>
+    </div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $$v("[data-af]").forEach(b=>b.onclick=()=>{S.acctF=b.dataset.af;render()});
+  $v("#ac-new").onclick=()=>toast("アカウント発行フォーム（モック）");
+  $$v("[data-ae]").forEach(b=>b.onclick=()=>toast(`${rows[+b.dataset.ae].n} の権限変更（モック）`));
+}
+
+/* ============ 動画のアップロードと格納 ============ */
+function vUpload(){
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},
+    {t:"コンテンツ制作管理",go:()=>go("production")},{t:"動画をアップロード"}]);
+  h+=`<h1 class="ptitle">動画をアップロード</h1>`;
+  h+=`<div class="uplayout">
+    <div>
+      <div class="dropzone" id="dz">
+        <div class="dzic">⬆</div>
+        <b>ここに動画ファイルをドロップ</b>
+        <span>MP4 / MOV・1本あたり5分程度・最大2GB</span>
+        <button class="b b-pri" id="dz-b" style="margin-top:10px">ファイルを選ぶ</button>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <div class="ch">この動画の情報</div>
+        <div class="filters">
+          <div class="f"><label>タイトル</label><input placeholder="例）手が止まる3つの原因"></div>
+          <div class="f"><label>格納先コース</label><select>
+            ${allCourses().slice(0,14).map(x=>`<option>${x.c.title}</option>`).join("")}</select></div>
+          <div class="f"><label>セクション</label><select><option>Section0</option><option>Section1</option>
+            <option>Section2</option><option>Section3</option></select></div>
+          <div class="f"><label>担当</label><select><option>蘭丸</option><option>小林</option></select></div>
+          <div class="f"><label>ナレーション</label><select><option>人</option><option>AI音声</option></select></div>
+          <div class="f"><label>公開範囲</label><select><option>スタンダード以上</option><option>エリートのみ</option>
+            <option>全員（必修）</option></select></div>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <button class="b b-pri" id="up-save">下書きとして保存</button>
+          <button class="b" id="up-rev">デザインレビューに出す</button>
+          <span class="grow"></span>
+          <span style="font-size:11.5px;color:var(--dim)">公開は運営管理者のみ行えます</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="card pad" style="margin-bottom:12px">
+        <div class="ch">動画はどこに置かれるか</div>
+        <ol class="steplist">
+          <li><b>アップロード</b><span>この画面から配信サービスへ直接送ります。サーバーを経由しません。</span></li>
+          <li><b>自動変換</b><span>回線速度に応じた画質が自動で作られます。こちらで変換作業は不要です。</span></li>
+          <li><b>受講生に配信</b><span>このサイトからの再生のみ許可します。動画のURLを直接開いても再生されません。</span></li>
+        </ol>
+      </div>
+      <div class="card pad" style="margin-bottom:12px">
+        <div class="ch">守り方</div>
+        <ul class="guardlist">
+          <li>再生できるのは、このサイトに<b>ログイン済みの受講生</b>のみ</li>
+          <li>動画URLの直リンクとダウンロードは<b>不可</b></li>
+          <li>同時視聴は<b>1アカウント1台</b>まで</li>
+          <li>再生画面に<b>受講生IDを薄く重ねる</b>（転載時に出所が分かる）</li>
+        </ul>
+      </div>
+      <div class="card pad">
+        <div class="ch">いまの保有量</div>
+        <div class="row" style="gap:6px;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:22px;font-weight:700" class="tnum">2</span>
+          <span style="font-size:12px;color:var(--dim)">/ 140本 公開済</span></div>
+        <div class="bar"><i style="width:2%"></i></div>
+        <p class="wsnote" style="margin-top:8px">全140本・1本5分で、合計およそ700分です。</p>
+      </div>
+    </div></div>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach((b,i)=>b.onclick=()=>go(i===0?"adash":"production"));
+  $v("#dz-b").onclick=()=>toast("ファイル選択（モック）");
+  $v("#up-save").onclick=()=>toast("下書きとして保存しました（モック）");
+  $v("#up-rev").onclick=()=>toast("カンタさんにデザインレビュー依頼を送りました（モック）");
 }
 
 const COTABS = [["program","プログラム"],["board","ボード"],["mins","議事録"],["todo","課題一覧"]];
@@ -3203,6 +3390,8 @@ function render(){
     else if(P==="viewdetail")vViewDetail();
     else if(P==="taskrate")vTaskRate();
     else if(P==="production")vProduction();
+    else if(P==="accounts")vAccounts();
+    else if(P==="upload")vUpload();
     else if(P==="acoach")vAcoach();
     else if(P==="mail")vMail();
     else vAdash();
