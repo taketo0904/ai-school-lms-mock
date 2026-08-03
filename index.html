@@ -620,6 +620,22 @@
   .wsblock.agree{border-left:3px solid var(--blue)}
   @media print{.side,.topbar,.wsnav,.crumb,.b{display:none!important}.wslayout{grid-template-columns:1fr}}
 
+
+  /* 制作管理 */
+  .launchbar{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .pstats{display:flex;gap:16px}
+  .pstats>div{text-align:center;min-width:56px}
+  .psn{display:block;font-size:19px;font-weight:700}
+  .psl{display:block;font-size:10px;color:var(--dim)}
+  /* デモ回 */
+  .demotag{position:absolute;bottom:6px;left:8px;font-size:9.5px;font-weight:700;
+    background:var(--ok);color:#fff;padding:1px 6px;border-radius:3px}
+  .demobox{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--ok-s);
+    border:1px solid var(--ok);border-radius:var(--r);padding:20px 22px;margin-bottom:14px}
+  .demoic{font-size:30px}
+  .demobox b{font-size:15px;display:block;margin-bottom:3px}
+  .demobox p{margin:0;font-size:12.5px;color:var(--ink2);max-width:46ch}
+
   /* ===== admin ===== */
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;text-align:center}
   .metric .lb{font-size:12.5px;font-weight:700;margin-bottom:10px}
@@ -700,6 +716,26 @@ const L = (sec,title,dur,done,body,tasks) => ({sec,title,dur,done,body,tasks:tas
    kind:"level"   = AIスキル。初級→中級→上級と積み上げる（仕事の能力）
    kind:"practice"= 営業・マーケ・副業。案件と副業を取るための実践（コーチングが並走） */
 const CATS = [
+{ id:"mind", kind:"core", num:"必修", name:"マインドセット", desc:"全員が最初に受ける共通コンテンツ。1on1の前にここを通しておく。", courses:[
+  { id:"md-why", badge:"必修", tool:"マインドセット", title:"なぜマインドセットから始めるのか", sub:"技術より先に決まっていないと進まないもの", tier:"standard",
+    about:["手が止まる本当の原因を知る","1on1の前に共通言語を持つ"], lessons:[
+    L("Section0","このコースの位置づけ","4:30",false,"AIの使い方を覚えても、何のために使うかが決まっていないと手は動きません。ここは全員必修です。"),
+    L("Section1","手が止まる3つの原因","9:20",false,"能力ではなく、ゴールの不在・優先順位の不在・一人で抱えることの3つが原因です。それぞれの外し方を解説します。"),
+    L("Section2","1on1で何を話すか","7:45",false,"コーチングを受ける前に、何を持ち込めば密度が上がるかを整理します。",["次回1on1で相談したいことを3つ書き出す"])]},
+  { id:"md-goal", badge:"必修", tool:"マインドセット", title:"ゴール設定の考え方", sub:"現状の外側に目標を置く", tier:"standard",
+    about:["現状の延長線上に置かない","定性と定量を分けて考える"], lessons:[
+    L("Section0","現状の外側とは","10:10",false,"いまの延長でできることを目標にすると、行動が変わりません。外側に置く意味を解説します。"),
+    L("Section1","定性ゴールと定量ゴール","12:30",false,"状態を表す言葉と、測れる指標。2つを分けて置く理由と作り方を解説します。",["ワークシート05のGOAL設計に着手する"]),
+    L("Section2","やらないことを決める","8:50",false,"時間は増えないので、何かを始めるには何かを止める必要があります。断つ決断の作り方を扱います。")]},
+  { id:"md-time", badge:"必修", tool:"マインドセット", title:"時間の使い方と優先順位", sub:"週の中に学習と実践を固定する", tier:"standard",
+    about:["使える時間を正確に把握する","詰め込まずに続ける形にする"], lessons:[
+    L("Section0","使える時間を数える","7:15",false,"やる気ではなく、実際に空いている時間で計画を組みます。",["平日と土日で使える時間を書き出す"]),
+    L("Section1","週の型を決める","9:40",false,"いつ学習し、いつ手を動かすか。曜日と時間帯で固定する方法を解説します。")]},
+  { id:"md-keep", badge:"必修", tool:"マインドセット", title:"続ける仕組みを作る", sub:"止まったときに戻る導線", tier:"standard",
+    about:["止まる前提で設計する","一人で抱えない状態を作る"], lessons:[
+    L("Section0","止まるのは普通のこと","6:20",false,"止まったこと自体を問題にせず、戻る導線をあらかじめ用意しておきます。"),
+    L("Section1","コミュニティとよろず相談室の使い方","8:35",false,"同じ段階の人と話すことが、続ける上で一番効きます。使い方を解説します。",["よろず相談室に一度参加する"])]},
+]},
 { id:"ai1", kind:"level", num:"初級", name:"AI初心者", desc:"どのツールが何に使えるかを知り、まず自分の手で動かせるようにする。", courses:[
   { id:"a1-map", badge:"全体", tool:"生成AI基礎", title:"生成AIの全体像と使い分け", sub:"ChatGPT・Gemini・Claudeの違い", tier:"standard",
     about:["主要ツールの違いと得意分野を知る","目的からツールを選べるようになる"], lessons:[
@@ -826,6 +862,12 @@ const CATS = [
 ]},
 
 { id:"sales-paid", kind:"practice", num:"営業", group:"営業", name:"有料編", desc:"無料で反応が取れたら、お金をかけて量と質を上げる。", courses:[
+  { id:"sp-crm", badge:"CRM", tool:"CRM/SFA", title:"CRM/SFAで案件を管理する", sub:"Salesforce・HubSpotのデモ環境で実際に触る", tier:"standard", demo:true,
+    about:["案件の抜け漏れを仕組みで防ぐ","デモ環境で実際に操作してみる"], lessons:[
+    L("Section0","なぜCRMを使うのか","8:10",false,"件数が増えると記憶と表計算では追えなくなります。導入の判断基準を解説します。"),
+    L("Section1","デモ環境：HubSpotを触ってみる","デモ",false,"実際のデモ環境にログインし、取引先と案件を登録するところまでを操作します。読むだけでは身につかないため、必ず手を動かしてください。",["デモ環境で案件を3件登録する"]),
+    L("Section2","デモ環境：Salesforceを触ってみる","デモ",false,"項目の多さに戸惑いやすいので、最低限使う画面だけに絞って操作します。",["デモ環境で商談フェーズを進めてみる"]),
+    L("Section3","自分の案件管理を決める","10:25",false,"個人であればどこまで作り込むべきか、現実的な落としどころを解説します。")]},
   { id:"sp-nav", badge:"Nav", tool:"LinkedIn", title:"Sales Navigatorの使い方", sub:"狙った決裁者だけを抽出する", tier:"standard",
     about:["検索条件の組み方","リスト化と運用"], lessons:[
     L("Section0","無料アカウントとの違い","8:10",false,"有料にすると何ができるようになるのか、費用に見合う場面を整理します。"),
@@ -915,7 +957,8 @@ const CATS = [
     L("Section1","アカウント構造と配信の仕組み","12:20",false,"キャンペーン・広告セット・広告の3階層と、配信がどう最適化されるかを解説します。"),
     L("Section2","ターゲティングの組み方","14:10",false,"興味関心・類似オーディエンス・リターゲティングの使い分けを解説します。絞りすぎて配信が伸びない失敗も扱います。",["自分の商材のターゲット設定を作る"]),
     L("Section3","クリエイティブで9割決まる","13:45",false,"画像・動画・広告文のどれを先に変えるか、検証の順番を解説します。",["広告クリエイティブを3案作る"]),
-    L("Section4","予算と検証の回し方","11:05",false,"いくらから始め、何日で判断するか。数字が足りない状態で判断しないための基準を解説します。")]},
+    L("Section4","予算と検証の回し方","11:05",false,"いくらから始め、何日で判断するか。数字が足りない状態で判断しないための基準を解説します。"),
+    L("Section5","デモ環境：広告管理画面を触ってみる","デモ",false,"実際の管理画面と同じ構成のデモ環境で、キャンペーンの作成から配信設定までを操作します。課金は発生しません。",["デモ環境でキャンペーンを1つ作る"])]},
   { id:"mk-lpo", badge:"LPO", tool:"広告", title:"広告LPのファーストビュー最適化", sub:"最初の画面で離脱を止める", tier:"standard",
     about:["最初の1画面で何を言うか決める","改善の優先順位をつける"], lessons:[
     L("Section0","ファーストビューで決まる","10:20",false,"広告から来た人の多くは最初の画面で去ります。ここに何を置くかで、その後の数字が変わります。"),
@@ -1154,9 +1197,9 @@ const V = () => $("#view");
 
 let S = {
   mode:"user", page:"home", cid:null, li:0,
-  tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-info","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prog","g-mail"]),
+  tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-info","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prod","g-prog","g-mail"]),
   q:"", qmode:"course", filter:"all", libFilter:"all", tmpl:"t1", chartRange:7, statTab:"amount",
-  page1:1, page2:1, done:null, cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
+  page1:1, page2:1, done:null, prodF:"all", cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
 };
 
 function save(){
@@ -1189,8 +1232,10 @@ const cSecs = c => c.lessons.reduce((a,l)=>a+secs(l.dur),0);
 const fmtM = s => {const m=Math.max(1,Math.round(s/60));return m>=60?`${Math.floor(m/60)}時間${m%60}分`:`${m}分`};
 const NEXT_SESSION = "2026/07/29 20:00";
 /* レベル別は「初級｜AI初心者」、実践は名前だけ。工程(FLOW)とは別軸 */
-const catLabel = ct => ct.kind==="level" ? `${ct.num}｜${ct.name}`
+const catLabel = ct => ct.kind==="core" ? ct.name
+  : ct.kind==="level" ? `${ct.num}｜${ct.name}`
   : ct.group ? `${ct.group}：${ct.name}` : ct.name;
+const coreCats  = () => CATS.filter(c=>c.kind==="core");
 const levelCats = () => CATS.filter(c=>c.kind==="level");
 const practiceCats = () => CATS.filter(c=>c.kind==="practice");
 const flowCur = () => FLOW.find(f=>f.status==="current") || FLOW[0];
@@ -1270,6 +1315,7 @@ const ADMINNAV = [
     { p:"stats", label:"コース別学習量" }]},
   { id:"g-stu", ic:"👥", label:"受講生管理", items:[{ p:"students", label:"受講生一覧" }]},
   { id:"g-coach", ic:"🎯", label:"コーチング管理", items:[{ p:"acoach", label:"セッション・議事録" }]},
+  { id:"g-prod", ic:"🎬", label:"コンテンツ管理", items:[{ p:"production", label:"制作進捗" }]},
   { id:"g-mail", ic:"✉️", label:"メール", items:[{ p:"mail", label:"メールテンプレート" }]},
 ];
 
@@ -1297,7 +1343,12 @@ function renderSide(){
 
   if(S.mode==="user"){
     h+=USERNAV.map(grp).join("");
-    /* AIスキルはレベル別（仕事の能力）、実践は営業・マーケ・副業（案件を取る） */
+    /* 必修（マインドセット）→ AIスキル（レベル別）→ 実践 の順に置く */
+    h+=`<div class="navgroup" data-open="true">
+      <button class="ghead" data-g="g-core"><span class="ic">🔰</span>必修<span class="cv">⌄</span></button>
+      <div class="glist">${coreCats().map(st=>`
+        <button class="nav" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
+        ${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`).join("")}</div></div>`;
     const lOpen=S.groups.has("g-level");
     h+=`<div class="navgroup" data-open="${lOpen}">
       <button class="ghead" data-g="g-level"><span class="ic">🪜</span>AIスキル（レベル別）<span class="cv">⌄</span></button>
@@ -1553,6 +1604,7 @@ function vCourse(){
       return `<button class="les" data-li="${i}" data-state="${s}">
         <div class="top"><span class="sc">${l.sec}</span><div class="ti">${l.title}</div>
           <span class="st">${s==="done"?"✓ 完了":s==="current"?"▶ 受講中":""}</span>
+          ${l.dur==="デモ"?`<span class="demotag">デモ環境</span>`:""}
           <span class="dr tnum">${l.dur}</span></div>
         <div class="bt"><span style="font-size:11px;color:var(--dim)">${l.tasks.length?`課題${l.tasks.length}件`:"　"}</span>
           <span><span class="iconb" role="button">♡</span><span class="iconb sh" role="button">⤴</span></span></div></button>`}).join("")}</div>`;
@@ -1575,7 +1627,12 @@ function vLesson(){
     {t:c.title,go:()=>go("course",{cid:c.id})},{t:l.sec}];
   let h=crumb(parts);
   h+=`<div class="lgrid"><div>
-    <div class="video"><div class="pl">▶</div><div class="tm tnum">${l.dur}</div></div>
+    ${l.dur==="デモ"?`<div class="demobox">
+      <div class="demoic">🖥</div>
+      <div><b>デモ環境で操作します</b>
+        <p>読むだけでは身につかないので、実際に触ってください。本番データには影響しません。</p></div>
+      <button class="b b-pri" id="lv-demo">デモ環境を開く</button></div>`
+    :`<div class="video"><div class="pl">▶</div><div class="tm tnum">${l.dur}</div></div>`}
     ${l.done?`<div style="font-size:11.5px;color:var(--ok);margin-bottom:6px">✓ 完了済み</div>`:""}
     <h1 style="font-size:19px;margin:0 0 10px">${l.sec}　${l.title}</h1>
     <p style="font-size:14px;color:var(--ink2);max-width:62ch;margin:0 0 18px">${l.body}</p>
@@ -1604,6 +1661,7 @@ function vLesson(){
     if(!was&&pct(c)===100)S.done=nextStep(st,c);
     go("course",{cid:c.id});
   };
+  if($v("#lv-demo"))$v("#lv-demo").onclick=()=>toast("デモ環境を別ウィンドウで開きます（モック）");
   $$v(".orow").forEach(b=>b.onclick=()=>go("lesson",{cid:c.id,li:+b.dataset.j}));
   $$v("[data-tk]").forEach(cb=>cb.onchange=()=>{cb.closest(".hw").dataset.done=cb.checked});
 }
@@ -2266,6 +2324,106 @@ function renderCoachPanel(){
     renderCoachPanel(); const bd=$("#cpbody"); bd.scrollTop=bd.scrollHeight;};
   $("#cpsend").onclick=send;
   $("#cpi").onkeydown=e=>{if(e.key==="Enter")send()};
+}
+
+
+/* ============ 運営：コンテンツ制作管理 ============
+   8/15ローンチに向けた制作の進み具合。5分×140本が母数。
+   ステータスは 未着手→制作中→デザインレビュー→公開済 の順に進む。 */
+const LAUNCH="2026/08/15";
+const PSTAT=[["todo","未着手"],["making","制作中"],["review","デザインレビュー"],["done","公開済"]];
+const PROD_TOTAL=140;
+const PROD=[
+  { c:"マインドセット", t:"なぜマインドセットから始めるのか", who:"蘭丸", pri:"最優先", st:"done", nar:"人", up:"2026/08/03" },
+  { c:"マインドセット", t:"手が止まる3つの原因", who:"蘭丸", pri:"最優先", st:"review", nar:"人", up:"2026/08/03" },
+  { c:"マインドセット", t:"ゴール設定の考え方", who:"蘭丸", pri:"最優先", st:"making", nar:"人", up:"2026/08/03" },
+  { c:"マインドセット", t:"現状の外側とは", who:"蘭丸", pri:"最優先", st:"making", nar:"人", up:"2026/08/03" },
+  { c:"マインドセット", t:"やらないことを決める", who:"蘭丸", pri:"最優先", st:"todo", nar:"人", up:"—" },
+  { c:"マインドセット", t:"時間の使い方と優先順位", who:"蘭丸", pri:"最優先", st:"todo", nar:"人", up:"—" },
+  { c:"マインドセット", t:"続ける仕組みを作る", who:"蘭丸", pri:"最優先", st:"todo", nar:"人", up:"—" },
+  { c:"マーケ", t:"マーケの全体像", who:"蘭丸", pri:"高", st:"making", nar:"人", up:"2026/08/02" },
+  { c:"マーケ", t:"リスティング広告の基礎知識", who:"蘭丸", pri:"高", st:"todo", nar:"人", up:"—" },
+  { c:"マーケ", t:"Meta広告の基礎", who:"蘭丸", pri:"高", st:"todo", nar:"人", up:"—" },
+  { c:"マーケ", t:"デモ環境：広告管理画面", who:"蘭丸", pri:"高", st:"todo", nar:"—", up:"—" },
+  { c:"マーケ", t:"ホワイトペーパーでリードを取る", who:"小林", pri:"中", st:"todo", nar:"人", up:"—" },
+  { c:"営業", t:"LinkedIn プロフィールの作り方", who:"小林", pri:"高", st:"making", nar:"人", up:"2026/08/02" },
+  { c:"営業", t:"フォーム営業 完全攻略", who:"小林", pri:"高", st:"todo", nar:"人", up:"—" },
+  { c:"営業", t:"デモ環境：CRM/SFA", who:"蘭丸", pri:"中", st:"todo", nar:"—", up:"—" },
+  { c:"AIスキル 初級", t:"生成AIの全体像と使い分け", who:"小林", pri:"中", st:"done", nar:"人", up:"2026/08/01" },
+  { c:"AIスキル 初級", t:"ChatGPTの基本操作", who:"小林", pri:"中", st:"review", nar:"人", up:"2026/08/02" },
+  { c:"AIスキル 中級", t:"バイブコーディング入門", who:"蘭丸", pri:"中", st:"todo", nar:"人", up:"—" },
+  { c:"AIスキル 上級", t:"実務で使えるAI活用事例集", who:"蘭丸", pri:"低", st:"todo", nar:"人", up:"—" },
+  { c:"副業", t:"クラウドワークスでの案件の取り方", who:"小林", pri:"低", st:"todo", nar:"人", up:"—" },
+];
+
+function daysTo(ymd){
+  const [y,m,d]=ymd.split("/").map(Number);
+  const [ty,tm,td]=TODAY.split("/").map(Number);
+  return Math.round((new Date(y,m-1,d)-new Date(ty,tm-1,td))/86400000);
+}
+function vProduction(){
+  const f=S.prodF||"all";
+  const rows=PROD.filter(x=>f==="all"?true:f==="mine"?x.who==="蘭丸":f==="pri"?x.pri==="最優先":x.st===f);
+  const cnt=k=>PROD.filter(x=>x.st===k).length;
+  /* 表に出ているのは代表20本。全体はPROD_TOTAL本として率で見る */
+  const rate=Math.round(cnt("done")/PROD.length*100);
+  const left=daysTo(LAUNCH);
+  let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"コンテンツ制作管理"}]);
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:14px">
+    <h1 class="ptitle" style="margin:0">コンテンツ制作管理</h1>
+    <div class="row" style="gap:8px">
+      <button class="b" id="p-csv">一覧をCSV出力</button>
+      <button class="b b-pri" id="p-up">動画をアップロード</button></div></div>`;
+
+  h+=`<div class="card pad launchbar">
+    <div><div class="ch">ローンチまで</div>
+      <div class="row" style="gap:8px;align-items:baseline">
+        <span style="font-size:26px;font-weight:700" class="tnum">${left}</span><span style="font-size:13px">日</span>
+        <span class="tnum" style="font-size:12px;color:var(--dim)">（${LAUNCH}）</span></div></div>
+    <div style="flex:1;min-width:220px"><div class="ch">公開済の割合</div>
+      <div class="row" style="gap:10px"><div class="bar ${rate>=80?"ok":""}"><i style="width:${rate}%"></i></div>
+        <span class="tnum" style="font-size:12.5px">${rate}%</span></div>
+      <div style="font-size:11px;color:var(--dim);margin-top:4px" class="tnum">
+        全${PROD_TOTAL}本予定・1本5分・想定工数7時間</div></div>
+    <div class="pstats">${PSTAT.map(([k,l])=>`<div><span class="psn tnum">${cnt(k)}</span><span class="psl">${l}</span></div>`).join("")}</div>
+  </div>`;
+
+  h+=`<div class="card pad" style="margin:14px 0">
+    <div class="row" style="gap:6px;flex-wrap:wrap">
+      ${[["all","すべて"],["pri","最優先のみ"],["mine","蘭丸の担当"],["making","制作中"],["review","デザインレビュー待ち"],["todo","未着手"]]
+        .map(([k,l])=>`<button class="b b-sm" data-pf="${k}"
+          ${f===k?'style="background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600"':""}>${l}</button>`).join("")}
+      <span class="grow"></span>
+      <span style="font-size:11.5px;color:var(--dim)">デザインレビュー担当：カンタ／ナレーションは人が担当</span></div></div>`;
+
+  h+=`<div class="tablewrap"><table><thead><tr>
+    <th>コンテンツ</th><th>カテゴリ</th><th>優先度</th><th>担当</th><th>ナレーション</th>
+    <th>ステータス</th><th>更新日</th><th style="width:88px"></th></tr></thead><tbody>
+    ${rows.length?rows.map((x,i)=>`<tr>
+      <td><b style="font-size:12.5px">${x.t}</b></td>
+      <td style="font-size:11.5px;color:var(--dim)">${x.c}</td>
+      <td><span class="chip ${x.pri==="最優先"?"m":x.pri==="高"?"w":""}">${x.pri}</span></td>
+      <td>${x.who}</td><td style="font-size:11.5px;color:var(--dim)">${x.nar}</td>
+      <td><span class="chip ${x.st==="done"?"g":x.st==="review"?"b":x.st==="making"?"w":""}">
+        ${PSTAT.find(p=>p[0]===x.st)[1]}</span></td>
+      <td class="tnum" style="font-size:11.5px">${x.up}</td>
+      <td><button class="link" data-pn="${i}">次へ進める</button></td></tr>`).join("")
+      :`<tr><td colspan="8" class="empty">該当するコンテンツはありません。</td></tr>`}
+  </tbody></table></div>
+  <p style="font-size:11.5px;color:var(--dim);margin-top:10px">
+    表示しているのは代表${PROD.length}本です。残りは同じ形式で登録されます。</p>`;
+  V().innerHTML=h;
+  $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
+  $$v("[data-pf]").forEach(b=>b.onclick=()=>{S.prodF=b.dataset.pf;render()});
+  $v("#p-csv").onclick=()=>toast("制作一覧を書き出しました（モック）");
+  $v("#p-up").onclick=()=>toast("動画アップロード画面（モック）");
+  $$v("[data-pn]").forEach(b=>b.onclick=()=>{
+    const x=rows[+b.dataset.pn];
+    const i=PSTAT.findIndex(p=>p[0]===x.st);
+    if(i<PSTAT.length-1){x.st=PSTAT[i+1][0]; x.up=TODAY;
+      toast(`「${x.t}」を${PSTAT[i+1][1]}にしました`); render();}
+    else toast("すでに公開済みです");
+  });
 }
 
 const COTABS = [["program","プログラム"],["board","ボード"],["mins","議事録"],["todo","課題一覧"]];
@@ -3044,6 +3202,7 @@ function render(){
     else if(P==="viewing")vViewing();
     else if(P==="viewdetail")vViewDetail();
     else if(P==="taskrate")vTaskRate();
+    else if(P==="production")vProduction();
     else if(P==="acoach")vAcoach();
     else if(P==="mail")vMail();
     else vAdash();
