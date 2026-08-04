@@ -659,6 +659,17 @@
   .steplist span{color:var(--dim);font-size:11.5px}
   .guardlist{margin:0;padding-left:1.2em;font-size:12.5px;line-height:1.95;color:var(--ink2)}
 
+
+  /* どこが何を守るか */
+  .guardtable{display:grid;gap:9px}
+  .gt{border-radius:var(--r2);padding:11px 13px;border:1px solid var(--line)}
+  .gt-v{background:var(--blue-s);border-color:var(--blue)}
+  .gt-l{background:var(--ok-s);border-color:var(--ok)}
+  .gtw{display:block;font-size:11px;font-weight:700;margin-bottom:6px}
+  .gt-v .gtw{color:var(--blue)}
+  .gt-l .gtw{color:var(--ok)}
+  .gt ul{margin:0;padding-left:1.15em;font-size:12px;line-height:1.8;color:var(--ink2)}
+
   /* ===== admin ===== */
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;text-align:center}
   .metric .lb{font-size:12.5px;font-weight:700;margin-bottom:10px}
@@ -2459,7 +2470,7 @@ function vProduction(){
 const ROLES=[
   { id:"student", n:"受講生", d:"コースを視聴し、課題とワークシートを埋める。見えるのは自分のデータのみ。", who:"48名", c:"" },
   { id:"coach",   n:"コーチ", d:"担当する受講生の進捗と課題を見て、議事録を書き課題を出す。担当外は見えない。", who:"2名", c:"b" },
-  { id:"editor",  n:"制作",   d:"動画のアップロードとコース編集。受講生の個人データにはアクセスできない。", who:"2名", c:"g" },
+  { id:"editor",  n:"制作",   d:"動画のアップロードとコース編集。Vimeoのアップロード権限もここに付く。受講生の個人データにはアクセスできない。", who:"2名", c:"g" },
   { id:"reviewer",n:"レビュー", d:"制作物を見てレビューの可否を出す。編集と公開はできない。", who:"1名", c:"w" },
   { id:"admin",   n:"運営管理者", d:"全権限。アカウント発行と権限付与、売上と視聴データの閲覧。", who:"2名", c:"m" },
 ];
@@ -2535,6 +2546,9 @@ function vAccounts(){
       <div class="card pad"><div class="ch">コーチ・制作・レビュー</div>
         <p class="wsnote" style="margin:0">運営管理者が招待メールを送って発行します。担当する受講生の割り当ても同時に行います。
           業務委託の場合は契約終了時に停止します。</p></div>
+      <div class="card pad"><div class="ch">Vimeo側のアカウント</div>
+        <p class="wsnote" style="margin:0">制作の2名にVimeoのアップロード権限を付けます。レビュー担当は閲覧のみです。
+          Vimeoの請求アカウントは運営管理者が持ち、制作側には支払い情報を触らせません。</p></div>
       <div class="card pad"><div class="ch">アカウント共有への対応</div>
         <p class="wsnote" style="margin:0">同時視聴は1アカウント1台までに制限します。
           再生画面に受講生IDを薄く重ねるため、外に出た場合に出所が分かります。</p></div>
@@ -2550,13 +2564,16 @@ function vAccounts(){
 function vUpload(){
   let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},
     {t:"コンテンツ制作管理",go:()=>go("production")},{t:"動画をアップロード"}]);
-  h+=`<h1 class="ptitle">動画をアップロード</h1>`;
+  h+=`<div class="row" style="justify-content:space-between;margin-bottom:14px">
+    <h1 class="ptitle" style="margin:0">動画をアップロード</h1>
+    <span class="chip b">配信基盤：Vimeo</span></div>`;
   h+=`<div class="uplayout">
     <div>
       <div class="dropzone" id="dz">
         <div class="dzic">⬆</div>
         <b>ここに動画ファイルをドロップ</b>
         <span>MP4 / MOV・1本あたり5分程度・最大2GB</span>
+        <span>この画面からVimeoへ直接送られます</span>
         <button class="b b-pri" id="dz-b" style="margin-top:10px">ファイルを選ぶ</button>
       </div>
       <div class="card pad" style="margin-top:14px">
@@ -2578,25 +2595,49 @@ function vUpload(){
           <span class="grow"></span>
           <span style="font-size:11.5px;color:var(--dim)">公開は運営管理者のみ行えます</span></div>
       </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="ch">Vimeo側の設定（フォルダの既定値として1度だけ設定）</div>
+        <div class="tablewrap"><table><thead><tr><th>項目</th><th>設定値</th><th>これで防げること</th></tr></thead><tbody>
+          <tr><td>公開範囲</td><td><b>Vimeo上では非表示</b></td><td>Vimeoで検索しても出てこない</td></tr>
+          <tr><td>埋め込み許可ドメイン</td><td><b>本番ドメインのみ</b></td><td>他サイトに貼っても再生されない</td></tr>
+          <tr><td>ダウンロード</td><td><b>オフ</b></td><td>ファイルの持ち出し</td></tr>
+          <tr><td>プレイヤー表示</td><td><b>ロゴ・関連動画・共有ボタンをオフ</b></td><td>外への導線ができること</td></tr>
+        </tbody></table></div>
+        <p class="wsnote" style="margin-top:9px">
+          フォルダの既定値にしておけば、以後のアップロードに自動で適用されます。1本ずつ設定する必要はありません。</p>
+      </div>
     </div>
+
     <div>
       <div class="card pad" style="margin-bottom:12px">
-        <div class="ch">動画はどこに置かれるか</div>
+        <div class="ch">アップロードしてから届くまで</div>
         <ol class="steplist">
-          <li><b>アップロード</b><span>この画面から配信サービスへ直接送ります。サーバーを経由しません。</span></li>
-          <li><b>自動変換</b><span>回線速度に応じた画質が自動で作られます。こちらで変換作業は不要です。</span></li>
-          <li><b>受講生に配信</b><span>このサイトからの再生のみ許可します。動画のURLを直接開いても再生されません。</span></li>
+          <li><b>Vimeoへ直接送る</b><span>こちらのサーバーを経由しないので、制作側の回線だけで完結します。</span></li>
+          <li><b>自動で画質を作る</b><span>回線速度に応じた画質がVimeo側で用意されます。変換作業は不要です。</span></li>
+          <li><b>このサイトに埋め込む</b><span>受講生はこのサイトの中だけで再生します。</span></li>
         </ol>
       </div>
+
       <div class="card pad" style="margin-bottom:12px">
-        <div class="ch">守り方</div>
-        <ul class="guardlist">
-          <li>再生できるのは、このサイトに<b>ログイン済みの受講生</b>のみ</li>
-          <li>動画URLの直リンクとダウンロードは<b>不可</b></li>
-          <li>同時視聴は<b>1アカウント1台</b>まで</li>
-          <li>再生画面に<b>受講生IDを薄く重ねる</b>（転載時に出所が分かる）</li>
-        </ul>
+        <div class="ch">どこが何を守るか</div>
+        <div class="guardtable">
+          <div class="gt gt-v"><span class="gtw">Vimeoが守る</span>
+            <ul><li>他サイトへの貼り付けを拒否</li>
+              <li>ファイルのダウンロード不可</li>
+              <li>Vimeo上での検索に出ない</li></ul></div>
+          <div class="gt gt-l"><span class="gtw">このサイトが守る</span>
+            <ul><li>ログインしていない人にページを見せない</li>
+              <li>プランと公開範囲で出し分ける</li>
+              <li>同時視聴を1アカウント1台に制限</li>
+              <li>再生画面に受講生IDを薄く重ねる</li></ul></div>
+        </div>
+        <p class="wsnote" style="margin-top:9px">
+          Vimeoが守るのは「動画そのもの」、このサイトが守るのは「誰に見せるか」です。
+          <b>片方だけでは足りません。</b>ドメイン制限をかけても、ページ自体に鍵がかかっていなければ見られてしまいます。
+          同時視聴の制限とID透かしはVimeoの機能ではないため、このサイト側で実装します。</p>
       </div>
+
       <div class="card pad">
         <div class="ch">いまの保有量</div>
         <div class="row" style="gap:6px;align-items:baseline;margin-bottom:6px">
