@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>動画格納マニュアル｜道場LMS</title>
+<style>
+  :root{
+    --paper:#f4f6f9; --card:#fff; --card2:#eef2f8; --head:#f7f9fc;
+    --ink:#16233d; --ink2:#3c4a64; --dim:#6c7a92;
+    --line:#dbe2ec; --line2:#c2cddc;
+    --blue:#1857a8; --blue-d:#12447f; --blue-s:#e8f0fb; --blue-ink:#fff;
+    --mag:#cf0e70; --mag-s:#fce7f2;
+    --ok:#0f7f5e; --ok-s:#e3f3ee;
+    --warn:#c2410c; --warn-s:#fdeee4;
+    --sh1:0 1px 2px rgba(22,35,61,.07);
+    --sh2:0 1px 3px rgba(22,35,61,.09),0 8px 20px -12px rgba(22,35,61,.2);
+    --r:9px; --r2:5px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--paper:#0b1120;--card:#141d2e;--card2:#1b2540;--head:#1a2440;
+      --ink:#eef3fa;--ink2:#c2ccdd;--dim:#8a97ad;--line:#26324a;--line2:#3a4a66;
+      --blue:#5d9dee;--blue-d:#7db4f5;--blue-s:#16294a;--blue-ink:#08111f;
+      --mag:#ff62ab;--mag-s:#3b0f28;--ok:#3ec191;--ok-s:#0f3229;
+      --warn:#f59e6b;--warn-s:#3a1e10;
+      --sh1:0 1px 2px rgba(0,0,0,.45);--sh2:0 1px 3px rgba(0,0,0,.55),0 10px 24px -14px rgba(0,0,0,.85)}
+  }
+  :root[data-theme="dark"]{--paper:#0b1120;--card:#141d2e;--card2:#1b2540;--head:#1a2440;
+    --ink:#eef3fa;--ink2:#c2ccdd;--dim:#8a97ad;--line:#26324a;--line2:#3a4a66;
+    --blue:#5d9dee;--blue-d:#7db4f5;--blue-s:#16294a;--blue-ink:#08111f;
+    --mag:#ff62ab;--mag-s:#3b0f28;--ok:#3ec191;--ok-s:#0f3229;--warn:#f59e6b;--warn-s:#3a1e10}
+  :root[data-theme="light"]{--paper:#f4f6f9;--card:#fff;--card2:#eef2f8;--head:#f7f9fc;
+    --ink:#16233d;--ink2:#3c4a64;--dim:#6c7a92;--line:#dbe2ec;--line2:#c2cddc;
+    --blue:#1857a8;--blue-d:#12447f;--blue-s:#e8f0fb;--blue-ink:#fff;
+    --mag:#cf0e70;--mag-s:#fce7f2;--ok:#0f7f5e;--ok-s:#e3f3ee;--warn:#c2410c;--warn-s:#fdeee4}
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+    font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+  .tnum{font-variant-numeric:tabular-nums}
+  a{color:var(--blue)}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+  .wrap{max-width:940px;margin:0 auto;padding:0 22px 80px}
+  @media (max-width:600px){.wrap{padding:0 15px 60px}}
+
+  header.hd{background:var(--card);border-bottom:1px solid var(--line);padding:34px 0 28px;margin-bottom:26px}
+  header.hd .wrap{padding-bottom:0}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--blue);font-weight:700}
+  h1{font-size:29px;font-weight:700;line-height:1.4;margin:8px 0 10px;letter-spacing:-.01em}
+  @media (max-width:600px){h1{font-size:23px}}
+  .lead{font-size:14.5px;color:var(--ink2);margin:0;max-width:62ch}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .chip{font-size:11.5px;padding:4px 10px;border-radius:999px;background:var(--card2);
+    color:var(--dim);border:1px solid var(--line);white-space:nowrap}
+  .chip.b{background:var(--blue-s);color:var(--blue);border-color:var(--blue)}
+  .chip.g{background:var(--ok-s);color:var(--ok);border-color:var(--ok)}
+  .chip.w{background:var(--warn-s);color:var(--warn);border-color:var(--warn)}
+  .chip.m{background:var(--mag-s);color:var(--mag);border-color:var(--mag)}
+
+  nav.toc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:18px 20px;margin-bottom:30px;box-shadow:var(--sh1)}
+  nav.toc b{font-size:12px;letter-spacing:.08em;color:var(--dim);display:block;margin-bottom:10px}
+  nav.toc ol{margin:0;padding-left:1.3em;font-size:14px;line-height:2}
+  nav.toc a{text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+
+  h2{font-size:21px;font-weight:700;margin:44px 0 6px;padding-top:8px;line-height:1.45}
+  h2 .num{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;
+    background:var(--blue);color:var(--blue-ink);font-size:14px;margin-right:10px;vertical-align:-6px}
+  h3{font-size:16.5px;font-weight:700;margin:28px 0 8px;border-left:3px solid var(--mag);padding-left:11px}
+  p{margin:0 0 14px;max-width:66ch}
+  ul,ol{max-width:66ch}
+  li{margin-bottom:5px}
+  code{background:var(--card2);border:1px solid var(--line);border-radius:4px;
+    padding:1px 6px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:18px 20px;margin:16px 0;box-shadow:var(--sh1)}
+  .note{border-left:4px solid var(--blue);background:var(--blue-s)}
+  .warn{border-left:4px solid var(--warn);background:var(--warn-s)}
+  .good{border-left:4px solid var(--ok);background:var(--ok-s)}
+  .card .lb{font-size:11.5px;font-weight:700;letter-spacing:.06em;display:block;margin-bottom:6px}
+  .note .lb{color:var(--blue)} .warn .lb{color:var(--warn)} .good .lb{color:var(--ok)}
+  .card p:last-child{margin-bottom:0}
+
+  .steps{counter-reset:s;list-style:none;padding:0;margin:18px 0}
+  .steps>li{counter-increment:s;position:relative;padding-left:46px;margin-bottom:24px}
+  .steps>li::before{content:counter(s);position:absolute;left:0;top:0;width:32px;height:32px;
+    border-radius:50%;background:var(--blue);color:var(--blue-ink);display:grid;place-items:center;
+    font-size:14px;font-weight:700}
+  .steps>li>b{display:block;font-size:16px;margin-bottom:5px;padding-top:4px}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);
+    background:var(--card);margin:16px 0}
+  table{border-collapse:collapse;width:100%;min-width:520px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:top}
+  th{background:var(--head);color:var(--ink2);font-weight:700;font-size:12px;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+
+  .fig{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px;margin:18px 0;box-shadow:var(--sh1)}
+  .fig figcaption{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.7}
+  .fig svg{width:100%;height:auto;display:block;border-radius:var(--r2)}
+
+  .check{list-style:none;padding:0;margin:14px 0}
+  .check li{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+  .check li:first-child{border-top:none}
+  .check input{margin-top:5px;width:17px;height:17px;accent-color:var(--ok);flex-shrink:0}
+
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .btn{display:inline-block;background:var(--blue);color:var(--blue-ink);text-decoration:none;
+    padding:10px 18px;border-radius:var(--r2);font-size:13.5px;font-weight:600}
+  .btn:hover{background:var(--blue-d)}
+  .btn.sub{background:var(--card);color:var(--ink);border:1px solid var(--line2)}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--dim)}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    nav.toc,.btnrow{display:none}
+    h2{page-break-after:avoid} .card,.fig,.tablewrap{page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<header class="hd"><div class="wrap">
+  <div class="eyebrow">道場LMS ／ 運用マニュアル</div>
+  <h1>動画格納マニュアル<br>ーー 書き出しからLMS公開まで</h1>
+  <p class="lead">動画をVimeoに置き、道場LMSから受講生に届けるまでの手順です。
+    はじめての方でも、上から順にやれば1本公開できるように書いています。</p>
+  <div class="meta">
+    <span class="chip b">対象：制作担当（蘭丸さん・小林さん）</span>
+    <span class="chip">レビュー：カンタさん</span>
+    <span class="chip">公開：運営管理者</span>
+    <span class="chip m">配信基盤：Vimeo</span>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+<div class="card warn">
+  <span class="lb">はじめに読んでください</span>
+  <p>この手順書に載せているVimeoの画面は、<b>操作位置を示すための図解</b>です。実際の画面の写真ではありません。
+    Vimeoは画面の作りや項目名がときどき変わるため、実物と文言が違う場合があります。
+    <b>図の位置関係と「何を設定するか」を見てください。</b>項目が見つからないときは第6章を参照してください。</p>
+  <p>道場LMS側の画面は実物があります。各章のボタンから実際の画面を開けます。</p>
+</div>
+
+<nav class="toc">
+  <b>目次</b>
+  <ol>
+    <li><a href="#s0">はじめる前に用意するもの</a></li>
+    <li><a href="#s1">Vimeoの初期設定（最初に1回だけ）</a></li>
+    <li><a href="#s2">動画を書き出す（毎回）</a></li>
+    <li><a href="#s3">Vimeoにアップロードする（毎回）</a></li>
+    <li><a href="#s4">道場LMSに登録して公開する（毎回）</a></li>
+    <li><a href="#s5">1本ぶんのチェックリスト</a></li>
+    <li><a href="#s6">困ったとき</a></li>
+    <li><a href="#s7">やってはいけないこと</a></li>
+  </ol>
+</nav>
+
+<!-- ============ 0 ============ -->
+<h2 id="s0"><span class="num">0</span>はじめる前に用意するもの</h2>
+
+<p>作業を始める前に、次の3つが揃っているか確認してください。揃っていなければ運営管理者に依頼します。</p>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>用意するもの</th><th>誰が用意するか</th><th>確認のしかた</th></tr></thead>
+  <tbody>
+    <tr><td><b>Vimeoのアカウント</b><br>（アップロード権限つき）</td><td>運営管理者が招待</td>
+      <td>Vimeoにログインして、動画をアップロードするボタンが出ていればOK</td></tr>
+    <tr><td><b>道場LMSのアカウント</b><br>（ロール：制作）</td><td>運営管理者が発行</td>
+      <td>ログイン後、左メニューに「コンテンツ管理」が出ていればOK</td></tr>
+    <tr><td><b>格納先のフォルダ</b><br>（Vimeo内）</td><td>運営管理者が作成</td>
+      <td>Vimeoの左メニューにフォルダ名が見えていればOK</td></tr>
+  </tbody>
+</table></div>
+
+<div class="card note">
+  <span class="lb">権限の考え方</span>
+  <p>制作担当は<b>アップロードと編集まで</b>、公開は運営管理者が行います。
+    誤って未完成の動画が受講生に見えてしまうことを防ぐためです。
+    また、Vimeoの<b>支払い情報には制作担当は触れません</b>。</p>
+</div>
+
+<!-- ============ 1 ============ -->
+<h2 id="s1"><span class="num">1</span>Vimeoの初期設定（最初に1回だけ）</h2>
+
+<p>ここは<b>最初の1回だけ</b>の作業です。2本目以降は不要なので、飛ばして第2章へ進んでください。
+  設定するのは次の4項目です。この4つで「動画が外に漏れないようにする」ことができます。</p>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>設定する項目</th><th>設定値</th><th>これで防げること</th></tr></thead>
+  <tbody>
+    <tr><td>公開範囲（プライバシー）</td><td><b>Vimeo上では非表示</b></td><td>Vimeoで検索して見つかること</td></tr>
+    <tr><td>埋め込み許可ドメイン</td><td><b>道場LMSのドメインのみ</b></td><td>他サイトに貼られて再生されること</td></tr>
+    <tr><td>ダウンロード</td><td><b>オフ</b></td><td>動画ファイルそのものの持ち出し</td></tr>
+    <tr><td>プレイヤーの表示</td><td><b>ロゴ・関連動画・共有ボタンをオフ</b></td><td>受講生が外部へ出ていく導線ができること</td></tr>
+  </tbody>
+</table></div>
+
+<figure class="fig">
+<svg viewBox="0 0 900 430" role="img" aria-label="Vimeoのプライバシー設定画面の図解">
+  <rect width="900" height="430" rx="8" fill="var(--card2)"/>
+  <rect x="16" y="16" width="868" height="44" rx="6" fill="var(--card)" stroke="var(--line)"/>
+  <text x="34" y="44" font-size="15" font-weight="700" fill="var(--ink)">動画の設定</text>
+  <text x="770" y="44" font-size="13" fill="var(--dim)">保存</text>
+  <rect x="16" y="72" width="200" height="342" rx="6" fill="var(--card)" stroke="var(--line)"/>
+  <text x="34" y="100" font-size="12.5" fill="var(--dim)">全般</text>
+  <rect x="24" y="112" width="184" height="30" rx="5" fill="var(--blue-s)"/>
+  <text x="34" y="132" font-size="12.5" font-weight="700" fill="var(--blue)">プライバシー</text>
+  <text x="34" y="164" font-size="12.5" fill="var(--dim)">埋め込み</text>
+  <text x="34" y="192" font-size="12.5" fill="var(--dim)">共同編集</text>
+
+  <rect x="232" y="72" width="652" height="342" rx="6" fill="var(--card)" stroke="var(--line)"/>
+
+  <text x="254" y="104" font-size="13" font-weight="700" fill="var(--ink)">この動画を見られる人</text>
+  <rect x="254" y="116" width="600" height="34" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="270" y="138" font-size="12.5" fill="var(--ink)">リンクを知っている人だけ ／ Vimeo上では非表示</text>
+  <circle cx="238" cy="133" r="11" fill="var(--mag)"/><text x="238" y="138" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+
+  <text x="254" y="184" font-size="13" font-weight="700" fill="var(--ink)">埋め込みを許可するドメイン</text>
+  <rect x="254" y="196" width="600" height="34" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="270" y="218" font-size="12.5" fill="var(--ink)">dojo.example.jp　（道場LMSのドメインだけを入れる）</text>
+  <circle cx="238" cy="213" r="11" fill="var(--mag)"/><text x="238" y="218" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+
+  <text x="254" y="264" font-size="13" font-weight="700" fill="var(--ink)">ダウンロードを許可する</text>
+  <rect x="254" y="276" width="52" height="26" rx="13" fill="var(--line2)"/>
+  <circle cx="267" cy="289" r="10" fill="#fff"/>
+  <text x="320" y="294" font-size="12.5" fill="var(--dim)">オフ（左に倒す）</text>
+  <circle cx="238" cy="289" r="11" fill="var(--mag)"/><text x="238" y="294" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+
+  <text x="254" y="340" font-size="13" font-weight="700" fill="var(--ink)">プレイヤーに表示するもの</text>
+  <rect x="254" y="352" width="140" height="28" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="268" y="371" font-size="12" fill="var(--dim)">□ ロゴ</text>
+  <rect x="404" y="352" width="150" height="28" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="418" y="371" font-size="12" fill="var(--dim)">□ 関連動画</text>
+  <rect x="564" y="352" width="160" height="28" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="578" y="371" font-size="12" fill="var(--dim)">□ 共有ボタン</text>
+  <circle cx="238" cy="366" r="11" fill="var(--mag)"/><text x="238" y="371" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+  <text x="254" y="400" font-size="11.5" fill="var(--dim)">※ 3つともチェックを外す</text>
+</svg>
+<figcaption><b>図1：Vimeoのプライバシー設定（図解）</b>　①〜④の4か所を設定します。
+  実際の画面では項目の並びや呼び方が違うことがありますが、設定する中身は同じです。</figcaption>
+</figure>
+
+<div class="card good">
+  <span class="lb">2本目以降を楽にする</span>
+  <p>Vimeoには、プレイヤーの見た目をまとめて適用できる<b>「埋め込みプリセット」</b>という機能があります。
+    ④の設定をプリセットとして保存しておくと、次からは選ぶだけで済みます。
+    アカウント全体の既定プライバシー設定も、設定画面から変更できる場合があります。
+    <b>可能なら初回に運営管理者と一緒に設定しておくと、以降の手間がなくなります。</b></p>
+</div>
+
+<h3>チームメンバーの権限</h3>
+<p>Vimeo側のメンバー権限は次のように分けます。運営管理者が設定します。</p>
+<div class="tablewrap"><table>
+  <thead><tr><th>担当</th><th>Vimeoでの権限</th><th>できること</th></tr></thead>
+  <tbody>
+    <tr><td>蘭丸さん・小林さん（制作）</td><td>アップロード可</td><td>動画の追加・差し替え・設定変更</td></tr>
+    <tr><td>カンタさん（レビュー）</td><td>閲覧のみ</td><td>動画を見る。編集や削除はできない</td></tr>
+    <tr><td>運営管理者</td><td>管理者</td><td>すべて。支払い情報もここだけ</td></tr>
+  </tbody>
+</table></div>
+
+<!-- ============ 2 ============ -->
+<h2 id="s2"><span class="num">2</span>動画を書き出す（毎回）</h2>
+
+<p>編集ソフトから書き出すときの設定です。<b>迷ったらこの表のとおりにしてください。</b>
+  Vimeo側で自動的に画質を調整してくれるので、こちらで複数の画質を作る必要はありません。</p>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>項目</th><th>設定</th><th>補足</th></tr></thead>
+  <tbody>
+    <tr><td>ファイル形式</td><td><code>MP4</code></td><td>MOVでも可</td></tr>
+    <tr><td>映像コーデック</td><td><code>H.264</code></td><td>書き出し設定で選べます</td></tr>
+    <tr><td>解像度</td><td><code>1920 × 1080</code></td><td>画面録画が中心なので1080pで十分</td></tr>
+    <tr><td>フレームレート</td><td><code>30fps</code></td><td>元素材に合わせる</td></tr>
+    <tr><td>音声</td><td><code>AAC / 48kHz / ステレオ</code></td><td>ナレーションは人が担当</td></tr>
+    <tr><td>1本の長さ</td><td><b>5分前後</b></td><td>長くなるときは分割を検討</td></tr>
+    <tr><td>ファイルサイズ</td><td>2GB以内</td><td>5分なら通常は数百MB</td></tr>
+  </tbody>
+</table></div>
+
+<h3>ファイル名の付け方</h3>
+<p>あとで探せるように、必ずこの形式で付けてください。</p>
+<p><code>カテゴリ_コース名_セクション番号_タイトル.mp4</code></p>
+<div class="card note">
+  <span class="lb">例</span>
+  <p><code>マインドセット_なぜマインドセットから始めるのか_S01_手が止まる3つの原因.mp4</code><br>
+  <code>マーケ有料_Meta広告の基礎_S03_クリエイティブで9割決まる.mp4</code></p>
+</div>
+
+<div class="card warn">
+  <span class="lb">気をつけること</span>
+  <p>ファイル名に<b>日付や「最終」「修正版」を入れないでください</b>。
+    差し替えるときは同じ名前のまま上書きします。
+    「最終_修正版_v3_本当に最終」のようになると、どれが正しいか分からなくなります。</p>
+</div>
+
+<!-- ============ 3 ============ -->
+<h2 id="s3"><span class="num">3</span>Vimeoにアップロードする（毎回）</h2>
+
+<ol class="steps">
+  <li><b>道場LMSの「動画をアップロード」画面を開く</b>
+    <p>左メニューの「コンテンツ管理 → 動画をアップロード」です。
+      Vimeoのサイトから直接アップロードすることもできますが、
+      <b>この画面から入れたほうが、コースとの紐づけまで一度に終わります。</b></p>
+    <div class="btnrow">
+      <a class="btn" href="https://taketo0904.github.io/ai-school-lms-mock/" target="_blank" rel="noopener">道場LMSを開く</a>
+    </div>
+  </li>
+
+  <li><b>ファイルをドロップする</b>
+    <p>点線の枠の中に、書き出した動画をドラッグして落とします。
+      「ファイルを選ぶ」から選んでも同じです。アップロード中は画面を閉じないでください。</p>
+  </li>
+
+  <li><b>動画の情報を入れる</b>
+    <p>下の表のとおりに入力します。ここで入れた内容が、そのまま受講生の画面に出ます。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>欄</th><th>入れるもの</th></tr></thead>
+      <tbody>
+        <tr><td>タイトル</td><td>受講生に見えるレッスン名。台本の見出しをそのまま使う</td></tr>
+        <tr><td>格納先コース</td><td>この動画が入るコースを選ぶ</td></tr>
+        <tr><td>セクション</td><td>コースの中の何番目か</td></tr>
+        <tr><td>担当</td><td>自分の名前</td></tr>
+        <tr><td>ナレーション</td><td>「人」を選ぶ（AI音声を使った場合のみ変更）</td></tr>
+        <tr><td>公開範囲</td><td>必修は「全員」、通常は「スタンダード以上」、上級は「エリートのみ」</td></tr>
+      </tbody>
+    </table></div>
+  </li>
+
+  <li><b>「下書きとして保存」を押す</b>
+    <p>この時点では、まだ受講生には見えません。安心して保存してください。</p>
+  </li>
+
+  <li><b>「デザインレビューに出す」を押す</b>
+    <p>カンタさんに通知が届きます。レビューで指摘があれば直して、もう一度出します。</p>
+  </li>
+</ol>
+
+<figure class="fig">
+<svg viewBox="0 0 900 330" role="img" aria-label="道場LMSのアップロード画面の図解">
+  <rect width="900" height="330" rx="8" fill="var(--card2)"/>
+  <rect x="16" y="16" width="520" height="140" rx="8" fill="var(--card)" stroke="var(--line2)" stroke-dasharray="7 5"/>
+  <text x="276" y="70" font-size="26" fill="var(--blue)" text-anchor="middle">⬆</text>
+  <text x="276" y="98" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">ここに動画ファイルをドロップ</text>
+  <text x="276" y="118" font-size="11.5" fill="var(--dim)" text-anchor="middle">MP4 / MOV・5分程度・最大2GB</text>
+  <circle cx="34" cy="34" r="12" fill="var(--mag)"/><text x="34" y="39" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+
+  <rect x="16" y="172" width="520" height="142" rx="8" fill="var(--card)" stroke="var(--line)"/>
+  <text x="36" y="196" font-size="11.5" font-weight="700" fill="var(--dim)">この動画の情報</text>
+  <rect x="36" y="206" width="228" height="30" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="48" y="226" font-size="11.5" fill="var(--dim)">タイトル</text>
+  <rect x="280" y="206" width="228" height="30" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="292" y="226" font-size="11.5" fill="var(--dim)">格納先コース ▾</text>
+  <rect x="36" y="244" width="228" height="30" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="48" y="264" font-size="11.5" fill="var(--dim)">セクション ▾</text>
+  <rect x="280" y="244" width="228" height="30" rx="5" fill="var(--card2)" stroke="var(--line2)"/>
+  <text x="292" y="264" font-size="11.5" fill="var(--dim)">公開範囲 ▾</text>
+  <circle cx="34" cy="190" r="12" fill="var(--mag)"/><text x="34" y="195" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+
+  <rect x="36" y="284" width="130" height="30" rx="5" fill="var(--blue)"/>
+  <text x="101" y="304" font-size="12" font-weight="700" fill="var(--blue-ink)" text-anchor="middle">下書きとして保存</text>
+  <circle cx="24" cy="299" r="12" fill="var(--mag)"/><text x="24" y="304" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+  <rect x="176" y="284" width="150" height="30" rx="5" fill="var(--card)" stroke="var(--line2)"/>
+  <text x="251" y="304" font-size="12" fill="var(--ink)" text-anchor="middle">デザインレビューに出す</text>
+  <circle cx="340" cy="299" r="12" fill="var(--mag)"/><text x="340" y="304" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+
+  <rect x="552" y="16" width="332" height="298" rx="8" fill="var(--card)" stroke="var(--line)"/>
+  <text x="572" y="40" font-size="11.5" font-weight="700" fill="var(--dim)">どこが何を守るか</text>
+  <rect x="572" y="52" width="292" height="104" rx="6" fill="var(--blue-s)" stroke="var(--blue)"/>
+  <text x="588" y="74" font-size="11.5" font-weight="700" fill="var(--blue)">Vimeoが守る</text>
+  <text x="588" y="96" font-size="11.5" fill="var(--ink2)">・他サイトへの貼り付けを拒否</text>
+  <text x="588" y="116" font-size="11.5" fill="var(--ink2)">・ファイルのダウンロード不可</text>
+  <text x="588" y="136" font-size="11.5" fill="var(--ink2)">・Vimeo上での検索に出ない</text>
+  <rect x="572" y="168" width="292" height="126" rx="6" fill="var(--ok-s)" stroke="var(--ok)"/>
+  <text x="588" y="190" font-size="11.5" font-weight="700" fill="var(--ok)">このサイトが守る</text>
+  <text x="588" y="212" font-size="11.5" fill="var(--ink2)">・ログインしていない人に見せない</text>
+  <text x="588" y="232" font-size="11.5" fill="var(--ink2)">・プランと公開範囲で出し分ける</text>
+  <text x="588" y="252" font-size="11.5" fill="var(--ink2)">・同時視聴を1アカウント1台に制限</text>
+  <text x="588" y="272" font-size="11.5" fill="var(--ink2)">・再生画面に受講生IDを重ねる</text>
+</svg>
+<figcaption><b>図2：道場LMSのアップロード画面（図解）</b>　②〜⑤が第3章の手順に対応します。
+  右側は参考表示です。実際の画面は<a href="https://taketo0904.github.io/ai-school-lms-mock/" target="_blank" rel="noopener">こちら</a>から確認できます。</figcaption>
+</figure>
+
+<!-- ============ 4 ============ -->
+<h2 id="s4"><span class="num">4</span>道場LMSに登録して公開する（毎回）</h2>
+
+<p>レビューが通ったら公開します。<b>公開の操作は運営管理者が行います。</b>制作担当はここまでで完了です。</p>
+
+<h3>制作の進み方</h3>
+<p>1本の動画は次の4段階を進みます。「制作進捗」の画面で、いまどこにいるか全員が見られます。</p>
+
+<figure class="fig">
+<svg viewBox="0 0 900 130" role="img" aria-label="制作の4段階">
+  <rect width="900" height="130" rx="8" fill="var(--card2)"/>
+  <line x1="110" y1="62" x2="790" y2="62" stroke="var(--line2)" stroke-width="3"/>
+  <g><circle cx="110" cy="62" r="26" fill="var(--card)" stroke="var(--line2)" stroke-width="2"/>
+    <text x="110" y="68" font-size="13" fill="var(--dim)" text-anchor="middle">1</text>
+    <text x="110" y="112" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">未着手</text></g>
+  <g><circle cx="337" cy="62" r="26" fill="var(--warn)" stroke="var(--warn)" stroke-width="2"/>
+    <text x="337" y="68" font-size="13" fill="#fff" text-anchor="middle">2</text>
+    <text x="337" y="112" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">制作中</text>
+    <text x="337" y="30" font-size="11" fill="var(--dim)" text-anchor="middle">制作担当</text></g>
+  <g><circle cx="564" cy="62" r="26" fill="var(--blue)" stroke="var(--blue)" stroke-width="2"/>
+    <text x="564" y="68" font-size="13" fill="var(--blue-ink)" text-anchor="middle">3</text>
+    <text x="564" y="112" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">デザインレビュー</text>
+    <text x="564" y="30" font-size="11" fill="var(--dim)" text-anchor="middle">カンタさん</text></g>
+  <g><circle cx="790" cy="62" r="26" fill="var(--ok)" stroke="var(--ok)" stroke-width="2"/>
+    <text x="790" y="68" font-size="13" fill="#fff" text-anchor="middle">4</text>
+    <text x="790" y="112" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">公開済</text>
+    <text x="790" y="30" font-size="11" fill="var(--dim)" text-anchor="middle">運営管理者</text></g>
+</svg>
+<figcaption><b>図3：制作の4段階</b>　制作担当が動かすのは②と③です。④の公開は運営管理者だけが行えます。</figcaption>
+</figure>
+
+<h3>公開したら必ず確認すること</h3>
+<p>公開後、<b>受講生と同じ見え方</b>で1回再生してください。ここを飛ばすと、見られない動画が放置されます。</p>
+<ul>
+  <li>コースを開いて、動画が正しい位置に入っているか</li>
+  <li>再生が始まるか（黒画面のままにならないか）</li>
+  <li>音が出るか、音量が他の動画と大きく違わないか</li>
+  <li>タイトルの誤字がないか</li>
+</ul>
+
+<!-- ============ 5 ============ -->
+<h2 id="s5"><span class="num">5</span>1本ぶんのチェックリスト</h2>
+<p>印刷して手元に置くか、この画面のままチェックを付けて使ってください。</p>
+
+<div class="card">
+  <span class="lb" style="color:var(--dim)">書き出し</span>
+  <ul class="check">
+    <li><input type="checkbox"><span>MP4 / H.264 / 1920×1080 で書き出した</span></li>
+    <li><input type="checkbox"><span>長さは5分前後に収まっている</span></li>
+    <li><input type="checkbox"><span>ファイル名を規則どおりに付けた（日付・「最終」を入れていない）</span></li>
+    <li><input type="checkbox"><span>音声が入っているか、書き出したファイルを再生して確認した</span></li>
+  </ul>
+</div>
+
+<div class="card">
+  <span class="lb" style="color:var(--dim)">アップロード</span>
+  <ul class="check">
+    <li><input type="checkbox"><span>道場LMSの「動画をアップロード」から入れた</span></li>
+    <li><input type="checkbox"><span>タイトル・格納先コース・セクションを入れた</span></li>
+    <li><input type="checkbox"><span>公開範囲を選んだ（必修／スタンダード以上／エリートのみ）</span></li>
+    <li><input type="checkbox"><span>下書きとして保存した</span></li>
+    <li><input type="checkbox"><span>デザインレビューに出した</span></li>
+  </ul>
+</div>
+
+<div class="card">
+  <span class="lb" style="color:var(--dim)">Vimeo側の確認（初回のみ／不安なときは毎回）</span>
+  <ul class="check">
+    <li><input type="checkbox"><span>Vimeo上では非表示になっている</span></li>
+    <li><input type="checkbox"><span>埋め込み許可ドメインが道場LMSだけになっている</span></li>
+    <li><input type="checkbox"><span>ダウンロードがオフになっている</span></li>
+    <li><input type="checkbox"><span>プレイヤーのロゴ・関連動画・共有ボタンがオフになっている</span></li>
+  </ul>
+</div>
+
+<div class="card">
+  <span class="lb" style="color:var(--dim)">公開後（運営管理者）</span>
+  <ul class="check">
+    <li><input type="checkbox"><span>受講生と同じ見え方で1回再生した</span></li>
+    <li><input type="checkbox"><span>音量が他の動画と大きく違わない</span></li>
+    <li><input type="checkbox"><span>制作進捗の画面で「公開済」になっている</span></li>
+  </ul>
+</div>
+
+<!-- ============ 6 ============ -->
+<h2 id="s6"><span class="num">6</span>困ったとき</h2>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>症状</th><th>考えられる原因</th><th>やること</th></tr></thead>
+  <tbody>
+    <tr><td>受講生の画面で再生できない（黒いまま）</td>
+      <td>埋め込み許可ドメインに道場LMSが入っていない</td>
+      <td>Vimeoの設定を開き、ドメインを追加する。1〜2分待って再読み込み</td></tr>
+    <tr><td>アップロードが途中で止まる</td>
+      <td>回線が不安定／ファイルが大きい</td>
+      <td>有線接続に変える。2GBを超えていないか確認する</td></tr>
+    <tr><td>画質が粗い</td>
+      <td>アップロード直後で変換が終わっていない</td>
+      <td>10〜20分待ってから見直す。変換はVimeo側で自動的に進みます</td></tr>
+    <tr><td>設定項目が手順書と違う名前になっている</td>
+      <td>Vimeoの画面が更新された</td>
+      <td>「何を設定するか」（第1章の表）で判断する。分からなければ運営管理者に連絡</td></tr>
+    <tr><td>間違えて公開してしまった</td>
+      <td>ー</td>
+      <td>すぐに運営管理者へ連絡。非公開に戻します。自分で消さないでください</td></tr>
+    <tr><td>差し替えたのに古い動画が出る</td>
+      <td>ブラウザが前の動画を覚えている</td>
+      <td>ページを強制的に再読み込みする。それでも直らなければ運営管理者へ</td></tr>
+  </tbody>
+</table></div>
+
+<!-- ============ 7 ============ -->
+<h2 id="s7"><span class="num">7</span>やってはいけないこと</h2>
+
+<div class="card warn">
+  <span class="lb">これをやると事故になります</span>
+  <ul style="margin:0">
+    <li><b>YouTubeに「限定公開」で上げない。</b>URLが1つ漏れると全員に見られます。有料の教材には使えません。</li>
+    <li><b>動画ファイルをGoogleドライブやSlackで受講生に直接渡さない。</b>ダウンロードされて配布されます。</li>
+    <li><b>Vimeoの共有リンクを受講生に送らない。</b>必ず道場LMSの画面から見てもらいます。</li>
+    <li><b>公開済みの動画を自分の判断で削除しない。</b>受講生が見ている最中かもしれません。運営管理者へ連絡してください。</li>
+    <li><b>Vimeoの支払い情報やプランを触らない。</b>運営管理者の担当です。</li>
+  </ul>
+</div>
+
+<div class="card note">
+  <span class="lb">迷ったら</span>
+  <p>判断に迷ったら、<b>公開せずに運営管理者へ聞いてください。</b>
+    公開が1日遅れることより、間違ったものが受講生に出るほうが問題になります。</p>
+</div>
+
+<footer>
+  <p>道場LMS 動画格納マニュアル ／ 作成 2026年8月<br>
+    この手順書は運用に合わせて更新します。実際の画面と食い違う箇所を見つけたら、運営管理者へ連絡してください。</p>
+  <div class="btnrow">
+    <a class="btn sub" href="https://taketo0904.github.io/ai-school-lms-mock/" target="_blank" rel="noopener">道場LMSを開く</a>
+    <a class="btn sub" href="#" onclick="window.print();return false">この手順書を印刷する</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>
