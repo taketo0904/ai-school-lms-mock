@@ -670,6 +670,20 @@
   .gt-l .gtw{color:var(--ok)}
   .gt ul{margin:0;padding-left:1.15em;font-size:12px;line-height:1.8;color:var(--ink2)}
 
+
+  /* アカウント発行フォーム */
+  .acctform{border-left:3px solid var(--blue);margin-bottom:18px}
+  .req{font-size:9.5px;font-weight:700;color:var(--warn);background:var(--warn-s);
+    border:1px solid var(--warn);border-radius:3px;padding:0 4px;margin-left:5px}
+  .rolehint{background:var(--card2);border-radius:var(--r2);padding:9px 12px;font-size:12px;
+    color:var(--ink2);line-height:1.7;margin-top:4px}
+  .rolehint b{color:var(--ink)}
+  .err{font-size:12px;color:var(--warn);font-weight:700}
+  .rsel,.ssel{width:100%;background:var(--card);border:1px solid var(--line2);
+    border-radius:var(--r2);padding:5px 7px;font-size:12px}
+  .rsel:hover,.ssel:hover{border-color:var(--blue)}
+  .link.del{color:var(--warn)}
+
   /* ===== admin ===== */
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;text-align:center}
   .metric .lb{font-size:12.5px;font-weight:700;margin-bottom:10px}
@@ -1233,7 +1247,7 @@ let S = {
   mode:"user", page:"home", cid:null, li:0,
   tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-info","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prod","g-prog","g-mail"]),
   q:"", qmode:"course", filter:"all", libFilter:"all", tmpl:"t1", chartRange:7, statTab:"amount",
-  page1:1, page2:1, done:null, prodF:"all", acctF:"all", cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
+  page1:1, page2:1, done:null, prodF:"all", acctF:"all", acctNew:false, acctDraft:null, cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
 };
 
 function save(){
@@ -2498,19 +2512,65 @@ const ACCOUNTS=[
   { n:"平野 さやか", m:"s.hirano@example.jp", r:"student", st:"休会", last:"2026/07/20", note:"8月末まで休会" },
 ];
 
+/* ============ アカウント管理（発行・変更ができる） ============
+   追加したアカウントは localStorage に保存する。既定の8件と合わせて表示する。 */
+const AKEY="dojo-acct-v1";
+function acctLoad(){
+  try{
+    const add=JSON.parse(localStorage.getItem(AKEY)||"[]");
+    if(Array.isArray(add)) add.forEach(a=>{ if(!ACCOUNTS.some(x=>x.m===a.m)) ACCOUNTS.push(a) });
+  }catch(e){}
+}
+function acctSave(){
+  /* 既定の8件は保存しない。追加・変更したものだけ持つ */
+  try{ localStorage.setItem(AKEY, JSON.stringify(ACCOUNTS.filter(a=>a.added||a.edited))) }catch(e){}
+}
+const mailOK = m => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m);
+
 function vAccounts(){
   const f=S.acctF||"all";
   const rows=ACCOUNTS.filter(a=>f==="all"||a.r===f);
+  const open=!!S.acctNew;
   let h=crumb([{t:"運営ダッシュボード",go:()=>go("adash")},{t:"アカウント管理"}]);
   h+=`<div class="row" style="justify-content:space-between;margin-bottom:14px">
     <h1 class="ptitle" style="margin:0">アカウント管理</h1>
-    <button class="b b-pri" id="ac-new">アカウントを発行する</button></div>`;
+    <button class="b ${open?"":"b-pri"}" id="ac-new">${open?"入力をやめる":"＋ アカウントを発行する"}</button></div>`;
+
+  /* ---- 発行フォーム ---- */
+  if(open){
+    const d=S.acctDraft||{};
+    h+=`<div class="card pad acctform">
+      <div class="ch">新しいアカウントを発行する</div>
+      <div class="filters">
+        <div class="f"><label>氏名 <span class="req">必須</span></label>
+          <input id="nf-n" value="${d.n||""}" placeholder="例）山田 太郎"></div>
+        <div class="f"><label>メールアドレス <span class="req">必須</span></label>
+          <input id="nf-m" value="${d.m||""}" placeholder="例）yamada@example.jp"></div>
+        <div class="f"><label>ロール <span class="req">必須</span></label>
+          <select id="nf-r">${ROLES.map(r=>`<option value="${r.id}" ${d.r===r.id?"selected":""}>${r.n}</option>`).join("")}</select></div>
+        <div class="f"><label>備考</label>
+          <input id="nf-note" value="${d.note||""}" placeholder="担当や契約期間など"></div>
+      </div>
+      <div class="rolehint" id="nf-hint"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="b b-pri" id="nf-save">この内容で発行する</button>
+        <button class="b" id="nf-cancel">やめる</button>
+        <span class="grow"></span>
+        <span class="err" id="nf-err"></span></div>
+      <p class="wsnote" style="margin-top:10px">
+        発行すると招待メールが送られ、本人が初回ログイン時にパスワードを設定します。
+        受講生は通常、決済の完了で自動的に発行されるため、ここから手で追加するのは
+        無料枠や特別対応の場合だけです。</p>
+    </div>`;
+  }
 
   h+=`<div class="sectitle">ロール</div>
-    <div class="rolegrid">${ROLES.map(r=>`<div class="rolecard">
+    <div class="rolegrid">${ROLES.map(r=>{
+      const n=ACCOUNTS.filter(a=>a.r===r.id).length;
+      return `<div class="rolecard">
       <div class="row" style="gap:8px;margin-bottom:6px">
-        <span class="chip ${r.c}">${r.n}</span><span class="tnum" style="font-size:11px;color:var(--dim)">${r.who}</span></div>
-      <p>${r.d}</p></div>`).join("")}</div>`;
+        <span class="chip ${r.c}">${r.n}</span><span class="tnum" style="font-size:11px;color:var(--dim)">${n}名</span></div>
+      <p>${r.d}</p></div>`}).join("")}</div>`;
 
   h+=`<div class="sectitle" style="margin-top:20px">権限</div>
     <p style="font-size:12px;color:var(--dim);margin:-6px 0 10px">
@@ -2523,20 +2583,29 @@ function vAccounts(){
 
   h+=`<div class="sectitle" style="margin-top:22px">アカウント一覧</div>
     <div class="row" style="gap:6px;margin-bottom:10px;flex-wrap:wrap">
-      ${[["all","すべて"],...ROLES.map(r=>[r.id,r.n])].map(([k,l])=>`<button class="b b-sm" data-af="${k}"
-        ${f===k?'style="background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600"':""}>${l}</button>`).join("")}</div>
+      ${[["all","すべて"],...ROLES.map(r=>[r.id,r.n])].map(([k,l])=>{
+        const n=k==="all"?ACCOUNTS.length:ACCOUNTS.filter(a=>a.r===k).length;
+        return `<button class="b b-sm" data-af="${k}"
+        ${f===k?'style="background:var(--blue);border-color:var(--blue);color:var(--blue-ink);font-weight:600"':""}>${l} ${n}</button>`}).join("")}</div>
     <div class="tablewrap"><table><thead><tr>
-      <th>氏名</th><th>メール</th><th>ロール</th><th>状態</th><th>最終ログイン</th><th>備考</th><th style="width:110px"></th></tr></thead><tbody>
-      ${rows.map((a,i)=>{const r=ROLES.find(x=>x.id===a.r);
-        return `<tr><td><div class="row" style="gap:8px;flex-wrap:nowrap"><span class="av">${a.n[0]}</span>
-          <b style="font-size:12.5px">${a.n}</b></div></td>
+      <th>氏名</th><th>メール</th><th style="width:150px">ロール</th><th style="width:110px">状態</th>
+      <th>最終ログイン</th><th>備考</th><th style="width:64px"></th></tr></thead><tbody>
+      ${rows.length?rows.map(a=>{const i=ACCOUNTS.indexOf(a);
+        return `<tr>
+        <td><div class="row" style="gap:8px;flex-wrap:nowrap"><span class="av">${a.n[0]}</span>
+          <b style="font-size:12.5px">${a.n}</b>${a.added?`<span class="chip g">追加</span>`:""}</div></td>
         <td style="font-size:11.5px;color:var(--dim)">${a.m}</td>
-        <td><span class="chip ${r.c}">${r.n}</span></td>
-        <td><span class="chip ${a.st==="有効"?"g":"w"}">${a.st}</span></td>
+        <td><select class="rsel" data-role="${i}">
+          ${ROLES.map(r=>`<option value="${r.id}" ${a.r===r.id?"selected":""}>${r.n}</option>`).join("")}</select></td>
+        <td><select class="ssel" data-st="${i}">
+          ${["有効","休会","停止"].map(v=>`<option ${a.st===v?"selected":""}>${v}</option>`).join("")}</select></td>
         <td class="tnum" style="font-size:11.5px">${a.last}</td>
         <td style="font-size:11.5px;color:var(--dim)">${a.note||"—"}</td>
-        <td><button class="link" data-ae="${i}">権限を変更</button></td></tr>`}).join("")}
-    </tbody></table></div>`;
+        <td><button class="link del" data-del="${i}">削除</button></td></tr>`}).join("")
+        :`<tr><td colspan="7" class="empty">該当するアカウントはありません。</td></tr>`}
+    </tbody></table></div>
+    <p style="font-size:11.5px;color:var(--dim);margin-top:9px">
+      ロールと状態はその場で変更できます。変更は自動で保存されます。</p>`;
 
   h+=`<div class="sectitle" style="margin-top:22px">発行のしかた</div>
     <div class="grid3">
@@ -2547,7 +2616,7 @@ function vAccounts(){
         <p class="wsnote" style="margin:0">運営管理者が招待メールを送って発行します。担当する受講生の割り当ても同時に行います。
           業務委託の場合は契約終了時に停止します。</p></div>
       <div class="card pad"><div class="ch">Vimeo側のアカウント</div>
-        <p class="wsnote" style="margin:0">制作の2名にVimeoのアップロード権限を付けます。レビュー担当は閲覧のみです。
+        <p class="wsnote" style="margin:0">制作の担当者にVimeoのアップロード権限を付けます。レビュー担当は閲覧のみです。
           Vimeoの請求アカウントは運営管理者が持ち、制作側には支払い情報を触らせません。</p></div>
       <div class="card pad"><div class="ch">アカウント共有への対応</div>
         <p class="wsnote" style="margin:0">同時視聴は1アカウント1台までに制限します。
@@ -2556,8 +2625,57 @@ function vAccounts(){
   V().innerHTML=h;
   $$v("[data-cb]").forEach(b=>b.onclick=()=>go("adash"));
   $$v("[data-af]").forEach(b=>b.onclick=()=>{S.acctF=b.dataset.af;render()});
-  $v("#ac-new").onclick=()=>toast("アカウント発行フォーム（モック）");
-  $$v("[data-ae]").forEach(b=>b.onclick=()=>toast(`${rows[+b.dataset.ae].n} の権限変更（モック）`));
+
+  $v("#ac-new").onclick=()=>{S.acctNew=!S.acctNew; if(!S.acctNew)S.acctDraft=null; render()};
+
+  /* ---- フォームの配線 ---- */
+  if(open){
+    const hint=()=>{
+      const r=$v("#nf-r").value, o=ROLES.find(x=>x.id===r);
+      $v("#nf-hint").innerHTML=`<b>${o.n}</b>　${o.d}`;
+    };
+    hint();
+    $v("#nf-r").onchange=hint;
+    $v("#nf-cancel").onclick=()=>{S.acctNew=false;S.acctDraft=null;render()};
+    $v("#nf-save").onclick=()=>{
+      const n=$v("#nf-n").value.trim(), m=$v("#nf-m").value.trim(),
+            r=$v("#nf-r").value, note=$v("#nf-note").value.trim();
+      const err=$v("#nf-err");
+      if(!n){ err.textContent="氏名を入れてください"; $v("#nf-n").focus(); return; }
+      if(!m){ err.textContent="メールアドレスを入れてください"; $v("#nf-m").focus(); return; }
+      if(!mailOK(m)){ err.textContent="メールアドレスの形式が正しくありません"; $v("#nf-m").focus(); return; }
+      if(ACCOUNTS.some(a=>a.m.toLowerCase()===m.toLowerCase())){
+        err.textContent="このメールアドレスは既に登録されています"; $v("#nf-m").focus(); return; }
+      ACCOUNTS.push({ n, m, r, st:"有効", last:"—", note, added:true });
+      acctSave();
+      S.acctNew=false; S.acctDraft=null; S.acctF=r;
+      toast(`${n} さんを発行しました。招待メールを送りました`);
+      render();
+    };
+    /* 入力を保持しておく（ロール変更などで再描画されても消えないように） */
+    ["n","m","note"].forEach(k=>{
+      const el=$v("#nf-"+k);
+      el.oninput=()=>{ S.acctDraft=S.acctDraft||{}; S.acctDraft[k==="n"?"n":k==="m"?"m":"note"]=el.value; };
+    });
+  }
+
+  /* ---- 一覧の変更 ---- */
+  $$v("[data-role]").forEach(sel=>sel.onchange=()=>{
+    const a=ACCOUNTS[+sel.dataset.role];
+    a.r=sel.value; a.edited=true; acctSave();
+    toast(`${a.n} のロールを「${ROLES.find(r=>r.id===sel.value).n}」に変更しました`); render();
+  });
+  $$v("[data-st]").forEach(sel=>sel.onchange=()=>{
+    const a=ACCOUNTS[+sel.dataset.st];
+    a.st=sel.value; a.edited=true; acctSave();
+    toast(`${a.n} を「${sel.value}」にしました`); render();
+  });
+  $$v("[data-del]").forEach(b=>b.onclick=()=>{
+    const a=ACCOUNTS[+b.dataset.del];
+    if(!confirm(`${a.n}（${a.m}）を削除します。よろしいですか。\n削除するとログインできなくなります。`))return;
+    ACCOUNTS.splice(+b.dataset.del,1); acctSave();
+    toast(`${a.n} を削除しました`); render();
+  });
 }
 
 /* ============ 動画のアップロードと格納 ============ */
@@ -3458,6 +3576,7 @@ $("#ic-bell").onclick=()=>toast("お知らせ：宿題の期限が2件近づい�
 
 load();
 wsLoad();
+acctLoad();
 render();
 </script>
 </body>
