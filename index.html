@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="オンラインスクール向けLMSのUIモック">
 <meta name="robots" content="noindex">
 <title>道場 — AIスクール LMS(モック)</title>
 </head>
@@ -119,6 +118,10 @@
     padding:8px 14px 8px 30px;text-align:left;color:var(--ink2);font-size:12.5px;border-left:3px solid transparent}
   .nav:hover{background:var(--card2);color:var(--ink)}
   .nav[aria-current="true"]{background:var(--blue-s);color:var(--blue);font-weight:600;border-left-color:var(--blue)}
+  .catn{font-size:10px;font-weight:700;color:var(--dim);margin-right:7px;min-width:16px;display:inline-block}
+  .nav[aria-current="true"] .catn{color:var(--blue)}
+  .wipbadge{font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:3px;
+    background:var(--card2);color:var(--dim);border:1px solid var(--line)}
   .subhead{padding:7px 14px 3px 30px;font-size:11px;color:var(--dim);font-weight:700;letter-spacing:.04em}
   .nav.sub{padding-left:42px}
   .nav.sub::before{content:"└";position:absolute;margin-left:-14px;color:var(--line2);font-size:10px}
@@ -763,285 +766,146 @@ const L = (sec,title,dur,done,body,tasks) => ({sec,title,dur,done,body,tasks:tas
 /* カリキュラムは2軸。
    kind:"level"   = AIスキル。初級→中級→上級と積み上げる（仕事の能力）
    kind:"practice"= 営業・マーケ・副業。案件と副業を取るための実践（コーチングが並走） */
+/* ============ カリキュラム ============
+   Google Drive の教材フォルダ（00〜06）の実構成に合わせている。
+   カテゴリ → 章（＝コース）→ コンテンツ（＝レッスン）の3層。
+   wip:true は設計mdはあるが台本・スライドが未着手の章。 */
 const CATS = [
-{ id:"mind", kind:"core", num:"必修", name:"マインドセット", desc:"全員が最初に受ける共通コンテンツ。1on1の前にここを通しておく。", courses:[
-  { id:"md-why", badge:"必修", tool:"マインドセット", title:"なぜマインドセットから始めるのか", sub:"技術より先に決まっていないと進まないもの", tier:"standard",
-    about:["手が止まる本当の原因を知る","1on1の前に共通言語を持つ"], lessons:[
-    L("Section0","このコースの位置づけ","4:30",false,"AIの使い方を覚えても、何のために使うかが決まっていないと手は動きません。ここは全員必修です。"),
-    L("Section1","手が止まる3つの原因","9:20",false,"能力ではなく、ゴールの不在・優先順位の不在・一人で抱えることの3つが原因です。それぞれの外し方を解説します。"),
-    L("Section2","1on1で何を話すか","7:45",false,"コーチングを受ける前に、何を持ち込めば密度が上がるかを整理します。",["次回1on1で相談したいことを3つ書き出す"])]},
-  { id:"md-goal", badge:"必修", tool:"マインドセット", title:"ゴール設定の考え方", sub:"現状の外側に目標を置く", tier:"standard",
-    about:["現状の延長線上に置かない","定性と定量を分けて考える"], lessons:[
-    L("Section0","現状の外側とは","10:10",false,"いまの延長でできることを目標にすると、行動が変わりません。外側に置く意味を解説します。"),
-    L("Section1","定性ゴールと定量ゴール","12:30",false,"状態を表す言葉と、測れる指標。2つを分けて置く理由と作り方を解説します。",["ワークシート05のGOAL設計に着手する"]),
-    L("Section2","やらないことを決める","8:50",false,"時間は増えないので、何かを始めるには何かを止める必要があります。断つ決断の作り方を扱います。")]},
-  { id:"md-time", badge:"必修", tool:"マインドセット", title:"時間の使い方と優先順位", sub:"週の中に学習と実践を固定する", tier:"standard",
-    about:["使える時間を正確に把握する","詰め込まずに続ける形にする"], lessons:[
-    L("Section0","使える時間を数える","7:15",false,"やる気ではなく、実際に空いている時間で計画を組みます。",["平日と土日で使える時間を書き出す"]),
-    L("Section1","週の型を決める","9:40",false,"いつ学習し、いつ手を動かすか。曜日と時間帯で固定する方法を解説します。")]},
-  { id:"md-keep", badge:"必修", tool:"マインドセット", title:"続ける仕組みを作る", sub:"止まったときに戻る導線", tier:"standard",
-    about:["止まる前提で設計する","一人で抱えない状態を作る"], lessons:[
-    L("Section0","止まるのは普通のこと","6:20",false,"止まったこと自体を問題にせず、戻る導線をあらかじめ用意しておきます。"),
-    L("Section1","コミュニティとよろず相談室の使い方","8:35",false,"同じ段階の人と話すことが、続ける上で一番効きます。使い方を解説します。",["よろず相談室に一度参加する"])]},
-]},
-{ id:"ai1", kind:"level", num:"初級", name:"AI初心者", desc:"どのツールが何に使えるかを知り、まず自分の手で動かせるようにする。", courses:[
-  { id:"a1-map", badge:"全体", tool:"生成AI基礎", title:"生成AIの全体像と使い分け", sub:"ChatGPT・Gemini・Claudeの違い", tier:"standard",
-    about:["主要ツールの違いと得意分野を知る","目的からツールを選べるようになる"], lessons:[
-    L("Section0","このコースの進め方","3:12",true,"AIスキルは「知っている」で止めると1円にもなりません。手を動かす前提で進めます。",["受講の目的と使える時間をコミュニティに投稿する"]),
-    L("Section1","ChatGPT / Gemini / Claudeの違い","12:40",true,"3つの主要ツールの特徴と、どの作業にどれを使うかを整理します。",["3つすべてでアカウントを作る"]),
-    L("Section2","AI関連用語の最低限","8:05",false,"トークン・コンテキスト・ハルシネーションなど、つまずきやすい用語だけ押さえます。"),
-    L("Section3","やってはいけない使い方","7:30",false,"機密情報の扱いと、出力をそのまま信じてはいけない場面を確認します。")]},
-  { id:"a1-gpt", badge:"GPT", tool:"ChatGPT", title:"ChatGPTの基本操作", sub:"画面操作から日常業務での使い方まで", tier:"standard",
-    about:["画面操作を一通り身につける","毎日使う型を3つ持ち帰る"], lessons:[
-    L("Section0","画面と基本操作","6:20",false,"新規チャット・履歴・モデル選択など、迷いやすい操作を確認します。"),
-    L("Section1","プロンプトの型を覚える","15:02",false,"毎回ゼロから考えなくて済むよう、目的別の型を身につけます。",["自分の業務用プロンプトを3つ作る"]),
-    L("Section2","ファイル・画像を読ませる","11:15",false,"資料や画像を渡して要約・抽出させる使い方を解説します."),
-    L("Section3","実践：自分の業務を1つ置き換える","課題",false,"実際の業務を1つ選び、AIで置き換えて時間を測ります。",["ビフォーアフターの時間を記録して提出する"])]},
-  { id:"a1-gemini", badge:"Ge", tool:"Gemini", title:"GeminiとGoogleサービス連携", sub:"Gmail・スプレッドシートと組み合わせる", tier:"standard",
-    about:["Geminiの得意な場面を知る","普段のGoogleツールと繋げて使う"], lessons:[
-    L("Section0","Geminiの基本操作","7:10",false,"ChatGPTとの違いを踏まえて基本操作を確認します。"),
-    L("Section1","Gmail・スプレッドシート連携","12:30",false,"メール下書きや表の集計を任せる使い方を解説します。",["スプレッドシートで1つ自動化する"])]},
-  { id:"a1-copilot", badge:"Co", tool:"Copilot", title:"Microsoft Copilot", sub:"Word / Excel / Outlookでの実践", tier:"standard",
-    about:["Office組み込みAIの使いどころ","議事録と集計を任せる"], lessons:[
-    L("Section0","Copilotで何ができるか","6:15",false,"Office製品に組み込まれたCopilotの範囲を確認します。"),
-    L("Section1","Word / Excel / Outlookでの実践","13:10",false,"議事録作成や集計作業など、日常業務での使い方を解説します。")]},
-  { id:"a1-nlm", badge:"NLM", tool:"NotebookLM", title:"NotebookLMで資料を整理する", sub:"要約とQ&Aで調べ物を短縮", tier:"standard",
-    about:["手元の資料をAIに読ませる","資料に基づいて答えさせる"], lessons:[
-    L("Section0","NotebookLMでできること","5:45",false,"資料を読み込ませて整理させる基本の使い方を確認します。"),
-    L("Section1","要約とQ&Aの実践","10:50",false,"長い資料の要約と、根拠つきの回答をさせる方法を学びます。")]},
-  { id:"a1-search", badge:"検索", tool:"AI検索エンジン", title:"AI検索でリサーチを短縮する", sub:"営業先の下調べにそのまま使う", tier:"standard",
-    about:["従来検索との使い分け","営業リサーチに落とし込む"], lessons:[
-    L("Section0","AI検索の使い分け","6:40",false,"従来の検索との違いと、向いている調べ物を整理します。"),
-    L("Section1","営業先リサーチへの実装","9:55",false,"訪問前の下調べを短時間で終わらせる手順を解説します。",["実際に3社分の下調べをする"])]},
+
+{ id:"mind", num:"00", name:"マインドセット", desc:"全職種の共通土台。第0章を全面作り直し中のため、章構成は変わる可能性がある。", courses:[
+  { id:"ms-ch0", badge:"第0章", tool:"マインドセット", title:"オリエンテーション", sub:"この学校で何を手に入れるか", tier:"standard",
+    about:["9章で何が身につくかを先に知る","AIの時代に何を身につけるかを決める"], lessons:[
+    L("Section0","オリエンテーション（全23ブロック）","9:52",true,"つかみから始まり、差がつくのは思い続けたかどうかであること、しんどい日の考え方、9章で何を手に入れるか、職種別カリキュラムへの流れ、1年後に何が変わるか、今日やること2つ、までを一気に話します。AIが代われないもの（何を聞くか決める・決める・人と仕事をする）にも触れます。",["今日やること2つに着手する"])]},
+  { id:"ms-ch1", badge:"第1章", tool:"マインドセット", title:"相手の思考を汲み取る力", sub:"全12コンテンツ", tier:"standard", wip:true,
+    about:["相手が何を考えているかを読む","前提のズレを先に潰す"], lessons:[]},
+  { id:"ms-ch2", badge:"第2章", tool:"マインドセット", title:"仮説思考", sub:"調べる範囲が10分の1になる", tier:"standard",
+    about:["仮の答えを先に置いてから調べる","外れた記録で的中率を上げる"], lessons:[
+    L("2-1","仮説思考とは何か","11:55",false,"関係のありそうなもの30項目を、仮の答えを1行置くだけで3項目に絞れます。範囲を決めているのは自分の仮説だという話から始めます。",["自分の調べ物で仮説を1行置いてみる"]),
+    L("2-2","調べずに質問しない","10:30",false,"「情報が足りないから判断できません」を分解します。当たり外れを分ける情報だけを取りに行く考え方です。"),
+    L("2-3","仮説の作り方4手順","12:10",false,"どう仮説を立てるか、手順に落として解説します。",["4手順で仮説を1つ作る"]),
+    L("2-4","反証条件","11:20",false,"何が起きたらこの仮説は外れなのか。先に決めておくことで、外れたときに気づけます。"),
+    L("2-5","網羅の罠","10:45",false,"全部調べようとすると終わりません。絞ってはいけない調べ物（請求・安全・法令）との線引きも扱います。"),
+    L("2-6","情報を取る順番","11:05",false,"どこから当たるかで、かかる時間が変わります。"),
+    L("2-7","10秒で答えられる質問","9:50",false,"相手が即答できる形に質問を変えると、返信率が変わります。",["自分の質問を10秒で答えられる形に直す"]),
+    L("2-8","外れた仮説を捨てられない理由","10:15",false,"手間をかけたものほど捨てにくくなります。その仕組みと外し方を扱います。"),
+    L("2-9","的中率は外れた記録で上がる","11:30",false,"当たった記録より外れた記録のほうが価値があります。記録の付け方を解説します。",["外れた仮説を3件記録する"]),
+    L("2-10","相談の型","10:40",false,"仮説を持って相談すると、相手の時間を奪いません。持ち込み方の型を解説します。"),
+    L("2-11","仮説思考が失敗する6パターン","12:20",false,"うまくいかないときに、どれに当てはまっているかを判定します。")]},
+  { id:"ms-ch3", badge:"第3章", tool:"マインドセット", title:"時間の価値", sub:"全12コンテンツ", tier:"standard", wip:true,
+    about:["時間を数字で捉える","何に使うかを決める"], lessons:[]},
+  { id:"ms-ch4", badge:"第4章", tool:"マインドセット", title:"結論と自責", sub:"全13コンテンツ", tier:"standard", wip:true,
+    about:["結論から話す","自分の側の要因を見る"], lessons:[]},
+  { id:"ms-ch5", badge:"第5章", tool:"マインドセット", title:"論点思考", sub:"全12コンテンツ", tier:"standard", wip:true,
+    about:["解くべき問いを見つける","問いを間違えない"], lessons:[]},
+  { id:"ms-ch6", badge:"第6章", tool:"マインドセット", title:"抽象と具体", sub:"全12コンテンツ", tier:"standard", wip:true,
+    about:["行き来できるようにする","伝わる粒度を選ぶ"], lessons:[]},
+  { id:"ms-ch7", badge:"第7章", tool:"マインドセット", title:"セルフコントロール", sub:"全12コンテンツ", tier:"standard", wip:true,
+    about:["続けられる状態を作る","感情に判断を渡さない"], lessons:[]},
+  { id:"ms-ch8", badge:"第8章", tool:"マインドセット", title:"働く理由", sub:"全10コンテンツ", tier:"standard", wip:true,
+    about:["自分の動機を言語化する","続く理由に変える"], lessons:[]},
+  { id:"ms-ch9", badge:"第9章", tool:"マインドセット", title:"ゴール設計", sub:"全12コンテンツ", tier:"standard", wip:true,
+    about:["現状の外側にゴールを置く","コーチングと接続する"], lessons:[]},
+  { id:"ms-exam", badge:"試験", tool:"マインドセット", title:"卒業試験", sub:"知識20／判断30／実技50", tier:"standard", wip:true,
+    about:["9章の到達を確認する","実技で判定する"], lessons:[]},
 ]},
 
-{ id:"ai2", kind:"level", num:"中級", name:"AI中級者", desc:"バイブコーディング。AIに書かせて、売れる成果物を自分で作れる状態にする。", courses:[
-  { id:"a2-vibe", badge:"VIBE", tool:"バイブコーディング", title:"バイブコーディング入門", sub:"コードを書かずにAIに作らせる", tier:"standard",
-    about:["バイブコーディングとは何かを理解する","作れる範囲と作れない範囲を知る"], lessons:[
-    L("Section0","バイブコーディングとは","8:40",false,"自分でコードを書く代わりに、AIに指示して作らせる進め方を解説します。プログラミング未経験でも成果物が作れる前提の考え方です。"),
-    L("Section1","作れるもの・作れないもの","10:20",false,"個人が仕事にできる範囲（単体ツール・LP・自動化）と、手を出すべきでない範囲を線引きします。"),
-    L("Section2","指示の出し方（要件の伝え方）","13:45",false,"何を作りたいかをAIに伝える順序を型にします。ここが甘いと何度も作り直しになります。",["作りたいツールの要件を1枚に書く"]),
-    L("Section3","動かない時の切り分け方","11:30",false,"エラーが出たときに、AIに何を渡せば直るのかを解説します。")]},
-  { id:"a2-cursor", badge:"Cur", tool:"Cursor", title:"Cursorで作る", sub:"AIエディタで実際に手を動かす", tier:"standard",
-    about:["Cursorの基本操作","小さいツールを1本完成させる"], lessons:[
-    L("Section0","Cursorの導入と基本操作","6:50",false,"AIに直接コードを書かせながら進める開発の流れを確認します。"),
-    L("Section1","作りながら直す進め方","14:10",false,"一度に完成させず、小さく動かして直す進め方を解説します。"),
-    L("Section2","実践：業務ツールを1本作る","課題",false,"自分の業務を題材に、動くツールを1本作り切ります。",["ツールを1本完成させて提出する"])]},
-  { id:"a2-cc", badge:"CC", tool:"Claude Code", title:"Claude Codeで作る", sub:"対話しながらまとめて作らせる", tier:"standard",
-    about:["対話型で作らせる進め方","複数ファイルの成果物を扱う"], lessons:[
-    L("Section0","Claude Codeの基本","9:15",false,"対話しながら、ある程度まとまった単位で作らせる進め方を解説します。"),
-    L("Section1","指示と確認のサイクル","12:00",false,"作らせたものを自分で確認し、直させるサイクルの回し方を学びます。")]},
-  { id:"a2-ghcp", badge:"GH", tool:"GitHub Copilot", title:"GitHub Copilot", sub:"補完で書く速度を上げる", tier:"standard",
-    about:["補完の使いどころ","既存コードに手を入れる"], lessons:[
-    L("Section0","導入と基本操作","4:20",false,"補完がどう効くかを確認します。"),
-    L("Section1","既存コードを直す","13:00",false,"ゼロから作る以外の、既にあるものを直す場面での使い方を解説します。")]},
-  { id:"a2-gas", badge:"GAS", tool:"Google Apps Script", title:"Google Apps Scriptで自動化する", sub:"スプレッドシート起点の業務自動化", tier:"standard",
-    about:["定型作業を自動化する","納品できる自動化を作る"], lessons:[
-    L("Section0","GASでできる自動化の範囲","8:00",false,"定型作業をどこまで自動化できるか、代表的な事例で確認します。"),
-    L("Section1","スプレッドシート連携の実践","14:20",false,"シートを起点にした自動化を実際に組みます。"),
-    L("Section2","実践：他人が使える形にする","課題",false,"自分だけが使える状態から、他人に渡せる状態まで整えます。",["自動化を1本作り、手順書をつけて提出する"])]},
-  { id:"a2-html", badge:"HTML", tool:"バイブコーディング", title:"単体HTMLツールを商品にする", sub:"納品しやすい最小の成果物", tier:"standard",
-    about:["ファイル1枚で動く成果物を作る","そのまま売れる形にする"], lessons:[
-    L("Section0","なぜ単体HTMLが売りやすいのか","7:20",false,"環境構築が不要で、渡すだけで動く成果物は個人が売る商材として扱いやすい理由を解説します。"),
-    L("Section1","作例：入力フォーム付きの計算ツール","15:40",false,"実際に売れる形の小さなツールを1本作ります。",["ツールを1本作って提出する"])]},
-  { id:"a2-nocode", badge:"自動", tool:"ノーコード自動化", title:"ノーコードで業務を繋ぐ", sub:"Zapier・n8n等での連携", tier:"elite",
-    about:["ツール間を繋ぐ自動化","運用に乗る形にする"], lessons:[
-    L("Section0","ノーコード自動化の考え方","9:30",false,"複数のツールを繋いで自動化する場合の設計を解説します。"),
-    L("Section1","実践：通知の自動化を組む","12:50",false,"問い合わせが来たら通知する、といった自動化を実際に組みます。")]},
+{ id:"mk", num:"01", name:"マーケティング", desc:"概念から広告運用・分析まで。第1章は台本とスライドが揃っており、最も制作が進んでいる。", courses:[
+  { id:"mk-ch1", badge:"第1章", tool:"マーケティング", title:"マーケティングの概念", sub:"全12コンテンツ・制作済み", tier:"standard",
+    about:["マーケの全体像をつかむ","誰に何をどう届けるかを設計する"], lessons:[
+    L("1-1","マーケティングの全体地図","10:20",false,"「マーケ担当＝広告を回す人」ではありません。顧客が自然に買いたくなる状態を作る一連の設計として定義し、設計範囲5つ（誰に・何を・いくらで・どこで・どう伝えるか）を示します。",["自社業務を5要素に分類し、誰も担当していない欄を探す"]),
+    L("1-2","マーケティングとブランディングの違い","9:40",false,"混同されやすい2つを、測れるかどうかの観点で切り分けます。"),
+    L("1-3","「ブランディングだから測れない」は逃げ","10:15",false,"測らない理由にブランディングを使わないための考え方を扱います。"),
+    L("1-4","マーケティングの周辺概念を整理する","11:00",false,"広告・広報・販促・CRMなど、隣接する言葉の関係を整理します。"),
+    L("1-5","4Pと4C ── 提供側と顧客側の視点","11:30",false,"同じものを売り手側と買い手側から見る2つの型を解説します。"),
+    L("1-6","STP ── 誰に、どう認識されるか","12:10",false,"分ける・選ぶ・位置づける。この3段階を実例で解説します。"),
+    L("1-7","カスタマージャーニーとは何か","10:50",false,"買うまでの道のりを段階に分けて見る考え方です。"),
+    L("1-8","ジャーニーマップの作り方","13:20",false,"実際に手を動かして作ります。",["自社のジャーニーマップを作る"]),
+    L("1-9","段階ごとに使う施策は違う","11:40",false,"知る段階と比べる段階では、打つ手が変わります。"),
+    L("1-10","ジャーニーの断絶を見つける","12:00",false,"どこで人が落ちているかを特定します。ここが改善の起点になります。"),
+    L("1-11","借りる集客と、貯める集客","11:15",false,"広告は借りる集客、SEOやコンテンツは貯める集客。使い分けを解説します。"),
+    L("1-12","演習 ── ジャーニーマップとチャネル設計","課題",false,"ここまでを使って、自分の商材でジャーニーとチャネルを設計します。",["ジャーニーマップとチャネル設計を提出する"])]},
+  { id:"mk-ch2", badge:"第2章", tool:"マーケティング", title:"用語", sub:"", tier:"standard", wip:true,
+    about:["現場で通じる言葉を揃える"], lessons:[]},
+  { id:"mk-ch3", badge:"第3章", tool:"マーケティング", title:"数字の見方", sub:"", tier:"standard", wip:true,
+    about:["見る指標を絞る","数字から次の手を決める"], lessons:[]},
+  { id:"mk-ch4", badge:"第4章", tool:"マーケティング", title:"SNS", sub:"", tier:"standard", wip:true, about:["媒体ごとの使い分け"], lessons:[]},
+  { id:"mk-ch5", badge:"第5章", tool:"マーケティング", title:"SEO", sub:"", tier:"standard", wip:true, about:["検索から継続的に流入を作る"], lessons:[]},
+  { id:"mk-ch6", badge:"第6章", tool:"マーケティング", title:"ライティング", sub:"", tier:"standard", wip:true, about:["読まれる文章を書く"], lessons:[]},
+  { id:"mk-ch7", badge:"第7章", tool:"マーケティング", title:"バナー・LP", sub:"", tier:"standard", wip:true, about:["最初の1画面で離脱を止める"], lessons:[]},
+  { id:"mk-ch8", badge:"第8章", tool:"マーケティング", title:"広告運用", sub:"", tier:"standard", wip:true, about:["予算を溶かさない出し方"], lessons:[]},
+  { id:"mk-ch9", badge:"第9章", tool:"マーケティング", title:"分析とPDCA", sub:"", tier:"standard", wip:true, about:["回し続ける仕組みにする"], lessons:[]},
+  { id:"mk-ch10", badge:"第10章", tool:"マーケティング", title:"AI業務効率化", sub:"", tier:"standard", wip:true, about:["マーケ業務をAIで圧縮する"], lessons:[]},
+  { id:"mk-exam", badge:"試験", tool:"マーケティング", title:"卒業試験", sub:"知識30／判断30／実技40・合格80点", tier:"standard", wip:true,
+    about:["到達を確認する"], lessons:[]},
 ]},
 
-{ id:"ai3", kind:"level", num:"上級", name:"AI上級者", desc:"実務で金額がつく事例。導入支援・研修講師まで踏み込む。", courses:[
-  { id:"a3-case", badge:"事例", tool:"実務事例", title:"実務で使えるAI活用事例集", sub:"金額がついた案件の中身を分解する", tier:"standard",
-    about:["実際に受注した案件の構造を知る","自分の商材に転用する"], lessons:[
-    L("Section0","議事録・レポート自動化の事例","11:20",false,"月額で継続している議事録自動化案件の中身と、いくらで受けているかを分解します。"),
-    L("Section1","問い合わせ対応の自動化事例","12:40",false,"問い合わせ返信の下書き生成を導入した事例を解説します。"),
-    L("Section2","資料作成代行の事例","10:15",false,"提案書・報告書の作成を巻き取っている事例を解説します。"),
-    L("Section3","事例から自分の商材を決める","課題",false,"3つの事例のうち、自分が売れそうなものを1つ選んで商品化します。",["自分の商材を1つ決めて提出する"])]},
-  { id:"a3-intro", badge:"導入", tool:"実務事例", title:"社内AI導入支援", sub:"業務フロー診断と置き換え設計", tier:"standard",
-    about:["現場の業務を棚卸しする","置き換える順番を設計する"], lessons:[
-    L("Section0","業務の棚卸しの進め方","12:10",false,"どの作業から置き換えるべきかを判断するための、業務の洗い出し方を解説します。"),
-    L("Section1","置き換え設計と費用対効果の出し方","14:30",false,"削減時間を金額に換算して提案する方法を学びます。",["架空の会社を想定して診断シートを作る"]),
-    L("Section2","導入後の定着支援","11:05",false,"導入して終わりにせず、使われ続ける状態を作る動き方を解説します。")]},
-  { id:"a3-teach", badge:"講師", tool:"研修講師", title:"AI研修講師として登壇する", sub:"企業研修は時給単価が高い", tier:"elite",
-    about:["研修講師の需要と単価","登壇の型を作る"], lessons:[
-    L("Section0","なぜ研修講師の需要があるのか","10:40",false,"CopilotやGeminiを導入したものの使いこなせていない企業が多く、実務に即して教えられる人が不足しています。時給2万円規模の案件が成立する背景を解説します。"),
-    L("Section1","研修の構成の作り方","15:20",false,"90分・半日・1日の型ごとに、構成の組み方を解説します。",["90分研修の構成案を1本作る"]),
-    L("Section2","登壇と質疑の対応","12:35",false,"当日の進め方と、答えられない質問が来たときの対応を解説します。"),
-    L("Section3","実践：模擬登壇","課題",false,"コーチ相手に15分の模擬登壇を行い、フィードバックを受けます。",["模擬登壇を1回実施する"])]},
-  { id:"a3-sec", badge:"制約", tool:"実務事例", title:"セキュリティ制約下での活用", sub:"大企業案件で必須になる論点", tier:"elite",
-    about:["持ち込めない情報の線引き","制約内で成果を出す設計"], lessons:[
-    L("Section0","何が持ち込めないのか","9:50",false,"顧客情報・機密資料の扱いと、社内規程で止まりやすい論点を整理します。"),
-    L("Section1","制約内での活用設計","13:15",false,"外部に出せない前提でどこまでできるかを設計します。")]},
-  { id:"a3-rag", badge:"RAG", tool:"実務事例", title:"社内ナレッジ検索の構築", sub:"手元の資料に基づいて答えさせる", tier:"elite",
-    about:["社内資料を検索できる形にする","精度が出ない時の対処"], lessons:[
-    L("Section0","仕組みの概要","11:40",false,"社内資料を読ませて回答させる仕組みの流れを、実装の前に整理します。"),
-    L("Section1","構築と精度の調整","16:20",false,"実際に構築し、狙った回答が出ない場合の調整方法を解説します。")]},
+{ id:"sales", num:"02", name:"営業", desc:"DM営業からインサイド・フィールドまで。設計は完成、台本はこれから。", courses:[
+  { id:"s-ch0", badge:"第0章", tool:"営業", title:"前提", sub:"", tier:"standard", wip:true, about:["営業という仕事の捉え方"], lessons:[]},
+  { id:"s-ch1", badge:"第1章", tool:"営業", title:"用語", sub:"", tier:"standard", wip:true, about:["現場で通じる言葉を揃える"], lessons:[]},
+  { id:"s-ch2", badge:"第2章", tool:"営業", title:"数字の見方", sub:"", tier:"standard", wip:true, about:["歩留まりで見る"], lessons:[]},
+  { id:"s-ch3", badge:"第3章", tool:"営業", title:"DM営業", sub:"", tier:"standard", wip:true, about:["返信が来る文面の型"], lessons:[]},
+  { id:"s-ch4", badge:"第4章", tool:"営業", title:"インサイドセールス", sub:"", tier:"standard", wip:true, about:["会う前に見極める"], lessons:[]},
+  { id:"s-ch5", badge:"第5章", tool:"営業", title:"フィールドセールス", sub:"", tier:"standard", wip:true, about:["商談を前に進める"], lessons:[]},
+  { id:"s-ch6", badge:"第6章", tool:"営業", title:"資料作成", sub:"", tier:"standard", wip:true, about:["読まれる提案資料を作る"], lessons:[]},
+  { id:"s-ch7", badge:"第7章", tool:"営業", title:"失注分析", sub:"", tier:"standard", wip:true, about:["負けた理由を次に使う"], lessons:[]},
+  { id:"s-ch8", badge:"第8章", tool:"営業", title:"AI業務効率化", sub:"", tier:"standard", wip:true, about:["営業業務をAIで圧縮する"], lessons:[]},
+  { id:"s-exam", badge:"試験", tool:"営業", title:"卒業試験", sub:"", tier:"standard", wip:true, about:["到達を確認する"], lessons:[]},
 ]},
 
-{ id:"sales-free", kind:"practice", num:"営業", group:"営業", name:"無料編", desc:"お金をかけずに反応を取る。まずここだけで案件は取れる。", courses:[
-  { id:"sf-li-prof", badge:"LI", tool:"LinkedIn", title:"LinkedIn プロフィールの作り方", sub:"見られる前提で整える", tier:"standard",
-    about:["発注したくなるプロフィールにする","検索で見つかる状態にする"], lessons:[
-    L("Section0","なぜLinkedInが法人営業に向くのか","8:20",false,"決裁者本人に直接届く導線があり、無料の範囲でも接触できるため、法人営業の入口として機能します。"),
-    L("Section1","ヘッドラインと自己紹介の書き方","14:10",false,"何ができる人なのかが3秒で伝わる書き方を、実例つきで解説します。",["ヘッドラインと自己紹介を書き換える"]),
-    L("Section2","職歴・実績の見せ方","12:30",false,"実績がまだ少ない段階での書き方も含めて解説します。"),
-    L("Section3","実践：プロフィールを完成させる","課題",false,"最後まで書き切って、コーチのレビューを受けます。",["プロフィールを完成させてレビュー依頼を出す"])]},
-  { id:"sf-li-free", badge:"LI", tool:"LinkedIn", title:"LinkedIn 無料でできる営業", sub:"つながり申請とメッセージ設計", tier:"standard",
-    about:["無料枠でできる範囲を把握する","返信が来るメッセージを書く"], lessons:[
-    L("Section0","無料アカウントでできること","7:40",false,"無料の範囲でどこまで営業できるか、制限も含めて整理します。"),
-    L("Section1","つながり申請の出し方","11:20",false,"承認されやすい相手の選び方と、申請時の一言を解説します。",["30件つながり申請を出す"]),
-    L("Section2","初回メッセージの型","13:50",false,"売り込まずに会話を始める型を、実際の文面で解説します。",["自分用のメッセージ文面を作る"]),
-    L("Section3","実践：20件送って反応を測る","課題",false,"実際に送信し、返信率を記録します。",["20件送信する","返信率を記録して提出する"])]},
-  { id:"sf-fb", badge:"FB", tool:"Facebook", title:"Facebook 無料施策", sub:"グループと投稿で見つけてもらう", tier:"standard",
-    about:["無料で接点を作る","嫌われない距離感を掴む"], lessons:[
-    L("Section0","Facebookが効く相手","7:10",false,"経営者層が動いているコミュニティがあり、無料でも接点を作れる場面を解説します。"),
-    L("Section1","グループの探し方と入り方","10:30",false,"どのグループに入るべきか、入った後の振る舞いを解説します。",["関連グループに3つ参加する"]),
-    L("Section2","友達申請とメッセージ","11:45",false,"いきなり売り込まずに関係を作る手順を解説します。"),
-    L("Section3","投稿で見つけてもらう","12:20",false,"何を投稿すると相談が来るのかを、実例つきで解説します。",["自己紹介投稿を1本出す"])]},
-  { id:"sf-form", badge:"フォ", tool:"営業", title:"フォーム営業 完全攻略", sub:"送信文の型と返信率の検証", tier:"standard",
-    about:["返信が来る送信文の型","50社に送って検証する"], lessons:[
-    L("Section0","フォーム営業の位置づけ","4:02",false,"費用がかからず、量を出せば必ず反応が返る手法として最初に置きます。"),
-    L("Section1","反響が出る送信文の型","11:20",false,"開封・返信されやすい文面の型を実例つきで解説します。",["自分用の送信文テンプレートを作る"]),
-    L("Section2","断られたときの切り返し","9:48",false,"断りの返信が来たときの再アプローチを、実際のやり取りで学びます。"),
-    L("Section3","実践：50社に送ってみる","課題",false,"実際に50社へ送り、返信率を記録します。",["50社に送信する","返信率をシートに記録する"])]},
-  { id:"sf-ref", badge:"紹介", tool:"営業", title:"知人・紹介からの営業", sub:"一番決まりやすい導線を先に使う", tier:"standard",
-    about:["身近な導線を洗い出す","紹介が続く状態を作る"], lessons:[
-    L("Section0","最初の1件は知人から出やすい","6:30",false,"実績ゼロの段階で最も決まりやすい導線として、知人・前職関係を先に使います。"),
-    L("Section1","声のかけ方と頼み方","10:15",false,"重くならない声のかけ方を、文面つきで解説します。",["声をかける候補を10人書き出す"])]},
+{ id:"pm", num:"03", name:"PM/PDM", desc:"事業解像度から会議・ゴール定義まで。決まっていないことを決めさせる仕事。", courses:[
+  { id:"p-ch0", badge:"第0章", tool:"PM/PDM", title:"前提", sub:"", tier:"standard", wip:true, about:["PMとPdMの役割を分ける"], lessons:[]},
+  { id:"p-ch1", badge:"第1章", tool:"PM/PDM", title:"事業解像度", sub:"", tier:"standard", wip:true, about:["何の事業かを正確に掴む"], lessons:[]},
+  { id:"p-ch2", badge:"第2章", tool:"PM/PDM", title:"役割把握", sub:"", tier:"standard", wip:true, about:["誰が何を持っているかを知る"], lessons:[]},
+  { id:"p-ch3", badge:"第3章", tool:"PM/PDM", title:"期限把握", sub:"", tier:"standard", wip:true, about:["守るべき日付を特定する"], lessons:[]},
+  { id:"p-ch4", badge:"第4章", tool:"PM/PDM", title:"情報整理", sub:"", tier:"standard", wip:true, about:["散らばった情報をまとめる"], lessons:[]},
+  { id:"p-ch5", badge:"第5章", tool:"PM/PDM", title:"エンジニアリング", sub:"", tier:"standard", wip:true, about:["作る側と話せるようになる"], lessons:[]},
+  { id:"p-ch6", badge:"第6章", tool:"PM/PDM", title:"会議", sub:"", tier:"standard", wip:true, about:["決まる会議にする"], lessons:[]},
+  { id:"p-ch7", badge:"第7章", tool:"PM/PDM", title:"ゴール定義", sub:"", tier:"standard", wip:true, about:["何をもって完了とするか"], lessons:[]},
+  { id:"p-ch8", badge:"第8章", tool:"PM/PDM", title:"AI業務効率化", sub:"", tier:"standard", wip:true, about:["進行管理をAIで圧縮する"], lessons:[]},
+  { id:"p-exam", badge:"試験", tool:"PM/PDM", title:"卒業試験", sub:"", tier:"standard", wip:true, about:["到達を確認する"], lessons:[]},
 ]},
 
-{ id:"sales-paid", kind:"practice", num:"営業", group:"営業", name:"有料編", desc:"無料で反応が取れたら、お金をかけて量と質を上げる。", courses:[
-  { id:"sp-crm", badge:"CRM", tool:"CRM/SFA", title:"CRM/SFAで案件を管理する", sub:"Salesforce・HubSpotのデモ環境で実際に触る", tier:"standard", demo:true,
-    about:["案件の抜け漏れを仕組みで防ぐ","デモ環境で実際に操作してみる"], lessons:[
-    L("Section0","なぜCRMを使うのか","8:10",false,"件数が増えると記憶と表計算では追えなくなります。導入の判断基準を解説します。"),
-    L("Section1","デモ環境：HubSpotを触ってみる","デモ",false,"実際のデモ環境にログインし、取引先と案件を登録するところまでを操作します。読むだけでは身につかないため、必ず手を動かしてください。",["デモ環境で案件を3件登録する"]),
-    L("Section2","デモ環境：Salesforceを触ってみる","デモ",false,"項目の多さに戸惑いやすいので、最低限使う画面だけに絞って操作します。",["デモ環境で商談フェーズを進めてみる"]),
-    L("Section3","自分の案件管理を決める","10:25",false,"個人であればどこまで作り込むべきか、現実的な落としどころを解説します。")]},
-  { id:"sp-nav", badge:"Nav", tool:"LinkedIn", title:"Sales Navigatorの使い方", sub:"狙った決裁者だけを抽出する", tier:"standard",
-    about:["検索条件の組み方","リスト化と運用"], lessons:[
-    L("Section0","無料アカウントとの違い","8:10",false,"有料にすると何ができるようになるのか、費用に見合う場面を整理します。"),
-    L("Section1","検索条件の組み方","15:30",false,"業種・役職・従業員数・地域などの条件を組んで、狙った層だけを出す方法を解説します。",["自分のターゲット条件を保存検索に登録する"]),
-    L("Section2","リストの管理と優先順位づけ","12:40",false,"抽出した相手をどう捌くか、優先順位の付け方を解説します。"),
-    L("Section3","実践：100件のリストを作る","課題",false,"実際に条件を組んでリストを作り、提出します。",["リストを100件作成して提出する"])]},
-  { id:"sp-event", badge:"交流", tool:"交流会", title:"交流会の調べ方と回り方", sub:"どの会に出れば決まるのか", tier:"standard",
-    about:["出るべき会の見極め","その場での動き方"], lessons:[
-    L("Section0","交流会の探し方","9:20",false,"どこで開催情報を探すか、参加費と参加者層の見極め方を解説します。",["参加候補の交流会を3件調べる"]),
-    L("Section1","当日の動き方と名刺後のフォロー","13:10",false,"その場で売り込まず、後日の商談に繋げる動き方を解説します。"),
-    L("Section2","実践：1回参加してレポートする","課題",false,"実際に参加し、誰と何を話したかを記録します。",["交流会に1回参加してレポートを提出する"])]},
-  { id:"sp-expo", badge:"展示", tool:"展示会", title:"展示会の逆営業", sub:"出展している側に営業する", tier:"standard",
-    about:["逆営業という考え方","名刺交換から商談へ"], lessons:[
-    L("Section0","逆営業とは","10:40",false,"来場者として行き、出展している企業側に営業をかける手法です。出展企業は話を聞く体勢で待っているため、通常の飛び込みより圧倒的に会話が成立しやすい構造を解説します。"),
-    L("Section1","展示会の選び方","11:15",false,"どの展示会に自分の顧客が出ているのかを調べる方法を解説します。",["行くべき展示会を2件特定する"]),
-    L("Section2","ブースでの話し方","12:50",false,"短時間で興味を持たせ、後日のアポに繋げる会話の型を解説します。"),
-    L("Section3","実践：展示会に行って5社と話す","課題",false,"実際に行き、5社と会話して記録します。",["5社と名刺交換して記録を提出する"])]},
-  { id:"sp-tel", badge:"TEL", tool:"営業", title:"テレアポ・手紙DM", sub:"リストにお金をかけて量を出す", tier:"elite",
-    about:["切られないトークを作る","手紙が刺さる相手を選ぶ"], lessons:[
-    L("Section0","テレアポの位置づけ","4:40",false,"他の手法と組み合わせたときの役割を整理します。"),
-    L("Section1","トークスクリプトの基本形","10:10",false,"最初の10秒で切られないための型を解説します。",["自分用スクリプトを作る"]),
-    L("Section2","手紙DMで反響を取る","12:30",false,"フォームやテレアポが効かない層に手紙が有効な理由と、文面の型を解説します。"),
-    L("Section3","ロープレ：受付突破","課題",false,"コーチ相手にロープレを行います。",["ロープレを1回実施する"])]},
+{ id:"newbiz", num:"04", name:"新規事業開発", desc:"市場規模・競合・業界構造から商材化まで。数字で判断できる形にする。", courses:[
+  { id:"nb-ch0", badge:"第0章", tool:"新規事業開発", title:"前提", sub:"", tier:"standard", wip:true, about:["新規事業の進め方の全体像"], lessons:[]},
+  { id:"nb-ch1", badge:"第1章", tool:"新規事業開発", title:"市場規模", sub:"", tier:"standard", wip:true, about:["2通りで計算して突き合わせる"], lessons:[]},
+  { id:"nb-ch2", badge:"第2章", tool:"新規事業開発", title:"競合リサーチ", sub:"", tier:"standard", wip:true, about:["誰と戦うのかを特定する"], lessons:[]},
+  { id:"nb-ch3", badge:"第3章", tool:"新規事業開発", title:"業界構造", sub:"", tier:"standard", wip:true, about:["お金の流れを掴む"], lessons:[]},
+  { id:"nb-ch4", badge:"第4章", tool:"新規事業開発", title:"商材作成", sub:"", tier:"standard", wip:true, about:["売れる形に落とす"], lessons:[]},
+  { id:"nb-ch5", badge:"第5章", tool:"新規事業開発", title:"エンジニアリング", sub:"", tier:"standard", wip:true, about:["作る側と話せるようになる"], lessons:[]},
+  { id:"nb-ch6", badge:"第6章", tool:"新規事業開発", title:"会議", sub:"", tier:"standard", wip:true, about:["決まる会議にする"], lessons:[]},
+  { id:"nb-ch7", badge:"第7章", tool:"新規事業開発", title:"ゴール定義", sub:"", tier:"standard", wip:true, about:["撤退基準も先に決める"], lessons:[]},
+  { id:"nb-ch8", badge:"第8章", tool:"新規事業開発", title:"AI業務効率化", sub:"", tier:"standard", wip:true, about:["調査と資料化をAIで圧縮する"], lessons:[]},
+  { id:"nb-exam", badge:"試験", tool:"新規事業開発", title:"卒業試験", sub:"", tier:"standard", wip:true, about:["到達を確認する"], lessons:[]},
 ]},
 
-{ id:"mk-free", kind:"practice", num:"マーケ", group:"マーケ", name:"無料編", desc:"お金をかけずに、向こうから来る導線を作る。", courses:[
-  { id:"mk-base", badge:"基礎", tool:"マーケ", title:"マーケの全体像", sub:"営業との違いと着手の順番", tier:"standard",
-    about:["営業とマーケの違いを理解する","自分がどこから手を付けるか決める"], lessons:[
-    L("Section0","営業とマーケの違い","8:30",false,"自分から取りに行く営業と、見つけてもらうマーケの違いと、個人がどの順番でやるべきかを解説します。"),
-    L("Section1","BtoBの買われ方を知る","11:20",false,"法人は「知る→調べる→比較する→稟議」と段階を踏みます。どの段階に何を置くかで打ち手が変わります。"),
-    L("Section2","何から手を付けるか","10:20",false,"実績がない段階でやるべきことと、やっても無駄なことを線引きします。",["自分の着手順を決めて提出する"])]},
-  { id:"mk-ana", badge:"解析", tool:"アクセス解析", title:"アクセス解析の見方", sub:"数字を見て次の一手を決める", tier:"standard",
-    about:["GA4で最低限見るべき指標を知る","数字から改善点を特定する"], lessons:[
-    L("Section0","何のために数字を見るのか","7:30",false,"感覚で判断せず、どこで人が離脱しているかを数字で特定するために見ます。全部の指標を見る必要はありません。"),
-    L("Section1","GA4の画面と最低限の指標","14:20",false,"ユーザー数・セッション・直帰率・コンバージョンなど、最初に見るべき指標だけに絞って解説します。",["自分のサイトにGA4を設置する"]),
-    L("Section2","流入元の見方（どこから来たか）","11:45",false,"検索・SNS・広告・直接流入をどう見分け、どれを伸ばすか判断する方法を解説します。"),
-    L("Section3","改善点の当て方","12:10",false,"数字を見て「次に何を直すか」を決めるまでの手順を、実例で追います。",["自分のサイトの課題を3つ書き出す"])]},
-  { id:"mk-seo", badge:"SEO", tool:"コンテンツSEO", title:"コンテンツSEOの基礎", sub:"検索から継続的に流入を作る", tier:"standard",
-    about:["検索されるキーワードから記事を設計する","広告を止めても残る資産にする"], lessons:[
-    L("Section0","SEOが効く場面・効かない場面","9:40",false,"成果が出るまで時間がかかる代わりに、止めても流入が残ります。広告との役割の違いを整理します。"),
-    L("Section1","キーワードの選び方","13:30",false,"検索ボリュームだけで選ばず、購入意欲のあるキーワードを見つける方法を解説します。",["狙うキーワードを10個決める"]),
-    L("Section2","記事の構成の作り方","14:50",false,"検索した人が何を知りたいのかから逆算して、記事の見出しを組み立てます。"),
-    L("Section3","実践：1本書いて公開する","課題",false,"実際に記事を1本書いて公開します。",["記事を1本公開する"])]},
-  { id:"mk-wp", badge:"WP", tool:"ホワイトペーパー", title:"ホワイトペーパーでリードを取る", sub:"資料ダウンロードで連絡先を得る", tier:"standard",
-    about:["ダウンロードされる資料を作る","取ったリードを商談に繋げる"], lessons:[
-    L("Section0","ホワイトペーパーとは","9:10",false,"BtoBで使われる、ダウンロードと引き換えに連絡先を得るための資料です。まだ検討段階の相手と接点を持てるため、問い合わせを待つより母数が増えます。"),
-    L("Section1","何を書けば落とされるのか","14:20",false,"売り込み資料ではなく、相手の課題解決に使える形にします。チェックリスト型・事例集型・調査レポート型の3つの型を解説します。",["自分が作れる資料の型を1つ決める"]),
-    L("Section2","フォームの設計","11:35",false,"項目を増やすほど数は減ります。何を必須にして何を捨てるかの判断を解説します。"),
-    L("Section3","ダウンロード後の追客","12:40",false,"落として終わりにせず、どのタイミングで何を送るかを設計します。"),
-    L("Section4","実践：資料を1本作る","課題",false,"実際にホワイトペーパーを1本作り、提出します。",["ホワイトペーパーを1本作って提出する"])]},
-  { id:"mk-nurt", badge:"追客", tool:"ナーチャリング", title:"ステップメールと追客設計", sub:"すぐ決まらない相手を追い続ける", tier:"standard",
-    about:["検討中の相手を放置しない","送る順番と間隔を設計する"], lessons:[
-    L("Section0","すぐ決まらないのが普通","8:50",false,"BtoBは検討期間が長く、初回接触でそのまま決まることは稀です。追い続ける仕組みが必要な理由を解説します。"),
-    L("Section1","ステップメールの構成","13:15",false,"1通目から順に何を送るか、間隔をどう置くかを型で示します。",["自分用のステップメールを3通書く"]),
-    L("Section2","送るタイミングと止めどき","10:30",false,"反応がない相手をいつまで追うか、線引きの考え方を解説します。")]},
-  { id:"mk-x", badge:"X", tool:"マーケ", title:"X（旧Twitter）発信", sub:"画像コンテンツで認知を取る", tier:"standard",
-    about:["何を発信すると相談が来るか","続く運用にする"], lessons:[
-    L("Section0","発信の設計図","8:50",false,"画像コンテンツによるオーガニック発信の型を解説します。"),
-    L("Section1","ネタの作り方","12:15",false,"自分の学びと実績を、そのまま発信ネタに変える方法を解説します。",["投稿ネタを10個書き出す"]),
-    L("Section2","実践：初回投稿を作る","課題",false,"最初の投稿を作って出します。",["投稿を1本出す"])]},
-  { id:"mk-case", badge:"事例", tool:"マーケ", title:"実績・事例コンテンツの作り方", sub:"1件の実績を何度も使う", tier:"standard",
-    about:["実績を見せられる形にする","次の受注に繋げる"], lessons:[
-    L("Section0","受注ストーリーとして書く","11:30",false,"何をしたかだけでなく、相手がどんな課題を抱え、どう解決したかの流れで書きます。守秘義務への配慮も扱います。",["自分の実績を1件、事例の形にする"]),
-    L("Section1","事例の使い回し方","9:45",false,"作った事例を提案・プロフィール・投稿でどう使い回すかを解説します。")]},
-  { id:"mk-lp", badge:"LP", tool:"マーケ", title:"LP・受け皿の作り方", sub:"問い合わせが来る導線を作る", tier:"standard",
-    about:["最低限の受け皿を用意する","AIで作ってしまう"], lessons:[
-    L("Section0","受け皿がないと取りこぼす","7:50",false,"興味を持った相手が問い合わせる場所を用意していないと、接触が無駄になります。"),
-    L("Section1","AIで1枚のLPを作る","14:20",false,"中級で学んだバイブコーディングを使って、自分のLPを作ります。",["自分のLPを1枚作る"])]},
+{ id:"cs", num:"05", name:"CS", desc:"ヘルススコアからクライアントワークまで。継続と拡大を担う職種。", courses:[
+  { id:"cs-ch0", badge:"第0章", tool:"CS", title:"前提", sub:"", tier:"standard", wip:true, about:["サポートとCSの違い"], lessons:[]},
+  { id:"cs-ch1", badge:"第1章", tool:"CS", title:"ヘルススコア", sub:"", tier:"standard", wip:true, about:["解約の予兆を数字で見る"], lessons:[]},
+  { id:"cs-ch2", badge:"第2章", tool:"CS", title:"アップセル", sub:"", tier:"standard", wip:true, about:["満足しているときに広げる"], lessons:[]},
+  { id:"cs-ch3", badge:"第3章", tool:"CS", title:"事業シナジー", sub:"", tier:"standard", wip:true, about:["他事業とつなげる"], lessons:[]},
+  { id:"cs-ch4", badge:"第4章", tool:"CS", title:"お客様対応", sub:"", tier:"standard", wip:true, about:["信頼を落とさない対応"], lessons:[]},
+  { id:"cs-ch5", badge:"第5章", tool:"CS", title:"クライアントワーク", sub:"", tier:"standard", wip:true, about:["受託の進め方"], lessons:[]},
+  { id:"cs-exam", badge:"試験", tool:"CS", title:"卒業試験", sub:"", tier:"standard", wip:true, about:["到達を確認する"], lessons:[]},
 ]},
 
-{ id:"mk-paid", kind:"practice", num:"マーケ", group:"マーケ", name:"有料編", desc:"お金をかけて量を増やす。無料で反応が取れてから入る。", courses:[
-  { id:"mk-ch", badge:"選定", tool:"広告", title:"広告チャネルの使い分け", sub:"どこに出すかを先に決める", tier:"standard",
-    about:["各媒体の特性を知る","自分の商材に合う媒体を選ぶ"], lessons:[
-    L("Section0","広告を出す前の条件","9:10",false,"実績と受け皿が揃う前に広告を出すと溶けるだけです。出してよい状態の判断基準を解説します。"),
-    L("Section1","検索広告・SNS広告・ディスプレイの違い","15:20",false,"リスティングは「今すぐ探している人」、Meta等のSNS広告は「まだ探していない人」に届きます。ディスプレイ・YouTube・LinkedIn広告も含めて特性を整理します。"),
-    L("Section2","自分の商材はどこに出すか","11:40",false,"商材の単価と検討期間から、出すべき媒体を決めます。",["出稿する媒体を1つ決めて理由を書く"])]},
-  { id:"mk-listing", badge:"検索", tool:"リスティング広告", title:"リスティング広告の基礎知識", sub:"検索連動型広告の仕組みと始め方", tier:"standard",
-    about:["検索広告の仕組みを理解する","予算を溶かさない出し方を知る"], lessons:[
-    L("Section0","リスティング広告とは","9:15",false,"検索結果に出る広告の仕組みと、なぜ「今すぐ客」に強いのかを解説します。SEOとの違いも整理します。"),
-    L("Section1","広告用語の基礎（CPC・CPA・ROAS）","11:40",false,"クリック単価・獲得単価・広告費用対効果など、最低限おさえる用語を計算式つきで解説します。"),
-    L("Section2","キーワードの選び方","14:30",false,"買う気のあるキーワードと、費用だけかかるキーワードの見分け方を解説します。除外キーワードの設定も扱います。",["自分の商材のキーワードを20個出す"]),
-    L("Section3","予算と入札の考え方","12:55",false,"いくらから始めるべきか、日予算と入札戦略の決め方を解説します。"),
-    L("Section4","広告文の作り方","10:20",false,"クリックされる広告文の型を、実例を分解して解説します。",["広告文を3パターン作る"])]},
-  { id:"mk-meta", badge:"Meta", tool:"Meta広告", title:"Meta広告（Facebook / Instagram）の基礎", sub:"まだ探していない層に届ける", tier:"standard",
-    about:["ターゲティングの考え方を知る","クリエイティブで決まることを理解する"], lessons:[
-    L("Section0","Meta広告が効く場面","9:30",false,"検索していない層にこちらから見せられるのが強みです。BtoBでも経営者層に届く理由と、向かない商材を解説します。"),
-    L("Section1","アカウント構造と配信の仕組み","12:20",false,"キャンペーン・広告セット・広告の3階層と、配信がどう最適化されるかを解説します。"),
-    L("Section2","ターゲティングの組み方","14:10",false,"興味関心・類似オーディエンス・リターゲティングの使い分けを解説します。絞りすぎて配信が伸びない失敗も扱います。",["自分の商材のターゲット設定を作る"]),
-    L("Section3","クリエイティブで9割決まる","13:45",false,"画像・動画・広告文のどれを先に変えるか、検証の順番を解説します。",["広告クリエイティブを3案作る"]),
-    L("Section4","予算と検証の回し方","11:05",false,"いくらから始め、何日で判断するか。数字が足りない状態で判断しないための基準を解説します。"),
-    L("Section5","デモ環境：広告管理画面を触ってみる","デモ",false,"実際の管理画面と同じ構成のデモ環境で、キャンペーンの作成から配信設定までを操作します。課金は発生しません。",["デモ環境でキャンペーンを1つ作る"])]},
-  { id:"mk-lpo", badge:"LPO", tool:"広告", title:"広告LPのファーストビュー最適化", sub:"最初の画面で離脱を止める", tier:"standard",
-    about:["最初の1画面で何を言うか決める","改善の優先順位をつける"], lessons:[
-    L("Section0","ファーストビューで決まる","10:20",false,"広告から来た人の多くは最初の画面で去ります。ここに何を置くかで、その後の数字が変わります。"),
-    L("Section1","載せるべき4要素","13:40",false,"誰向けか・何ができるか・なぜ信じられるか・次に何をするか。この4つをどう配置するかを実例で解説します。",["自分のLPのファーストビューを書き直す"]),
-    L("Section2","改善の順番とA/Bの考え方","12:15",false,"どこから直すと効果が大きいか、優先順位のつけ方を解説します。")]},
-  { id:"mk-ad", badge:"動画", tool:"マーケ", title:"縦型動画広告の基本", sub:"認知をさらに広げる", tier:"elite",
-    about:["個人でも作れる範囲を知る","最初の3秒を設計する"], lessons:[
-    L("Section0","縦型動画が伸びる理由","9:10",false,"SNSの主戦場が縦型に移っており、個人でも作れる範囲で成果が出やすい構造を解説します。"),
-    L("Section1","最初の3秒の作り方","13:40",false,"見続けてもらうための冒頭の設計を、実例を分解して解説します。")]},
-]},
-{ id:"side", kind:"practice", num:"副業", name:"副業・案件獲得", desc:"副業プラットフォームから案件を取る。ここはコーチングで一緒に探す。", courses:[
-  { id:"sd-cw", badge:"CW", tool:"クラウドワークス", title:"クラウドワークスでの案件の取り方", sub:"最初の1件を取るために使う", tier:"standard",
-    about:["受かる提案文を書く","単価の低さとの付き合い方"], lessons:[
-    L("Section0","クラウドワークスの位置づけ","9:30",false,"単価は低い一方、実績ゼロから最初の1件を取るには機能します。ここに居続けないことを前提に使い方を解説します。"),
-    L("Section1","受かる提案文の型","14:50",false,"通る提案文と落ちる提案文を並べて、違いを分解します。",["自分の提案文テンプレートを作る"]),
-    L("Section2","案件の選び方と避ける案件","11:20",false,"時間単価が破綻する案件、揉めやすい案件の見分け方を解説します。"),
-    L("Section3","実践：10件提案する","課題",false,"実際に提案を出し、通過率を記録します。",["10件提案する","結果を記録して提出する"])]},
-  { id:"sd-wt", badge:"WT", tool:"Wantedly", title:"Wantedlyでの副業の取り方", sub:"副業前提の募集を狙う", tier:"standard",
-    about:["副業募集の探し方","面談までの流れ"], lessons:[
-    L("Section0","Wantedlyの使い方","8:40",false,"副業・業務委託の募集がある場所として、どう探すかを解説します。"),
-    L("Section1","プロフィールと応募文","13:15",false,"会ってみたいと思わせるプロフィールの作り方を解説します。",["プロフィールを作成する"]),
-    L("Section2","カジュアル面談の進め方","11:50",false,"面談で何を聞かれ、何を確認すべきかを解説します。",["3社に応募する"])]},
-  { id:"sd-yt", badge:"YT", tool:"YOUTRUST", title:"YOUTRUSTでの副業の取り方", sub:"つながり経由で声がかかる", tier:"standard",
-    about:["信頼ベースの導線を作る","声がかかる状態にする"], lessons:[
-    L("Section0","YOUTRUSTの特徴","8:20",false,"知人のつながりを起点に副業の話が来る構造を解説します。他媒体との違いを整理します。"),
-    L("Section1","プロフィールと副業意欲の出し方","12:30",false,"副業を探していることをどう表明するか、書き方を解説します。",["プロフィールを整えて副業意欲を公開する"])]},
-  { id:"sd-prop", badge:"提案", tool:"副業", title:"提案文とポートフォリオ", sub:"どの媒体でも共通で必要になるもの", tier:"standard",
-    about:["使い回せる提案文を持つ","見せられる作品を用意する"], lessons:[
-    L("Section0","提案文の共通の型","12:10",false,"媒体が変わっても使える提案文の骨格を作ります。",["共通の提案文を作る"]),
-    L("Section1","ポートフォリオの作り方","13:35",false,"中級で作ったツールを、そのまま見せられる形に整えます。",["ポートフォリオを1枚作る"])]},
-  { id:"sd-price", badge:"単価", tool:"副業", title:"単価交渉と継続化", sub:"1件で終わらせない", tier:"elite",
-    about:["安く受けすぎない","継続契約に持ち込む"], lessons:[
-    L("Section0","最初の見積の出し方","11:40",false,"相場を踏まえて、安く受けすぎないための考え方を解説します。"),
-    L("Section1","継続契約に変える","13:20",false,"単発で終わらせず、月額に変えていく話の持っていき方を解説します。"),
-    L("Section2","稼働管理と確定申告の基本","10:50",false,"副業として続ける上で最低限おさえる事務を確認します。")]},
+{ id:"ai", num:"06", name:"AI", desc:"道具としてのAI。第0章の台本は完成済み。セットアップから自動化まで。", courses:[
+  { id:"ai-ch0", badge:"第0章", tool:"AI", title:"前提", sub:"全8コンテンツ・台本済み", tier:"standard",
+    about:["AIは作業者、人は管理者と定義する","任せる・任せないの線を引く"], lessons:[
+    L("0-1","二つの定義","10:40",false,"AI＝作業者（判断と責任を持たない）、人＝管理者（判定・改善指示・最終責任）。渡せるのは作る側だけで、責任は移りません。求められる能力が「書く力」から「見極める力」へ入れ替わります。",["自分の職務がどちら側かを判定する"]),
+    L("0-2","最終チェックの省略は禁止","9:20",false,"どれだけ精度が上がっても、出す前の確認を飛ばしてはいけない理由を扱います。"),
+    L("0-3","任せる・任せない・中間の3分類","11:10",false,"業務を3つに仕分けます。中間をどう扱うかが実務では一番重要です。",["自分の業務を3分類する"]),
+    L("0-4","検査基準は「増やす」のではなく「言語化する」","10:50",false,"チェック項目を足すのではなく、頭の中にある基準を言葉にします。"),
+    L("0-5","AIの仕組みから来る得意・不得意","12:00",false,"なぜ間違えるのかを仕組みから理解すると、使いどころが分かります。"),
+    L("0-6","機密・権利・法務の線引き","11:30",false,"渡してはいけない情報と、権利まわりの注意点を整理します。"),
+    L("0-7","コストとモデルの使い分け","10:15",false,"高いモデルを常用しないための判断基準です。"),
+    L("0-8","自社への落とし込み","課題",false,"4欄シートを使って、自分の職場に当てはめます。",["4欄シートを埋めて提出する"])]},
+  { id:"ai-ch1", badge:"第1章", tool:"AI", title:"セットアップ", sub:"", tier:"standard", wip:true, about:["使う環境を整える"], lessons:[]},
+  { id:"ai-ch2", badge:"第2章", tool:"AI", title:"プロンプト", sub:"", tier:"standard", wip:true, about:["指示の型を持つ"], lessons:[]},
+  { id:"ai-ch3", badge:"第3章", tool:"AI", title:"フィードバック", sub:"", tier:"standard", wip:true, about:["直させ方を覚える"], lessons:[]},
+  { id:"ai-ch4", badge:"第4章", tool:"AI", title:"HTML", sub:"", tier:"standard", wip:true, about:["1枚で動くものを作る"], lessons:[]},
+  { id:"ai-ch5", badge:"第5章", tool:"AI", title:"Webアプリ", sub:"", tier:"standard", wip:true, about:["納品できる形にする"], lessons:[]},
+  { id:"ai-ch6", badge:"第6章", tool:"AI", title:"自動化", sub:"", tier:"standard", wip:true, about:["繰り返しを機械に渡す"], lessons:[]},
+  { id:"ai-exam", badge:"試験", tool:"AI", title:"卒業試験", sub:"", tier:"standard", wip:true, about:["到達を確認する"], lessons:[]},
 ]},
 ];
 
@@ -1052,27 +916,27 @@ const FLOW = [
   { id:"f1", num:"01", name:"AIスキル基礎", status:"done",
     goal:"AIで自分の業務を1つ置き換え、削減時間を数字で出せている",
     desc:"まず道具を使えるようにする。ここで止まる人が最も多い。",
-    cats:["ai1"], courses:["a1-map","a1-gpt"] },
+    cats:["mind","ai"], courses:["md-why","a1-map","a1-gpt"] },
   { id:"f2", num:"02", name:"商材化", status:"current",
     goal:"売る商材を1つに絞り、見積を自分で出せる",
     desc:"何を売るか決まっていないと営業に進めない。1本に絞る。",
-    cats:["ai2","ai3"], courses:["a2-html","a3-case"] },
+    cats:["ai","newbiz"], courses:["a2-html","a3-case","nb-market"] },
   { id:"f3", num:"03", name:"営業実践", status:"todo",
     goal:"営業を送り、返信が3件来ている",
     desc:"無料施策から始める。受注より先に反応を取る。",
-    cats:["sales-free","sales-paid"], courses:["sf-li-prof","sf-form"] },
+    cats:["sales"], courses:["sf-li-prof","sf-form"] },
   { id:"f4", num:"04", name:"マーケ実践", status:"todo",
     goal:"実績を見せられる事例と、問い合わせの受け皿が1つある",
     desc:"追いかけるだけでなく、向こうから来る導線を作る。",
-    cats:["mk-free","mk-paid"], courses:["mk-case","mk-lp","mk-wp"] },
+    cats:["mk"], courses:["mk-case","mk-lp","mk-wp"] },
   { id:"f5", num:"05", name:"案件獲得〜納品", status:"todo",
     goal:"1件受注し、納品と検収まで終わっている",
     desc:"納品まで終えて初めて実績になる。副業媒体も併用する。",
-    cats:["side"], courses:["sd-cw","sd-wt","sd-yt"] },
+    cats:["sales","pm"], courses:["sd-cw","sd-wt","sd-yt"] },
   { id:"f6", num:"06", name:"継続・単価アップ", status:"todo",
     goal:"月5万円を継続して超えている",
     desc:"単発で終わらせず、継続契約と単価改善に入る。",
-    cats:["side"], courses:["sd-price"] },
+    cats:["cs","sales"], courses:["sd-price","cs-keep"] },
 ];
 
 /* コーチング議事録。
@@ -1245,7 +1109,7 @@ const V = () => $("#view");
 
 let S = {
   mode:"user", page:"home", cid:null, li:0,
-  tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-info","g-level","g-practice","g-tool","g-adash","g-stu","g-coach","g-prod","g-prog","g-mail"]),
+  tier:"standard", favs:new Set(), groups:new Set(["g-lib","g-info","g-cats","g-tool","g-adash","g-stu","g-coach","g-prod","g-prog","g-mail"]),
   q:"", qmode:"course", filter:"all", libFilter:"all", tmpl:"t1", chartRange:7, statTab:"amount",
   page1:1, page2:1, done:null, prodF:"all", acctF:"all", acctNew:false, acctDraft:null, cotab:"program", sid:"s3", iid:"h1", ws:"w1", coachOpen:false, coachLog:[], vu:"中川 雄斗",
 };
@@ -1273,21 +1137,18 @@ const allCourses = () => CATS.flatMap(s=>s.courses.map(c=>({st:s,c})));
 const findC = id => allCourses().find(x=>x.c.id===id);
 const locked = c => c.tier==="elite" && S.tier==="standard";
 const dn = c => c.lessons.filter(l=>l.done).length;
-const pct = c => Math.round(dn(c)/c.lessons.length*100);
+const pct = c => c.lessons.length ? Math.round(dn(c)/c.lessons.length*100) : 0;
 const lstate = (c,i) => c.lessons[i].done?"done":(i===c.lessons.findIndex(l=>!l.done)?"current":"todo");
 const secs = d => {const m=/^(\d+):(\d+)$/.exec(d);return m?+m[1]*60+ +m[2]:0};
 const cSecs = c => c.lessons.reduce((a,l)=>a+secs(l.dur),0);
 const fmtM = s => {const m=Math.max(1,Math.round(s/60));return m>=60?`${Math.floor(m/60)}時間${m%60}分`:`${m}分`};
 const NEXT_SESSION = "2026/07/29 20:00";
 /* レベル別は「初級｜AI初心者」、実践は名前だけ。工程(FLOW)とは別軸 */
-const catLabel = ct => ct.kind==="core" ? ct.name
-  : ct.kind==="level" ? `${ct.num}｜${ct.name}`
-  : ct.group ? `${ct.group}：${ct.name}` : ct.name;
-const coreCats  = () => CATS.filter(c=>c.kind==="core");
-const levelCats = () => CATS.filter(c=>c.kind==="level");
-const practiceCats = () => CATS.filter(c=>c.kind==="practice");
+const catLabel = ct => `${ct.num}_${ct.name}`;
+const allCats = () => CATS;
+
 const flowCur = () => FLOW.find(f=>f.status==="current") || FLOW[0];
-const catPct = st => {const cs=st.courses.filter(c=>!locked(c));
+const catPct = st => {const cs=st.courses.filter(c=>!locked(c)&&c.lessons.length);
   const t=cs.reduce((a,c)=>a+c.lessons.length,0),d=cs.reduce((a,c)=>a+dn(c),0);return t?Math.round(d/t*100):0};
 const tools = () => [...new Set(allCourses().map(x=>x.c.tool))];
 const allHw = () => SESSIONS.flatMap(s=>s.actions.map(h=>({...h,ses:s})));
@@ -1395,27 +1256,13 @@ function renderSide(){
 
   if(S.mode==="user"){
     h+=USERNAV.map(grp).join("");
-    /* 必修（マインドセット）→ AIスキル（レベル別）→ 実践 の順に置く */
-    h+=`<div class="navgroup" data-open="true">
-      <button class="ghead" data-g="g-core"><span class="ic">🔰</span>必修<span class="cv">⌄</span></button>
-      <div class="glist">${coreCats().map(st=>`
+    /* コースは00〜06の7カテゴリ。番号順にそのまま並べる */
+    const cOpen=S.groups.has("g-cats");
+    h+=`<div class="navgroup" data-open="${cOpen}">
+      <button class="ghead" data-g="g-cats"><span class="ic">📚</span>コース<span class="cv">⌄</span></button>
+      <div class="glist">${allCats().map(st=>`
         <button class="nav" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
-        ${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`).join("")}</div></div>`;
-    const lOpen=S.groups.has("g-level");
-    h+=`<div class="navgroup" data-open="${lOpen}">
-      <button class="ghead" data-g="g-level"><span class="ic">🪜</span>AIスキル（レベル別）<span class="cv">⌄</span></button>
-      <div class="glist">${levelCats().map(st=>`
-        <button class="nav" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
-        ${st.num}　${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`).join("")}</div></div>`;
-    const pOpen=S.groups.has("g-practice");
-    h+=`<div class="navgroup" data-open="${pOpen}">
-      <button class="ghead" data-g="g-practice"><span class="ic">🎯</span>実践コース<span class="cv">⌄</span></button>
-      <div class="glist">${(()=>{let prev=null;return practiceCats().map(st=>{
-        /* 同じ group（例：営業）が続く場合は親見出しを一度だけ出し、子を字下げする */
-        const head = st.group && st.group!==prev ? `<div class="subhead">${st.group}</div>` : "";
-        prev = st.group||null;
-        return head+`<button class="nav${st.group?" sub":""}" data-stage="${st.id}" aria-current="${S.page==="stage"&&S.cid===st.id}">
-        ${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`}).join("")})()}</div></div>`;
+        <span class="catn tnum">${st.num}</span>${st.name}<span class="cnt tnum">${catPct(st)}%</span></button>`).join("")}</div></div>`;
     const tOpen=S.groups.has("g-tool");
     h+=`<div class="navgroup" data-open="${tOpen}">
       <button class="ghead" data-g="g-tool"><span class="ic">🧰</span>ツール別コース<span class="cv">⌄</span></button>
@@ -1492,10 +1339,10 @@ function courseCard(st,c){
       <div class="row" style="gap:8px">
         <div class="bar${p===100?" ok":""}"><i style="width:${lk?0:p}%"></i></div>
         <span class="mt tnum">${lk?"—":p+"%"}</span></div>
-      <span class="mt tnum">${lk?`全${c.lessons.length}レッスン`:`${dn(c)} / ${c.lessons.length}レッスン`}・計${fmtM(cSecs(c))}</span>
+      <span class="mt tnum">${c.wip?"公開準備中":lk?`全${c.lessons.length}レッスン`:`${dn(c)} / ${c.lessons.length}レッスン・計${fmtM(cSecs(c))}`}</span>
     </div>
     <div class="ft">
-      <span class="chip ${lk?"m":p===100?"g":p>0?"b":""}">${lk?"エリート":p===100?"修了":p>0?"受講中":"未着手"}</span>
+      <span class="chip ${c.wip?"":lk?"m":p===100?"g":p>0?"b":""}">${c.wip?"制作中":lk?"エリート":p===100?"修了":p>0?"受講中":"未着手"}</span>
       <span><span class="iconb fav" data-fav="${c.id}" role="button" aria-pressed="${S.favs.has(c.id)}">${S.favs.has(c.id)?"♥":"♡"}</span>
       <span class="iconb sh" data-share="${c.id}" role="button">⤴</span></span>
     </div></button>`;
@@ -1610,8 +1457,7 @@ function vDash(){
       <div class="bar${p===100?" ok":""}" style="margin-bottom:6px"><i style="width:${p}%"></i></div>
       <span style="font-size:11px;color:var(--dim)" class="tnum">${st.courses.length}コース・${p}%</span></button>`}).join("")}</div>`;
 
-  h+=`<div class="sectitle">AIスキル（仕事の能力）</div>`+catBlock(levelCats());
-  h+=`<div class="sectitle">実践コース（案件・副業を取る）</div>`+catBlock(practiceCats());
+  h+=`<div class="sectitle">コースの進捗</div>`+catBlock(allCats());
 
   V().innerHTML=h;
   wireDoneBanner(); wireBoard();
@@ -1647,7 +1493,7 @@ function vCourse(){
         <div class="bar${p===100?" ok":""}"><i style="width:${p}%"></i></div>
         <span class="tnum" style="font-size:12.5px;color:var(--dim)">${p}%（${dn(c)} / ${c.lessons.length}）</span></div></div>
     <div style="display:flex;flex-direction:column;gap:8px">
-      <button class="b b-pri" id="startc">${p===0?"最初から受講する":p===100?"復習する":"続きから受講する"}</button>
+      <button class="b b-pri" id="startc" ${c.wip?"disabled":""}>${c.wip?"公開準備中":p===0?"最初から受講する":p===100?"復習する":"続きから受講する"}</button>
       <button class="b" id="goal">${S.favs.has(c.id)?"♥ お気に入り解除":"♡ マイ目標コースに追加"}</button>
       ${nx?`<button class="b" id="nextc">次のコース →</button>`:""}</div>
   </div></div>`;
